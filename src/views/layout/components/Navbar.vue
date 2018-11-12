@@ -1,23 +1,52 @@
 <template>
-  <el-menu class="navbar" mode="horizontal">
-    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
+  <el-menu 
+    class="navbar" 
+    mode="horizontal">
+
+    <!-- 收放侧栏 -->
+    <hamburger 
+      :toggle-click="toggleSideBar" 
+      :is-active="sidebar.opened" 
+      class="hamburger-container"/>
+
+    <!-- 面包屑路径 -->
     <breadcrumb />
-    <el-dropdown class="avatar-container" trigger="click">
+
+    <el-dropdown 
+      class="avatar-container" 
+      trigger="click">
+
+      <!-- 用户头像  -->
       <div class="avatar-wrapper">
-        <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+        <img 
+          :src="avatar+'?imageView2/1/w/80/h/80'" 
+          class="user-avatar">
         <i class="el-icon-caret-bottom"/>
       </div>
-      <el-dropdown-menu slot="dropdown" class="user-dropdown">
-        <router-link class="inlineBlock" to="/">
+
+      <el-dropdown-menu 
+        slot="dropdown" 
+        class="user-dropdown">
+        <!-- 用户主页 -->
+        <router-link 
+          class="inlineBlock" 
+          to="/">
           <el-dropdown-item>
             Home
           </el-dropdown-item>
         </router-link>
+        <!-- 退出登录 -->
         <el-dropdown-item divided>
-          <span style="display:block;" @click="logout">LogOut</span>
+          <span 
+            style="display:block;" 
+            @click="logout">
+            LogOut
+          </span>
         </el-dropdown-item>
       </el-dropdown-menu>
+
     </el-dropdown>
+
   </el-menu>
 </template>
 

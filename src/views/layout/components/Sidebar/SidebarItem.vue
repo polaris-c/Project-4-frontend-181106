@@ -1,20 +1,37 @@
 <template>
-  <div v-if="!item.hidden&&item.children" class="menu-wrapper">
+  <div 
+    v-if="!item.hidden&&item.children" 
+    class="menu-wrapper">
 
-    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+    <template v-if="hasOneShowingChild(item.children,item) 
+      && (!onlyOneChild.children||onlyOneChild.noShowingChildren) 
+      && !item.alwaysShow">
       <app-link :to="resolvePath(onlyOneChild.path)">
-        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon||item.meta.icon" :title="onlyOneChild.meta.title" />
+        <el-menu-item 
+          :index="resolvePath(onlyOneChild.path)" 
+          :class="{'submenu-title-noDropdown':!isNest}">
+          <item 
+            v-if="onlyOneChild.meta" 
+            :icon="onlyOneChild.meta.icon||item.meta.icon" 
+            :title="onlyOneChild.meta.title" />
         </el-menu-item>
       </app-link>
     </template>
 
-    <el-submenu v-else :index="resolvePath(item.path)">
+    <el-submenu v-else 
+      :index="resolvePath(item.path)">
+
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta.icon" :title="item.meta.title" />
+        <item 
+          v-if="item.meta" 
+          :icon="item.meta.icon" 
+          :title="item.meta.title" />
       </template>
 
-      <template v-for="child in item.children" v-if="!child.hidden">
+      <template 
+        v-for="child in item.children" 
+        v-if="!child.hidden">
+
         <sidebar-item
           v-if="child.children&&child.children.length>0"
           :is-nest="true"
@@ -22,11 +39,18 @@
           :key="child.path"
           :base-path="resolvePath(child.path)"
           class="nest-menu" />
-        <app-link v-else :to="resolvePath(child.path)" :key="child.name">
+
+        <app-link v-else 
+          :to="resolvePath(child.path)" 
+          :key="child.name">
           <el-menu-item :index="resolvePath(child.path)">
-            <item v-if="child.meta" :icon="child.meta.icon" :title="child.meta.title" />
+            <item 
+              v-if="child.meta" 
+              :icon="child.meta.icon" 
+              :title="child.meta.title" />
           </el-menu-item>
         </app-link>
+
       </template>
     </el-submenu>
 
@@ -64,17 +88,18 @@ export default {
   },
   methods: {
     hasOneShowingChild(children, parent) {
+      /* 筛选出需要显示的子组件 */
       const showingChildren = children.filter(item => {
         if (item.hidden) {
           return false
         } else {
-          // Temp set(will be used if only has one showing child)
+          /* 临时设置(如果只有一个要显示的子组件) Temp set(will be used if only has one showing child)  */
           this.onlyOneChild = item
           return true
         }
       })
 
-      // When there is only one child router, the child router is displayed by default
+      /* 当只有一个子路由器时，默认情况下会显示子路由器 When there is only one child router, the child router is displayed by default */
       if (showingChildren.length === 1) {
         return true
       }
@@ -87,12 +112,14 @@ export default {
 
       return false
     },
+
     resolvePath(routePath) {
       if (this.isExternalLink(routePath)) {
         return routePath
       }
       return path.resolve(this.basePath, routePath)
     },
+
     isExternalLink(routePath) {
       return isExternal(routePath)
     }
