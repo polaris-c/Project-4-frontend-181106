@@ -1,11 +1,27 @@
 <template>
-  <el-breadcrumb class="app-breadcrumb" separator="/">
+  <el-breadcrumb 
+    class="app-breadcrumb" 
+    separator-class="el-icon-arrow-right">
+
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item,index) in levelList" v-if="item.meta.title" :key="item.path">
-        <span v-if="item.redirect==='noredirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
-        <router-link v-else :to="item.redirect||item.path">{{ item.meta.title }}</router-link>
+      <el-breadcrumb-item 
+        v-for="(item,index) in levelList" 
+        v-if="item.meta.title" 
+        :key="item.path">
+
+        <span 
+          v-if="item.redirect==='noredirect'||index==levelList.length-1" 
+          class="no-redirect">
+          {{ item.meta.title }}
+        </span>
+
+        <router-link v-else :to="item.redirect||item.path">
+          {{ item.meta.title }}
+        </router-link>
+
       </el-breadcrumb-item>
     </transition-group>
+
   </el-breadcrumb>
 </template>
 
@@ -18,25 +34,34 @@ export default {
       levelList: null
     }
   },
+
   watch: {
     $route() {
       this.getBreadcrumb()
     }
   },
+
   created() {
     this.getBreadcrumb()
   },
+
   methods: {
     getBreadcrumb() {
       const { params } = this.$route
+      console.log('* * * * Breadcrumb - this.$route:', this.$route)
       let matched = this.$route.matched.filter(item => {
         if (item.name) {
           // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
+          console.log('* * * * Breadcrumb-item.name:', item.name)
+          console.log('* * * * Breadcrumb-item.path:', item.path)
+
           var toPath = pathToRegexp.compile(item.path)
           item.path = toPath(params)
+          // console.log('* * * * Breadcrumb-pathToRegexp-path:', item.path)
           return true
         }
       })
+      // console.log('* * * * Breadcrumb - matched：', matched)
       const first = matched[0]
       if (first && first.name !== 'dashboard') {
         matched = [{ path: '/dashboard', meta: { title: 'Dashboard' }}].concat(matched)
