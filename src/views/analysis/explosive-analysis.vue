@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    user-management-List
+    explosive-analysis
     <div class="dashboard-text">name:{{ name }}</div>
   </div>
 </template>

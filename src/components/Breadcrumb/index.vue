@@ -63,7 +63,7 @@ export default {
       })
       // console.log('* * * * Breadcrumb - matched：', matched)
       const first = matched[0]
-      if (first && first.name !== 'Home') {
+      if (first && first.name !== 'home') {
         matched = [{ path: '/home', meta: { title: 'Home' }}].concat(matched)
       }
       this.levelList = matched

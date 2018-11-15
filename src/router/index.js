@@ -26,35 +26,161 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
+    path: '/',
+    component: Layout,
+    redirect: '/home',
+    name: 'NULL',
+    children: [
+      {
+        path: 'home',
+        name: 'Home',
+        component: () => import('@/views/user-profile/index'),
+        meta: { title: 'Home', icon: 'user' }
+      }
+    ]
+  },
+
+  {
     path: '/handbook',
     component: Layout,
     redirect: '/handbook/index',
     name: 'Handbook',
     // hidden: true,
-    children: [{
-      path: 'index',
-      name: 'HandbookIndex',
-      component: () => import('@/views/handbook/index'),
-      meta: { title: 'Handbook', icon: 'example' }
-    }]
+    children: [
+      {
+        path: 'index',
+        name: 'HandbookIndex',
+        component: () => import('@/views/handbook/index'),
+        meta: { title: 'Handbook', icon: 'excel' }
+      }
+    ]
   },
 
   {
-    path: '/',
+    path: '/userManagement',
     component: Layout,
-    redirect: '/home',
-    name: 'Home',
-    children: [{
-      path: 'home',
-      name: 'HomeIndex',
-      component: () => import('@/views/user-profile/index'),
-      meta: { title: 'Home', icon: 'user' }
-    }]
+    name: 'UserManagement',
+    children: [
+      {
+        path: 'index',
+        name: 'UserManagementIndex',
+        component: () => import('@/views/user-management/index'),
+        meta: { title: 'UserManagement', icon: 'peoples' }
+      }
+    ]
   },
 
-  // {
-  //   path: '/'
-  // }
+  {
+    path: '/message',
+    component: Layout,
+    // redirect: '/message/newMessage',
+    name: 'Message',
+    meta: { title: 'Message', icon: 'email' },
+    children: [
+      {
+        path: 'newMessage',
+        name: 'NewMessage',
+        component: () => import('@/views/message/index'),
+        meta: { title: 'NewMsg', icon: 'form' }
+      },
+      {
+        path: 'sentMessage',
+        name: 'SentMessage',
+        component: () => import('@/views/message/sent-message'),
+        meta: { title: 'SentMsg', icon: 'guide' }
+      },
+      {
+        path: 'receivedMessage',
+        name: 'ReceivedMessage',
+        component: () => import('@/views/message/received-message'),
+        meta: { title: 'ReceivedMsg', icon: 'message' }
+      }
+    ]
+  },
+
+  {
+    path: '/sampleManagement',
+    component: Layout,
+    name: 'SampleManagement',
+    meta: { title: 'Sample', icon: 'tab' },
+    children: [
+      {
+        path: 'explosiveSample',
+        name: 'ExplosiveSample',
+        component: () => import('@/views/sample-management/explosive-sample'),
+        meta: { title: 'ExplosiveSample', icon: 'table' }
+      },
+      {
+        path: 'deviceSample',
+        name: 'DeviceSample',
+        component: () => import('@/views/sample-management/device-sample'),
+        meta: { title: 'DeviceSample', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/evidenceManagement',
+    component: Layout,
+    name: 'EvidenceManagement',
+    meta: { title: 'Evidence', icon: 'dashboard' },
+    children: [
+      {
+        path: 'explosiveEvidence',
+        name: 'ExplosiveEvidence',
+        component: () => import('@/views/evidence-management/explosive-evidence'),
+        meta: { title: 'ExplosiveEvidence', icon: 'table' }
+      },
+      {
+        path: 'deviceEvidence',
+        name: 'DeviceEvidence',
+        component: () => import('@/views/evidence-management/device-evidence'),
+        meta: { title: 'DeviceEvidence', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/analysis',
+    component: Layout,
+    name: 'Analysis',
+    meta: { title: 'Analysis', icon: 'chart' },
+    children: [
+      {
+        path: 'explosive',
+        name: 'Explosive',
+        component: () => import('@/views/analysis/explosive-analysis'),
+        meta: { title: 'Explosive', icon: 'table' }
+      },
+      {
+        path: 'device',
+        name: 'Device',
+        component: () => import('@/views/analysis/device-analysis'),
+        meta: { title: 'Device', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/result',
+    component: Layout,
+    name: 'Result',
+    meta: { title: 'Result', icon: 'clipboard' },
+    children: [
+      {
+        path: 'explosive',
+        name: 'Explosive',
+        component: () => import('@/views/result/explosive-result'),
+        meta: { title: 'Explosive', icon: 'table' }
+      },
+      {
+        path: 'device',
+        name: 'Device',
+        component: () => import('@/views/result/device-result'),
+        meta: { title: 'Device', icon: 'table' }
+      }
+    ]
+  },
 
   // {
   //   path: '/example',
@@ -145,17 +271,6 @@ export const constantRouterMap = [
   //       path: 'menu2',
   //       component: () => import('@/views/nested/menu2/index'),
   //       meta: { title: 'menu2' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: 'external-link',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-  //       meta: { title: 'External Link', icon: 'link' }
   //     }
   //   ]
   // },

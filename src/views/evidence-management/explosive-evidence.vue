@@ -1,11 +1,7 @@
 <template>
   <div class="dashboard-container">
+    explosive-evidence
     <div class="dashboard-text">name:{{ name }}</div>
-    <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
-    <div class="dashboard-text">sidebar:{{ sidebar }}</div>
-    <div class="dashboard-text">device:{{ device }}</div>
-    <div class="dashboard-text">token:{{ token }}</div>
-    <div class="dashboard-text">avatar:{{ avatar }}</div>
   </div>
 </template>
 
