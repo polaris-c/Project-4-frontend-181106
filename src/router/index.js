@@ -45,13 +45,12 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/handbook/index',
     name: 'Handbook',
-    // hidden: true,
     children: [
       {
         path: 'index',
         name: 'HandbookIndex',
         component: () => import('@/views/handbook/index'),
-        meta: { title: 'Handbook', icon: 'excel' }
+        meta: { title: 'Handbook', icon: 'handbook' }
       }
     ]
   },
@@ -60,12 +59,40 @@ export const constantRouterMap = [
     path: '/userManagement',
     component: Layout,
     name: 'UserManagement',
+    meta: { title: 'UserMag', icon: 'peoples' },
     children: [
       {
         path: 'index',
-        name: 'UserManagementIndex',
+        name: 'UserList',
         component: () => import('@/views/user-management/index'),
-        meta: { title: 'UserManagement', icon: 'peoples' }
+        meta: { title: 'UserList', icon: 'list' }
+      },
+      {
+        path: 'create',
+        name: 'NewUser',
+        component: () => import('@/views/user-management/create'),
+        meta: { title: 'NewUser', icon: 'people' }
+      }
+    ]
+  },
+
+  {
+    path: '/options',
+    component: Layout,
+    name: 'Options',
+    meta: { title: 'Options', icon: 'options' },
+    children: [
+      {
+        path: 'detectionDevice',
+        name: 'DetectionDevice',
+        component: () => import('@/views/options/device-detection'),
+        meta: { title: 'Device', icon: 'devices' }
+      },
+      {
+        path: 'detectionMethod',
+        name: 'DetectionMethod',
+        component: () => import('@/views/options/method-detection'),
+        meta: { title: 'Method', icon: 'method' }
       }
     ]
   },
@@ -107,13 +134,13 @@ export const constantRouterMap = [
       {
         path: 'explosiveSample',
         name: 'ExplosiveSample',
-        component: () => import('@/views/sample-management/explosive-sample'),
+        component: () => import('@/views/sample-management/explosive-sample/explosive-sample'),
         meta: { title: 'ExplosiveSample', icon: 'table' }
       },
       {
         path: 'deviceSample',
         name: 'DeviceSample',
-        component: () => import('@/views/sample-management/device-sample'),
+        component: () => import('@/views/sample-management/device-sample/device-list'),
         meta: { title: 'DeviceSample', icon: 'table' }
       }
     ]
