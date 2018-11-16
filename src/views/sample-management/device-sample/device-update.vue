@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    device-sample
+    device-update
     <div class="dashboard-text">name:{{ name }}</div>
   </div>
 </template>

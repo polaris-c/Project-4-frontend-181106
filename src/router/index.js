@@ -128,6 +128,7 @@ export const constantRouterMap = [
   {
     path: '/sampleManagement',
     component: Layout,
+    redirect: '/sampleManagement/deviceSample',
     name: 'SampleManagement',
     meta: { title: 'Sample', icon: 'tab' },
     children: [
@@ -135,13 +136,67 @@ export const constantRouterMap = [
         path: 'explosiveSample',
         name: 'ExplosiveSample',
         component: () => import('@/views/sample-management/explosive-sample/explosive-sample'),
-        meta: { title: 'ExplosiveSample', icon: 'table' }
+        meta: { title: 'ExplosiveSample', icon: '' }
       },
       {
         path: 'deviceSample',
         name: 'DeviceSample',
-        component: () => import('@/views/sample-management/device-sample/device-list'),
-        meta: { title: 'DeviceSample', icon: 'table' }
+        component: () => import('@/views/sample-management/device-sample/device-index'),
+        redirect: '/sampleManagement/deviceSample/deviceIndexList/deviceList',
+        meta: { title: 'DeviceSample' },
+        // hidden: true,
+        children: [
+          {
+            path: 'deviceCreation',
+            name: 'DeviceCreation',
+            component: () => import('@/views/sample-management/device-sample/device-creation'),
+            meta: { title: 'DeviceCreation', icon: '' },
+            // hidden: true
+          },
+          {
+            path: 'deviceIndexList',
+            name: 'DeviceIndexList',
+            component: () => import('@/views/sample-management/device-sample/device-index-list'),
+            redirect: '/sampleManagement/deviceSample/deviceIndexList/deviceList',
+            meta: { title: '', icon: '' },
+            children: [
+              {
+                path: 'deviceList',
+                name: 'DeviceList',
+                component: () => import('@/views/sample-management/device-sample/device-list'),
+                meta: { title: 'DeviceList', icon: '' },
+              },
+              {
+                path: 'deviceUpdate',
+                name: 'DeviceUpdate',
+                component: () => import('@/views/sample-management/device-sample/device-update'),
+                meta: { title: 'DeviceUpdate', icon: '' },
+                hidden: true
+              },
+              {
+                path: 'deviceDetail',
+                name: 'DeviceDetail',
+                component: () => import('@/views/sample-management/device-sample/device-detail'),
+                meta: { title: 'DeviceDetail', icon: '' },
+                hidden: true
+              },
+              {
+                path: 'deviceDetailIngredient',
+                name: 'DeviceDetailIngredient',
+                component: () => import('@/views/sample-management/device-sample/device-detail-ingredient'),
+                meta: { title: 'DeviceDetailIngredient', icon: '' },
+                hidden: true
+              },
+              {
+                path: 'deviceDetailAppearance',
+                name: 'DeviceDetailAppearance',
+                component: () => import('@/views/sample-management/device-sample/device-Detail-Appearance'),
+                meta: { title: 'DeviceDetailAppearance', icon: '' },
+                hidden: true
+              }
+            ]
+          }
+        ]
       }
     ]
   },

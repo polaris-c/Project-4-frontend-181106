@@ -1,7 +1,9 @@
 <template>
   <div class="dashboard-container">
-    device-sample
+    device-list
     <div class="dashboard-text">name:{{ name }}</div>
+    <el-button type="primary" @click="update">Update</el-button>
+    <el-button type="primary" @click="detail">Detail</el-button>
   </div>
 </template>
 
@@ -9,7 +11,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Dashboard',
+  name: 'DeviceList',
   computed: {
     ...mapGetters([
       'name',
@@ -19,6 +21,14 @@ export default {
       'token',
       'avatar',
     ])
+  },
+  methods: {
+    update() {
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceUpdate')
+    },
+    detail() {
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetail')
+    }
   }
 }
 </script>

@@ -1,7 +1,9 @@
 <template>
   <div class="dashboard-container">
-    device-sample
+    device-detail
     <div class="dashboard-text">name:{{ name }}</div>
+    <el-button type="primary" @click="detailIngredient">Detail Ingredient</el-button>
+    <el-button type="primary" @click="deviceDetailAppearance">Detail Appearance</el-button>
   </div>
 </template>
 
@@ -19,6 +21,14 @@ export default {
       'token',
       'avatar',
     ])
+  },
+  methods: {
+    detailIngredient() {
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailIngredient')
+    },
+    deviceDetailAppearance() {
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailAppearance')
+    }
   }
 }
 </script>
