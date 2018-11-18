@@ -26,21 +26,6 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
-    path: '/',
-    component: Layout,
-    redirect: '/home',
-    name: 'NULL',
-    children: [
-      {
-        path: 'home',
-        name: 'Home',
-        component: () => import('@/views/user-profile/index'),
-        meta: { title: 'Home', icon: 'user' }
-      }
-    ]
-  },
-
-  {
     path: '/handbook',
     component: Layout,
     redirect: '/handbook/index',
@@ -51,6 +36,49 @@ export const constantRouterMap = [
         name: 'HandbookIndex',
         component: () => import('@/views/handbook/index'),
         meta: { title: 'Handbook', icon: 'handbook' }
+      }
+    ]
+  },
+
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/userProfile',
+    name: 'Home',
+    meta: { title: 'Home', icon: 'example' },
+    children: [
+      {
+        path: 'userProfile',
+        name: 'UserProfile',
+        component: () => import('@/views/home/user-profile'),
+        meta: { title: 'UserProfile', icon: 'user' }
+      },
+      {
+        path: 'message',
+        name: 'Message',
+        component: () => import('@/views/home/message/home-index-message'),
+        redirect: '/message/messageCreation',
+        meta: { title: 'Message', icon: 'email' },
+        children: [
+          {
+            path: 'messageCreation',
+            name: 'MessageCreation',
+            component: () => import('@/views/home/message/message-form'),
+            meta: { title: 'MsgCreation', icon: 'form' }
+          },
+          {
+            path: 'messageSent',
+            name: 'MessageSent',
+            component: () => import('@/views/home/message/message-sent'),
+            meta: { title: 'MsgSent', icon: 'guide' }
+          },
+          {
+            path: 'messageReceived',
+            name: 'MessageReceived',
+            component: () => import('@/views/home/message/message-received'),
+            meta: { title: 'MsgReceived', icon: 'message' }
+          }
+        ]
       }
     ]
   },
@@ -97,33 +125,33 @@ export const constantRouterMap = [
     ]
   },
 
-  {
-    path: '/message',
-    component: Layout,
-    // redirect: '/message/newMessage',
-    name: 'Message',
-    meta: { title: 'Message', icon: 'email' },
-    children: [
-      {
-        path: 'newMessage',
-        name: 'NewMessage',
-        component: () => import('@/views/message/index'),
-        meta: { title: 'NewMsg', icon: 'form' }
-      },
-      {
-        path: 'sentMessage',
-        name: 'SentMessage',
-        component: () => import('@/views/message/sent-message'),
-        meta: { title: 'SentMsg', icon: 'guide' }
-      },
-      {
-        path: 'receivedMessage',
-        name: 'ReceivedMessage',
-        component: () => import('@/views/message/received-message'),
-        meta: { title: 'ReceivedMsg', icon: 'message' }
-      }
-    ]
-  },
+  // {
+  //   path: '/message',
+  //   component: Layout,
+  //   // redirect: '/message/newMessage',
+  //   name: 'Message',
+  //   meta: { title: 'Message', icon: 'email' },
+  //   children: [
+  //     {
+  //       path: 'newMessage',
+  //       name: 'NewMessage',
+  //       component: () => import('@/views/message/index'),
+  //       meta: { title: 'NewMsg', icon: 'form' }
+  //     },
+  //     {
+  //       path: 'sentMessage',
+  //       name: 'SentMessage',
+  //       component: () => import('@/views/message/sent-message'),
+  //       meta: { title: 'SentMsg', icon: 'guide' }
+  //     },
+  //     {
+  //       path: 'receivedMessage',
+  //       name: 'ReceivedMessage',
+  //       component: () => import('@/views/message/received-message'),
+  //       meta: { title: 'ReceivedMsg', icon: 'message' }
+  //     }
+  //   ]
+  // },
 
   {
     path: '/sampleManagement',
