@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    explosive-evidence
+    explosive-detail
     <div class="dashboard-text">name:{{ name }}</div>
   </div>
 </template>
@@ -19,6 +19,9 @@ export default {
       'token',
       'avatar',
     ])
+  },
+  methods: {
+    
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    device-evidence
+    device-ingredient
     <div class="dashboard-text">name:{{ name }}</div>
   </div>
 </template>

@@ -272,20 +272,113 @@ export const constantRouterMap = [
   {
     path: '/evidenceManagement',
     component: Layout,
+    redirect: '/evidenceManagement/deviceEvidence',
     name: 'EvidenceManagement',
     meta: { title: 'Evidence', icon: 'dashboard' },
     children: [
       {
         path: 'explosiveEvidence',
         name: 'ExplosiveEvidence',
-        component: () => import('@/views/evidence-management/explosive-evidence'),
-        meta: { title: 'ExplosiveEvidence', icon: 'table' }
+        component: () => import('@/views/evidence-management/explosive-evidence/explosive-index'),
+        redirect: '/evidenceManagement/explosiveEvidence/explosiveIndexList/explosiveList',
+        meta: { title: 'ExplosiveEvidence', icon: '' },
+        children: [
+          {
+            path: 'explosiveCreation',
+            name: 'ExplosiveCreation',
+            component: () => import('@/views/evidence-management/explosive-evidence/explosive-creation'),
+            meta: { title: 'ExplosiveCreation' }
+          },
+          {
+            path: 'explosiveIndexList',
+            name: 'ExplosiveIndexList',
+            component: () => import('@/views/evidence-management/explosive-evidence/explosive-index-list'),
+            redirect: '/evidenceManagement/explosiveEvidence/explosiveIndexList/explosiveList',
+            meta: { title: '' },
+            children: [
+              {
+                path: 'explosiveList',
+                name: 'ExplosiveList',
+                component: () => import('@/views/evidence-management/explosive-evidence/explosive-list'),
+                meta: { title: 'ExplosiveList' }
+              },
+              {
+                path: 'explosiveDetail',
+                name: 'ExplosiveDetail',
+                component: () => import('@/views/evidence-management/explosive-evidence/explosive-detail'),
+                meta: { title: 'ExplosiveDetail' },
+                hidden: true
+              },
+              {
+                path: 'explosiveUpdate',
+                name: 'ExplosiveUpdate',
+                component: () => import('@/views/evidence-management/explosive-evidence/explosive-update'),
+                meta: { title: 'ExplosiveUpdate' },
+                hidden: true
+              },
+            ]
+          }
+        ]
       },
       {
         path: 'deviceEvidence',
         name: 'DeviceEvidence',
-        component: () => import('@/views/evidence-management/device-evidence'),
-        meta: { title: 'DeviceEvidence', icon: 'table' }
+        component: () => import('@/views/evidence-management/device-evidence/device-index'),
+        redirect: '/evidenceManagement/deviceEvidence/deviceIndexList/deviceList',
+        meta: { title: 'DeviceEvidence' },
+        // hidden: true,
+        children: [
+          {
+            path: 'deviceCreation',
+            name: 'DeviceCreation',
+            component: () => import('@/views/evidence-management/device-evidence/device-creation'),
+            meta: { title: 'DeviceCreation', icon: '' },
+            // hidden: true
+          },
+          {
+            path: 'deviceIndexList',
+            name: 'DeviceIndexList',
+            component: () => import('@/views/evidence-management/device-evidence/device-index-list'),
+            redirect: '/evidenceManagement/deviceEvidence/deviceIndexList/deviceList',
+            meta: { title: '', icon: '' },
+            children: [
+              {
+                path: 'deviceList',
+                name: 'DeviceList',
+                component: () => import('@/views/evidence-management/device-evidence/device-list'),
+                meta: { title: 'DeviceList', icon: '' },
+              },
+              {
+                path: 'deviceUpdate',
+                name: 'DeviceUpdate',
+                component: () => import('@/views/evidence-management/device-evidence/device-update'),
+                meta: { title: 'DeviceUpdate', icon: '' },
+                hidden: true
+              },
+              {
+                path: 'deviceDetail',
+                name: 'DeviceDetail',
+                component: () => import('@/views/evidence-management/device-evidence/device-detail'),
+                meta: { title: 'DeviceDetail', icon: '' },
+                hidden: true
+              },
+              {
+                path: 'deviceDetailIngredient',
+                name: 'DeviceDetailIngredient',
+                component: () => import('@/views/evidence-management/device-evidence/device-detail-ingredient'),
+                meta: { title: 'DeviceDetailIngredient', icon: '' },
+                hidden: true
+              },
+              {
+                path: 'deviceDetailAppearance',
+                name: 'DeviceDetailAppearance',
+                component: () => import('@/views/evidence-management/device-evidence/device-Detail-Appearance'),
+                meta: { title: 'DeviceDetailAppearance', icon: '' },
+                hidden: true
+              }
+            ]
+          }
+        ]
       }
     ]
   },
