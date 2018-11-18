@@ -1,8 +1,7 @@
 <template>
   <div class="dashboard-container">
-    message-sent
+    user-management-update
     <div class="dashboard-text">name:{{ name }}</div>
-    <el-button type="primary" @click="detail">Detail</el-button>
   </div>
 </template>
 
@@ -10,7 +9,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'MessageDetail',
+  name: 'Dashboard',
   computed: {
     ...mapGetters([
       'name',
@@ -19,12 +18,7 @@ export default {
       'device',
       'token',
       'avatar',
-    ]),
-  },
-  methods: {
-    detail() {
-      this.$router.push('/message/messageDetail')
-    }
+    ])
   }
 }
 </script>

@@ -77,6 +77,13 @@ export const constantRouterMap = [
             name: 'MessageReceived',
             component: () => import('@/views/home/message/message-received'),
             meta: { title: 'MsgReceived', icon: 'message' }
+          },
+          {
+            path: 'messageDetail',
+            name: 'MessageDetail',
+            component: () => import('@/views/home/message/message-detail'),
+            meta: { title: 'MsgDetail' },
+            hidden: true
           }
         ]
       }
@@ -86,20 +93,43 @@ export const constantRouterMap = [
   {
     path: '/userManagement',
     component: Layout,
+    redirect: '/userManagement/userIndexList/userList',
     name: 'UserManagement',
     meta: { title: 'UserMag', icon: 'peoples' },
     children: [
       {
-        path: 'index',
-        name: 'UserList',
-        component: () => import('@/views/user-management/index'),
-        meta: { title: 'UserList', icon: 'list' }
+        path: 'userCreation',
+        name: 'UserCreation',
+        component: () => import('@/views/user-management/user-creation'),
+        meta: { title: 'UserCreation', icon: 'people' }
       },
       {
-        path: 'create',
-        name: 'NewUser',
-        component: () => import('@/views/user-management/create'),
-        meta: { title: 'NewUser', icon: 'people' }
+        path: 'userIndexList',
+        name: 'UserIndexList',
+        component: () => import('@/views/user-management/user-index-list'),
+        meta: { title: '', icon: '' },
+        children: [
+          {
+            path: 'userList',
+            name: 'UserList',
+            component: () => import('@/views/user-management/user-list'),
+            meta: { title: 'UserList', icon: 'list' }
+          },
+          {
+            path: 'userDetail',
+            name: 'UserDetail',
+            component: () => import('@/views/user-management/user-detail'),
+            meta: { title: 'UserDetail', icon: '' },
+            hidden: true
+          },
+          {
+            path: 'userUpdate',
+            name: 'UserUpdate',
+            component: () => import('@/views/user-management/user-update'),
+            meta: { title: 'UserUpdate', icon: '' },
+            hidden: true
+          }
+        ]
       }
     ]
   },
@@ -125,34 +155,6 @@ export const constantRouterMap = [
     ]
   },
 
-  // {
-  //   path: '/message',
-  //   component: Layout,
-  //   // redirect: '/message/newMessage',
-  //   name: 'Message',
-  //   meta: { title: 'Message', icon: 'email' },
-  //   children: [
-  //     {
-  //       path: 'newMessage',
-  //       name: 'NewMessage',
-  //       component: () => import('@/views/message/index'),
-  //       meta: { title: 'NewMsg', icon: 'form' }
-  //     },
-  //     {
-  //       path: 'sentMessage',
-  //       name: 'SentMessage',
-  //       component: () => import('@/views/message/sent-message'),
-  //       meta: { title: 'SentMsg', icon: 'guide' }
-  //     },
-  //     {
-  //       path: 'receivedMessage',
-  //       name: 'ReceivedMessage',
-  //       component: () => import('@/views/message/received-message'),
-  //       meta: { title: 'ReceivedMsg', icon: 'message' }
-  //     }
-  //   ]
-  // },
-
   {
     path: '/sampleManagement',
     component: Layout,
@@ -163,8 +165,46 @@ export const constantRouterMap = [
       {
         path: 'explosiveSample',
         name: 'ExplosiveSample',
-        component: () => import('@/views/sample-management/explosive-sample/explosive-sample'),
-        meta: { title: 'ExplosiveSample', icon: '' }
+        component: () => import('@/views/sample-management/explosive-sample/explosive-index'),
+        redirect: '/sampleManagement/explosiveSample/explosiveIndexList/explosiveList',
+        meta: { title: 'ExplosiveSample', icon: '' },
+        children: [
+          {
+            path: 'explosiveCreation',
+            name: 'ExplosiveCreation',
+            component: () => import('@/views/sample-management/explosive-sample/explosive-creation'),
+            meta: { title: 'ExplosiveCreation' }
+          },
+          {
+            path: 'explosiveIndexList',
+            name: 'ExplosiveIndexList',
+            component: () => import('@/views/sample-management/explosive-sample/explosive-index-list'),
+            redirect: '/sampleManagement/explosiveSample/explosiveIndexList/explosiveList',
+            meta: { title: '' },
+            children: [
+              {
+                path: 'explosiveList',
+                name: 'ExplosiveList',
+                component: () => import('@/views/sample-management/explosive-sample/explosive-list'),
+                meta: { title: 'ExplosiveList' }
+              },
+              {
+                path: 'explosiveDetail',
+                name: 'ExplosiveDetail',
+                component: () => import('@/views/sample-management/explosive-sample/explosive-detail'),
+                meta: { title: 'ExplosiveDetail' },
+                hidden: true
+              },
+              {
+                path: 'explosiveUpdate',
+                name: 'ExplosiveUpdate',
+                component: () => import('@/views/sample-management/explosive-sample/explosive-update'),
+                meta: { title: 'ExplosiveUpdate' },
+                hidden: true
+              },
+            ]
+          }
+        ]
       },
       {
         path: 'deviceSample',

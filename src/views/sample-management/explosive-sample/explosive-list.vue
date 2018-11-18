@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-container">
-    message-sent
+    explosive-list
     <div class="dashboard-text">name:{{ name }}</div>
+    <el-button type="primary" @click="update">Update</el-button>
     <el-button type="primary" @click="detail">Detail</el-button>
   </div>
 </template>
@@ -10,7 +11,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'MessageDetail',
+  name: 'DeviceList',
   computed: {
     ...mapGetters([
       'name',
@@ -19,11 +20,14 @@ export default {
       'device',
       'token',
       'avatar',
-    ]),
+    ])
   },
   methods: {
+    update() {
+      this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveUpdate')
+    },
     detail() {
-      this.$router.push('/message/messageDetail')
+      this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveDetail')
     }
   }
 }

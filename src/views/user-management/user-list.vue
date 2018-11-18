@@ -1,7 +1,9 @@
 <template>
   <div class="dashboard-container">
-    explosive-sample
+    user-management-List
     <div class="dashboard-text">name:{{ name }}</div>
+    <el-button type="primary" @click="update">Update</el-button>
+    <el-button type="primary" @click="detail">Detail</el-button>
   </div>
 </template>
 
@@ -19,6 +21,14 @@ export default {
       'token',
       'avatar',
     ])
+  },
+  methods: {
+    update() {
+      this.$router.push('/userManagement/userIndexList/userUpdate')
+    },
+    detail() {
+      this.$router.push('/userManagement/userIndexList/userDetail')
+    }
   }
 }
 </script>
