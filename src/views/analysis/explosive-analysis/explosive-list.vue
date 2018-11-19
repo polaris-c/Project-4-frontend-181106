@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-container">
-    device-analysis
+    explosive-list
     <div class="dashboard-text">name:{{ name }}</div>
+    <el-button type="primary" @click="detail">Detail</el-button>
   </div>
 </template>
 
@@ -9,7 +10,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Dashboard',
+  name: 'DeviceList',
   computed: {
     ...mapGetters([
       'name',
@@ -19,6 +20,11 @@ export default {
       'token',
       'avatar',
     ])
+  },
+  methods: {
+    detail() {
+      this.$router.push('/analysis/explosiveAnalysis/explosiveDetail')
+    }
   }
 }
 </script>

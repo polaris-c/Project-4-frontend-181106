@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-container">
-    device-result
+    device-appearance!
     <div class="dashboard-text">name:{{ name }}</div>
+    <el-button type="primary" @click="analysisAppearanceCompare">AppearanceCompare</el-button>
   </div>
 </template>
 
@@ -19,6 +20,11 @@ export default {
       'token',
       'avatar',
     ])
+  },
+  methods: {
+    analysisAppearanceCompare() {
+      this.$router.push('/analysis/deviceAnalysis/deviceAppearanceCompare')
+    }
   }
 }
 </script>

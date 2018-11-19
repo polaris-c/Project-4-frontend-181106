@@ -386,20 +386,81 @@ export const constantRouterMap = [
   {
     path: '/analysis',
     component: Layout,
+    redirect: '/analysis/explosiveAnalysis',
     name: 'Analysis',
     meta: { title: 'Analysis', icon: 'chart' },
     children: [
       {
-        path: 'explosive',
-        name: 'Explosive',
-        component: () => import('@/views/analysis/explosive-analysis'),
-        meta: { title: 'Explosive', icon: 'table' }
+        path: 'explosiveAnalysis',
+        name: 'ExplosiveAnalysis',
+        component: () => import('@/views/analysis/explosive-analysis/explosive-index'),
+        redirect: '/analysis/explosiveAnalysis/explosiveList',
+        meta: { title: 'ExplosiveAnalysis', icon: 'table' },
+        children: [
+          {
+            path: 'explosiveList',
+            name: 'ExplosiveList',
+            component: () => import('@/views/analysis/explosive-analysis/explosive-list'),
+            meta: { title: 'ExplosiveList' }
+          },
+          {
+            path: 'explosiveDetail',
+            name: 'ExplosiveDetail',
+            component: () => import('@/views/analysis/explosive-analysis/explosive-detail'),
+            meta: { title: 'ExplosiveDetail' },
+            hidden: true
+          }
+        ]
       },
       {
-        path: 'device',
-        name: 'Device',
-        component: () => import('@/views/analysis/device-analysis'),
-        meta: { title: 'Device', icon: 'table' }
+        path: 'deviceAnalysis',
+        name: 'DeviceAnalysis',
+        component: () => import('@/views/analysis/device-analysis/device-index'),
+        redirect: '/analysis/deviceAnalysis/deviceList',
+        meta: { title: 'DeviceAnalysis', icon: 'table' },
+        children: [
+          {
+            path: 'deviceList',
+            name: 'DeviceList',
+            component: () => import('@/views/analysis/device-analysis//device-list'),
+            meta: { title: 'DeviceList' }
+          },
+          {
+            path: 'deviceDetail',
+            name: 'DeviceDetail',
+            component: () => import('@/views/analysis/device-analysis/device-detail'),
+            meta: { title: 'DeviceDetail' },
+            hidden: true
+          },
+          {
+            path: 'deviceFilter',
+            name: 'DeviceFilter',
+            component: () => import('@/views/analysis/device-analysis/device-detail-filter'),
+            meta: { title: 'DeviceFilter' },
+            hidden: true
+          },
+          {
+            path: 'deviceIngredient',
+            name: 'DeviceIngredient',
+            component: () => import('@/views/analysis/device-analysis/device-detail-ingredient'),
+            meta: { title: 'DeviceIngredient' },
+            hidden: true
+          },
+          {
+            path: 'deviceAppearance',
+            name: 'DeviceAppearance',
+            component: () => import('@/views/analysis/device-analysis/device-detail-appearance'),
+            meta: { title: 'DeviceAppearance' },
+            hidden: true
+          },
+          {
+            path: 'deviceAppearanceCompare',
+            name: 'DeviceAppearanceCompare',
+            component: () => import('@/views/analysis/device-analysis/device-detail-appearance-Compare'),
+            meta: { title: 'DeviceAppearanceCompare' },
+            hidden: true
+          },
+        ]
       }
     ]
   },
@@ -407,116 +468,56 @@ export const constantRouterMap = [
   {
     path: '/result',
     component: Layout,
+    redirect: '/result/explosiveResult/explosiveList',
     name: 'Result',
     meta: { title: 'Result', icon: 'clipboard' },
     children: [
       {
-        path: 'explosive',
-        name: 'Explosive',
-        component: () => import('@/views/result/explosive-result'),
-        meta: { title: 'Explosive', icon: 'table' }
+        path: 'explosiveResult',
+        name: 'ExplosiveResult',
+        component: () => import('@/views/result/explosive-result/explosive-index'),
+        redirect: '/result/explosiveResult/explosiveList',
+        meta: { title: 'ExplosiveResult', icon: 'table' },
+        children: [
+          {
+            path: 'explosiveList',
+            name: 'ExplosiveList',
+            component: () => import('@/views/result/explosive-result/explosive-list'),
+            meta: { title: 'ExplosiveList' }
+          },
+          {
+            path: 'explosiveDetail',
+            name: 'ExplosiveDetail',
+            component: () => import('@/views/result/explosive-result/explosive-detail'),
+            meta: { title: 'ExplosiveDetail' },
+            hidden: true
+          }
+        ]
       },
       {
-        path: 'device',
-        name: 'Device',
-        component: () => import('@/views/result/device-result'),
-        meta: { title: 'Device', icon: 'table' }
+        path: 'deviceResult',
+        name: 'DeviceResult',
+        component: () => import('@/views/result/device-result/device-index'),
+        redirect: '/result/deviceResult/deviceList',
+        meta: { title: 'DeviceResult', icon: 'table' },
+        children: [
+          {
+            path: 'deviceList',
+            name: 'DeviceList',
+            component: () => import('@/views/result/device-result/device-list'),
+            meta: { title: 'DeviceList' }
+          },
+          {
+            path: 'deviceDetail',
+            name: 'DeviceDetail',
+            component: () => import('@/views/result/device-result/device-detail'),
+            meta: { title: 'DeviceDetail' },
+            hidden: true
+          }
+        ]
       }
     ]
   },
-
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: { title: 'Example', icon: 'example' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: 'Table', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: 'Tree', icon: 'tree' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/form',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Form',
-  //       component: () => import('@/views/form/index'),
-  //       meta: { title: 'Form', icon: 'form' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/nested',
-  //   component: Layout,
-  //   redirect: '/nested/menu1',
-  //   name: 'Nested',
-  //   meta: {
-  //     title: 'Nested',
-  //     icon: 'nested'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       component: () => import('@/views/nested/menu1/index'), // Parent router-view
-  //       name: 'Menu1',
-  //       meta: { title: 'Menu1' },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           component: () => import('@/views/nested/menu1/menu1-1'),
-  //           name: 'Menu1-1',
-  //           meta: { title: 'Menu1-1' }
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           component: () => import('@/views/nested/menu1/menu1-2'),
-  //           name: 'Menu1-2',
-  //           meta: { title: 'Menu1-2' },
-  //           children: [
-  //             {
-  //               path: 'menu1-2-1',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-  //               name: 'Menu1-2-1',
-  //               meta: { title: 'Menu1-2-1' }
-  //             },
-  //             {
-  //               path: 'menu1-2-2',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-  //               name: 'Menu1-2-2',
-  //               meta: { title: 'Menu1-2-2' }
-  //             }
-  //           ]
-  //         },
-  //         {
-  //           path: 'menu1-3',
-  //           component: () => import('@/views/nested/menu1/menu1-3'),
-  //           name: 'Menu1-3',
-  //           meta: { title: 'Menu1-3' }
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: 'menu2',
-  //       component: () => import('@/views/nested/menu2/index'),
-  //       meta: { title: 'menu2' }
-  //     }
-  //   ]
-  // },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
