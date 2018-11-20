@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-container">
     explosive-update
-    <div class="dashboard-text">name:{{ name }}</div>
+    <div>name:{{ name }}</div>
+    route.params: {{ $route.params }}
   </div>
 </template>
 
@@ -19,7 +20,10 @@ export default {
       'token',
       'avatar',
     ])
-  }
+  },
+  mounted() {
+    console.log('- - - - update route.params: ', this.$route.params.id)
+  },
 }
 </script>
 

@@ -48,16 +48,16 @@ export default {
   methods: {
     getBreadcrumb() {
       const { params } = this.$route
-      console.log('* * * * Breadcrumb - this.$route:', this.$route)
+      // console.log('* * * * Breadcrumb - this.$route:', this.$route)
       let matched = this.$route.matched.filter(item => {
         if (item.name) {
           // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
-          console.log('* * * * Breadcrumb-item.name:', item.name)
-          console.log('* * * * Breadcrumb-item.path:', item.path)
+          // console.log('* * * * Breadcrumb-item.name:', item.name)
+          // console.log('* * * * Breadcrumb-item.path:', item.path)
 
           var toPath = pathToRegexp.compile(item.path)
           item.path = toPath(params)
-          // console.log('* * * * Breadcrumb-pathToRegexp-path:', item.path)
+          console.log('* * * * Breadcrumb-pathToRegexp-path:', item.path)
           return true
         }
       })

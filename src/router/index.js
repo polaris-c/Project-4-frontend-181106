@@ -158,7 +158,7 @@ export const constantRouterMap = [
   {
     path: '/sampleManagement',
     component: Layout,
-    redirect: '/sampleManagement/deviceSample',
+    redirect: '/sampleManagement/explosiveSample',
     name: 'SampleManagement',
     meta: { title: 'Sample', icon: 'tab' },
     children: [
@@ -189,14 +189,14 @@ export const constantRouterMap = [
                 meta: { title: 'ExplosiveList' }
               },
               {
-                path: 'explosiveDetail',
+                path: 'explosiveDetail/:id',
                 name: 'ExplosiveDetail',
                 component: () => import('@/views/sample-management/explosive-sample/explosive-detail'),
                 meta: { title: 'ExplosiveDetail' },
                 hidden: true
               },
               {
-                path: 'explosiveUpdate',
+                path: 'explosiveUpdate/:id',
                 name: 'ExplosiveUpdate',
                 component: () => import('@/views/sample-management/explosive-sample/explosive-update'),
                 meta: { title: 'ExplosiveUpdate' },
@@ -235,28 +235,28 @@ export const constantRouterMap = [
                 meta: { title: 'DeviceList', icon: '' },
               },
               {
-                path: 'deviceUpdate',
+                path: 'deviceUpdate/:id',
                 name: 'DeviceUpdate',
                 component: () => import('@/views/sample-management/device-sample/device-update'),
                 meta: { title: 'DeviceUpdate', icon: '' },
                 hidden: true
               },
               {
-                path: 'deviceDetail',
+                path: 'deviceDetail/:id',
                 name: 'DeviceDetail',
                 component: () => import('@/views/sample-management/device-sample/device-detail'),
                 meta: { title: 'DeviceDetail', icon: '' },
                 hidden: true
               },
               {
-                path: 'deviceDetailIngredient',
+                path: 'deviceDetailIngredient/:id',
                 name: 'DeviceDetailIngredient',
                 component: () => import('@/views/sample-management/device-sample/device-detail-ingredient'),
                 meta: { title: 'DeviceDetailIngredient', icon: '' },
                 hidden: true
               },
               {
-                path: 'deviceDetailAppearance',
+                path: 'deviceDetailAppearance/:id',
                 name: 'DeviceDetailAppearance',
                 component: () => import('@/views/sample-management/device-sample/device-Detail-Appearance'),
                 meta: { title: 'DeviceDetailAppearance', icon: '' },
@@ -303,14 +303,14 @@ export const constantRouterMap = [
                 meta: { title: 'ExplosiveList' }
               },
               {
-                path: 'explosiveDetail',
+                path: 'explosiveDetail/:id',
                 name: 'ExplosiveDetail',
                 component: () => import('@/views/evidence-management/explosive-evidence/explosive-detail'),
                 meta: { title: 'ExplosiveDetail' },
                 hidden: true
               },
               {
-                path: 'explosiveUpdate',
+                path: 'explosiveUpdate/:id',
                 name: 'ExplosiveUpdate',
                 component: () => import('@/views/evidence-management/explosive-evidence/explosive-update'),
                 meta: { title: 'ExplosiveUpdate' },

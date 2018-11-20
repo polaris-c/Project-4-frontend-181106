@@ -1,9 +1,11 @@
 <template>
   <div class="dashboard-container">
     device-detail
-    <div class="dashboard-text">name:{{ name }}</div>
-    <el-button type="primary" @click="detailIngredient">Detail Ingredient</el-button>
-    <el-button type="primary" @click="deviceDetailAppearance">Detail Appearance</el-button>
+    <div>name:{{ name }}</div>
+    {{ $route.params }}
+    <el-button type="primary" @click="update">Update</el-button>
+    <el-button type="primary" @click="ingredient">Ingredient</el-button>
+    <el-button type="primary" @click="appearance">Appearance</el-button>
   </div>
 </template>
 
@@ -23,11 +25,14 @@ export default {
     ])
   },
   methods: {
-    detailIngredient() {
-      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailIngredient')
+    update() {
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceUpdate/' + this.$route.params.id)
     },
-    deviceDetailAppearance() {
-      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailAppearance')
+    ingredient() {
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailIngredient/'+ this.$route.params.id)
+    },
+    appearance() {
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailAppearance/'+ this.$route.params.id)
     }
   }
 }

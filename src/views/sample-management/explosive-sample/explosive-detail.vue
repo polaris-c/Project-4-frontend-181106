@@ -1,7 +1,9 @@
 <template>
   <div class="dashboard-container">
-    explosive-detail
-    <div class="dashboard-text">name:{{ name }}</div>
+    <div>explosive-detail</div>
+    <div>name: {{ name }}</div>
+    <div>route.params: {{ routeParams }}</div>
+    <el-button type="primary" @click="update">Update</el-button>
   </div>
 </template>
 
@@ -9,7 +11,12 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Dashboard',
+  name: 'DeviceDetail',
+  data() {
+    return {
+      routeParams: null
+    }
+  },
   computed: {
     ...mapGetters([
       'name',
@@ -20,8 +27,20 @@ export default {
       'avatar',
     ])
   },
+  watch: {
+    $route() {
+      this.routeParams = this.$route.params
+      console.log('- - - - detail route.params: ', this.$route.params.id)
+    }
+  },
+  mounted() {
+    this.routeParams = this.$route.params
+    console.log('- - - - detail route.params: ', this.$route.params.id)
+  },
   methods: {
-    
+    update() {
+      this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveUpdate/' + this.$route.params.id)
+    },
   }
 }
 </script>
