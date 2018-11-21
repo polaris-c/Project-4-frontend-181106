@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-container">
     user-management-update
-    <div class="dashboard-text">name:{{ name }}</div>
+    <div>name:{{ name }}</div>
+    {{ $route.params }}
   </div>
 </template>
 

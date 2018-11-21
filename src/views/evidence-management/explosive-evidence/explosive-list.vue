@@ -36,7 +36,7 @@
 
       <el-table-column
         prop="evidenceName"
-        label="样本名称"
+        label="物证名称"
         align="center"
         width="200">
       </el-table-column>

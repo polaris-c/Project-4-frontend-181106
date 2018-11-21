@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
-    device-creation
-    <div class="dashboard-text">name:{{ name }}</div>
+    sample-device-creation
+    <div>name:{{ name }}</div>
   </div>
 </template>
 

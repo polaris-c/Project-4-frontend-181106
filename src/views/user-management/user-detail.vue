@@ -1,7 +1,9 @@
 <template>
   <div class="dashboard-container">
     user-management-detail
-    <div class="dashboard-text">name:{{ name }}</div>
+    <div>name:{{ name }}</div>
+    {{ $route.params }}
+    <el-button type="primary" @click="update">Update</el-button>
   </div>
 </template>
 
@@ -19,6 +21,14 @@ export default {
       'token',
       'avatar',
     ])
+  },
+  mounted() {
+    console.log('- - - - User detail this.$route:', this.$route)
+  },
+  methods: {
+    update() {
+      this.$router.push('/userManagement/userIndexList/userUpdate/' + this.$route.params.id)
+    },
   }
 }
 </script>

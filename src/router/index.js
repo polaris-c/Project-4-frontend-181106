@@ -116,14 +116,14 @@ export const constantRouterMap = [
             meta: { title: 'UserList', icon: 'list' }
           },
           {
-            path: 'userDetail',
+            path: 'userDetail/:id',
             name: 'UserDetail',
             component: () => import('@/views/user-management/user-detail'),
             meta: { title: 'UserDetail', icon: '' },
             hidden: true
           },
           {
-            path: 'userUpdate',
+            path: 'userUpdate/:id',
             name: 'UserUpdate',
             component: () => import('@/views/user-management/user-update'),
             meta: { title: 'UserUpdate', icon: '' },
@@ -349,28 +349,28 @@ export const constantRouterMap = [
                 meta: { title: 'DeviceList', icon: '' },
               },
               {
-                path: 'deviceUpdate',
+                path: 'deviceUpdate/:id',
                 name: 'DeviceUpdate',
                 component: () => import('@/views/evidence-management/device-evidence/device-update'),
                 meta: { title: 'DeviceUpdate', icon: '' },
                 hidden: true
               },
               {
-                path: 'deviceDetail',
+                path: 'deviceDetail/:id',
                 name: 'DeviceDetail',
                 component: () => import('@/views/evidence-management/device-evidence/device-detail'),
                 meta: { title: 'DeviceDetail', icon: '' },
                 hidden: true
               },
               {
-                path: 'deviceDetailIngredient',
+                path: 'deviceDetailIngredient/:id',
                 name: 'DeviceDetailIngredient',
                 component: () => import('@/views/evidence-management/device-evidence/device-detail-ingredient'),
                 meta: { title: 'DeviceDetailIngredient', icon: '' },
                 hidden: true
               },
               {
-                path: 'deviceDetailAppearance',
+                path: 'deviceDetailAppearance/:id',
                 name: 'DeviceDetailAppearance',
                 component: () => import('@/views/evidence-management/device-evidence/device-Detail-Appearance'),
                 meta: { title: 'DeviceDetailAppearance', icon: '' },

@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    evidence-device-list
+    sample-device-list
     <div>name:{{ name }}</div>
 
     <el-table

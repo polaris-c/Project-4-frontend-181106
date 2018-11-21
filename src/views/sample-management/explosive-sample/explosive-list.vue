@@ -88,7 +88,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'DeviceList',
+  name: 'ExplosiveList',
   data() {
     return {
       multipleSelection: [],
