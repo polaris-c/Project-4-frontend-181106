@@ -204,15 +204,11 @@
     <!-- 页面操作按键 -->
     <el-card shadow="hover">
       <el-row class="">
-        <el-col :span="20">
-          <buttons></buttons>
+        <el-col :span="22">
+          <goback-button @goback-confirm="goBcak"></goback-button>
         </el-col>
-        <el-col :span="4">
-          <buttons 
-            @submit-confirm="submit"
-            @goback-confirm="goBcak"
-            class="buttons-bottom">
-          </buttons>
+        <el-col :span="2">
+          <submit-button @submit-confirm="submit"></submit-button>
         </el-col>
       </el-row>
     </el-card>
@@ -221,7 +217,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Buttons from '@/components/buttons/index'
+import GobackButton from '@/components/Buttons/goback-button'
+import SubmitButton from '@/components/Buttons/submit-button'
 
 export default {
   name: 'ExplosiveCreation',
@@ -249,7 +246,8 @@ export default {
     }
   },
   components: {
-    Buttons
+    GobackButton,
+    SubmitButton
   },
   computed: {
     ...mapGetters([
@@ -331,7 +329,4 @@ export default {
   margin-bottom: 15px;
 }
 
-.buttons-bottom {
-
-}
 </style>

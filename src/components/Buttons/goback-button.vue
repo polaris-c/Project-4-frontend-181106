@@ -1,42 +1,18 @@
 <template>
-  <div id="buttons">
+  <div id="GobackButton">
     <el-button 
       type=""
       @click="beforeGoback"
       icon="el-icon-back">
       返 回
     </el-button>
-    <el-button 
-      type="primary" 
-      @click="beforeSubmit"
-      icon="el-icon-upload"
-      class="buttons-gutter">
-      提 交
-    </el-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Buttons',
+  name: 'GobackButton',
   methods: {
-    beforeSubmit() {
-      this.$confirm('确定提交吗？', ' 提 示', {
-        confirmButtonText: '确定提交',
-        cancelButtonText: '取 消',
-        type: 'info'
-      }).then(() => {
-        this.$message({
-          message: '上传中...',
-          type: 'success'
-        })
-        this.$emit('submit-confirm')
-      }).catch(() => {
-        this.$message({
-          message: '取消操作'
-        })
-      })
-    },
     beforeGoback() {
       this.$confirm('确定离开吗？', '提 示', {
         confirmButtonText: '确定离开',
