@@ -28,9 +28,29 @@
   }
 }
 
+
+// 
+.el-form-item {
+  margin-bottom: 6px;
+}
+
+.el-form-item__label {
+  padding: 0 5px 0 0;
+}
+
+.el-input__inner {
+  height: 32px;
+  line-height: 32px;
+}
+
 div.el-card__header {
   color: rgb(250, 250, 250);
   background-color:rgb(68, 85, 106);
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.el-card__body {
+  padding: 10px 25px 10px 20px;
 }
 
 .el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
@@ -40,3 +60,13 @@ div.el-card__header {
 // .el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
 //   box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
 // }
+
+.el-table th.is-center {
+  font-weight: initial;
+  color: whitesmoke;
+  background-color: rgb(68, 85, 106);
+}
+
+.el-table td.is-center {
+  text-align: center;
+}

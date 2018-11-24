@@ -1,18 +1,19 @@
 <template>
   <div class="dashboard-container">
+    <!-- 基本信息 -->
     <el-row class="el-row-style">
       <el-col :span="24">
-        <el-card class="" shadow="hover">
+        <el-card shadow="hover">
           <div slot="header">
             <span>炸药与原材料基本信息</span>
           </div>
           <div>
             <el-form 
-              ref="form" 
+              ref="baseForm" 
               :model="formData"
               :rules="formRule"
               :label-position="labelPosition"
-              label-width="100px">
+              label-width="80px">
 
               <el-row :gutter="40">
                 <el-col :span="12">
@@ -21,7 +22,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="样本名称缩写">
+                  <el-form-item label="名称缩写">
                     <el-input v-model="formData.snameAbbr"></el-input>
                   </el-form-item>
                 </el-col>
@@ -199,11 +200,28 @@
       </el-col>
 
     </el-row>
+
+    <!-- 页面操作按键 -->
+    <el-card shadow="hover">
+      <el-row class="">
+        <el-col :span="20">
+          <buttons></buttons>
+        </el-col>
+        <el-col :span="4">
+          <buttons 
+            @submit-confirm="submit"
+            @goback-confirm="goBcak"
+            class="buttons-bottom">
+          </buttons>
+        </el-col>
+      </el-row>
+    </el-card>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Buttons from '@/components/buttons/index'
 
 export default {
   name: 'ExplosiveCreation',
@@ -230,6 +248,9 @@ export default {
       uploadFTIRFile: {}
     }
   },
+  components: {
+    Buttons
+  },
   computed: {
     ...mapGetters([
       'name',
@@ -243,7 +264,7 @@ export default {
 
   mounted() {
     this.uploadFTIRFile = new FormData()
-    console.log('- - mounted - - uploadFTIRFile', this.uploadFTIRFile)
+    console.log('+ + ExplosiveCreation mounted + + uploadFTIRFile is OK')
   },
 
   methods: {
@@ -276,8 +297,14 @@ export default {
     },
     handlePreview(file) {
       console.log('- - Preview - - file:', file.name, file)
-    }
+    },
 
+    submit() {
+      console.log('- - submit - - formData:', this.formData.sname)
+    },
+    goBcak() {
+      this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveList')
+    }
   }
 
 }
@@ -301,6 +328,10 @@ export default {
 }
 
 .el-row-style {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+}
+
+.buttons-bottom {
+
 }
 </style>

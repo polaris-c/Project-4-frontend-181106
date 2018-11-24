@@ -1,7 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div>sample-explosive-list</div>
-    name:{{ name }}
+    <div>炸药与原材料样本</div>
 
     <el-table
       ref="explosiveList"
@@ -23,12 +22,12 @@
       <el-table-column
         label="样本序号"
         align="center"
-        width="150"
+        width="120"
         fixed="left">
         <template slot-scope="scope">
           <el-button 
             type="text"
-            @click="detail((scope.row))">
+            @click="detail(scope.row)">
             {{ scope.row.id }}
           </el-button>
         </template>
@@ -39,6 +38,13 @@
         label="样本名称"
         align="center"
         width="200">
+        <template slot-scope="scope">
+          <el-button 
+            type="text"
+            @click="detail(scope.row)">
+            {{ scope.row.sname }}
+          </el-button>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -52,14 +58,14 @@
         prop="sampleOrigin"
         label="样本产地"
         align="center"
-        width="160">
+        width="180">
       </el-table-column>
 
       <el-table-column
         prop="factory"
         label="样本厂家"
         align="center"
-        width="160">
+        width="180">
       </el-table-column>
 
       <el-table-column
@@ -130,6 +136,26 @@ export default {
           sampleOrigin: 'AP',
           factory: 'AF',
           user: 'user004',
+          inputDate: '2018-11-19',
+          note: '4444'
+        },
+        {
+          id: '005',
+          sname: 'A005',
+          snameAbbr: 'A5',
+          sampleOrigin: 'AP',
+          factory: 'AF',
+          user: 'user005',
+          inputDate: '2018-11-19',
+          note: '3333'
+        },
+        {
+          id: '006',
+          sname: 'A006',
+          snameAbbr: 'A6',
+          sampleOrigin: 'AP',
+          factory: 'AF',
+          user: 'user006',
           inputDate: '2018-11-19',
           note: '4444'
         },
