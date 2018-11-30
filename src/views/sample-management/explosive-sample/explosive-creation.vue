@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div class="app-main-container">
     <!-- 基本信息 -->
     <el-row class="el-row-style">
       <el-col :span="24">
@@ -309,7 +309,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
+.app-main {
   &-container {
     padding: 15px;
   }

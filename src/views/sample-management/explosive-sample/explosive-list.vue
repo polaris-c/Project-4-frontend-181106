@@ -1,8 +1,16 @@
 <template>
-  <div class="dashboard-container">
-    <div>炸药与原材料样本</div>
+  <div class="app-main-container">
+    <el-row>
+      <el-col :span="22">
+        <search-input @emit-search="search"></search-input>
+      </el-col>
+      <el-col :span="2">
+        <delete-button @delete-confirm="batchDelete"></delete-button>
+      </el-col>
+    </el-row>
 
     <el-table
+      class="app-main-table"
       ref="explosiveList"
       :data="tableData"
       style="width: 100%"
@@ -87,11 +95,16 @@
       </el-table-column>
 
     </el-table>
+
+    <pagination></pagination>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import DeleteButton from '@/components/Buttons/delete-button'
+import SearchInput from '@/components/SearchInput'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'ExplosiveList',
@@ -162,6 +175,11 @@ export default {
       ]
     }
   },
+  components: {
+    DeleteButton,
+    SearchInput,
+    Pagination
+  },
   computed: {
     ...mapGetters([
       'name',
@@ -175,24 +193,34 @@ export default {
   methods: {
     handleSelectionChange(val) {
       this.multipleSelection = val
-      console.log('- - - - multipleSeletion:', this.multipleSelection)
+      console.log('- - multipleSeletion:', this.multipleSelection)
     },
     detail(row) {
-      console.log('- - - - list-detail row:', row.id, row.sname)
+      console.log('- - list-detail row:', row.id, row.sname)
       this.$router.push({path: '/sampleManagement/explosiveSample/explosiveIndexList/explosiveDetail/' + row.id})
+    },
+    batchDelete() {
+      console.log('- - delete: ', this.multipleSelection)
+    },
+    search(searchInputData) {
+      console.log('- - search: ', searchInputData)
     }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
+.app-main {
   &-container {
-    margin: 30px;
+    padding: 15px;
   }
   &-text {
     font-size: 30px;
     line-height: 46px;
+  }
+  &-table {
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 </style>
