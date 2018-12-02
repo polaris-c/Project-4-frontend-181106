@@ -208,7 +208,7 @@
           <goback-button @goback-confirm="goBcak"></goback-button>
         </el-col>
         <el-col :span="2">
-          <submit-button @submit-confirm="submit"></submit-button>
+          <submit-button @submit-confirm="handleSubmit"></submit-button>
         </el-col>
       </el-row>
     </el-card>
@@ -297,7 +297,7 @@ export default {
       console.log('- - Preview - - file:', file.name, file)
     },
 
-    submit() {
+    handleSubmit() {
       console.log('- - submit - - formData:', this.formData.sname)
     },
     goBcak() {

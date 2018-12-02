@@ -4,9 +4,10 @@
       v-model="searchInputData"
       placeholder="请输入需要搜索的信息...">
       <el-button
+        type="primary"
         slot="append"
         class="el-icon-search"
-        @click="emitSearch">
+        @click="emitSearch"> 搜 索
       </el-button>
     </el-input>
   </div>

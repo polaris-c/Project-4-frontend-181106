@@ -10,14 +10,21 @@
 <script>
 export default {
   name: 'Pagination',
+  props: {
+    currentPage: {
+      type: Number,
+      default: 1
+    }
+  },
   data() {
     return {
-      currentPage: 2
     }
   },
   methods: {
     handleCurrentChange(pageIndex) {
-      console.log('- - pageIndex: ', pageIndex)
+      console.log('- - Pagination - - pageIndex: ', pageIndex)
+      console.log('- - Pagination - - currentPage: ', this.currentPage)
+      this.$emit('change-page', pageIndex)
     }
   }
 }

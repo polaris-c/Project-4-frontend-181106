@@ -2,10 +2,10 @@
   <div class="app-main-container">
     <el-row>
       <el-col :span="22">
-        <search-input @emit-search="search"></search-input>
+        <search-input @emit-search="handleSearch"></search-input>
       </el-col>
       <el-col :span="2">
-        <delete-button @delete-confirm="batchDelete"></delete-button>
+        <delete-button @delete-confirm="handleDelete"></delete-button>
       </el-col>
     </el-row>
 
@@ -35,7 +35,7 @@
         <template slot-scope="scope">
           <el-button 
             type="text"
-            @click="detail(scope.row)">
+            @click="handleDetail(scope.row)">
             {{ scope.row.id }}
           </el-button>
         </template>
@@ -49,7 +49,7 @@
         <template slot-scope="scope">
           <el-button 
             type="text"
-            @click="detail(scope.row)">
+            @click="handleDetail(scope.row)">
             {{ scope.row.sname }}
           </el-button>
         </template>
@@ -96,7 +96,10 @@
 
     </el-table>
 
-    <pagination></pagination>
+    <pagination 
+      :currentPage="tablePageIndex"
+      @change-page="handleChangePage">
+    </pagination>
   </div>
 </template>
 
@@ -172,7 +175,8 @@ export default {
           inputDate: '2018-11-19',
           note: '4444'
         },
-      ]
+      ],
+      tablePageIndex: 1
     }
   },
   components: {
@@ -195,15 +199,19 @@ export default {
       this.multipleSelection = val
       console.log('- - multipleSeletion:', this.multipleSelection)
     },
-    detail(row) {
+    handleDetail(row) {
       console.log('- - list-detail row:', row.id, row.sname)
       this.$router.push({path: '/sampleManagement/explosiveSample/explosiveIndexList/explosiveDetail/' + row.id})
     },
-    batchDelete() {
+    handleDelete() {
       console.log('- - delete: ', this.multipleSelection)
     },
-    search(searchInputData) {
+    handleSearch(searchInputData) {
       console.log('- - search: ', searchInputData)
+    },
+    handleChangePage(pageIndex) {
+      console.log('- - ExplosiveList - - pageIndex: ', pageIndex)
+      this.tablePageIndex = pageIndex
     }
   }
 }
