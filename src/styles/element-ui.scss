@@ -70,3 +70,17 @@ div.el-card__header {
 .el-table td.is-center {
   text-align: center;
 }
+
+// 检测数据卡片
+.el-tabs__nav-scroll {
+  background-color: rgb(68, 85, 106);
+}
+
+.el-tabs--border-card > .el-tabs__header .el-tabs__item {
+  color: whitesmoke;
+}
+
+// el-row-col布局
+.el-row-style {
+  margin-bottom: 15px;
+}

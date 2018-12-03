@@ -126,7 +126,7 @@
       <el-col :span="8">
         <el-card shadow="hover">
           <div slot="header">
-            <span>XRD</span>
+            <span>XRF</span>
           </div>
           <div>
             <el-form 

@@ -76,3 +76,17 @@ a:hover {
 .app-container {
   padding: 20px;
 }
+
+.app-main {
+  &-container {
+    padding: 15px;
+  }
+  &-text {
+    font-size: 30px;
+    line-height: 46px;
+  }
+  &-table {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
