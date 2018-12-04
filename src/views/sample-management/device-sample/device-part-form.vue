@@ -111,10 +111,10 @@
       </div>
 
       <!-- 零件特征 -->
-      <div>
+      <div class="card-collapse">
         <el-collapse > 
           <el-collapse-item title="成分特征" name="ingredient">
-            <el-row :gutter="15" class="el-row-style">
+            <el-row :gutter="12" class="el-row-style">
 
               <el-col :span="8">
                 <el-card 
@@ -138,17 +138,19 @@
                         <el-upload
                           action=""
                           ref="uploadFTIR"
-                          :limit="10"
                           :file-list="devPartData.FTIRdata.fileList"
+                          :limit="20"
+                          :on-exceed="handleExceed"
                           :on-change="handleChange"
                           :on-preview="handlePreview"
-                          :auto-upload="false"
                           :before-remove="beforeRemove"
-                          :on-remove="handleRemove"> 
+                          :on-remove="handleRemove"
+                          :auto-upload="false"
+                          multiple> 
                           <!-- :on-change="handleChange"  :auto-upload="false" :before-upload="beforeFileUpload"-->
                           <el-button 
                             slot="trigger"
-                            size="small" 
+                            size="mini" 
                             type="primary"
                             @click="handleIndex(index, 'FTIR')">
                             <!-- slot="trigger"  -->
@@ -182,16 +184,18 @@
                         <el-upload
                           action=""
                           ref="uploadRAMAN"
-                          :limit="10"
                           :file-list="devPartData.RAMANdata.fileList"
+                          :limit="20"
+                          :on-exceed="handleExceed"
                           :on-change="handleChange"
                           :on-preview="handlePreview"
-                          :auto-upload="false"
                           :before-remove="beforeRemove"
-                          :on-remove="handleRemove"> 
+                          :on-remove="handleRemove"
+                          :auto-upload="false"
+                          multiple> 
                           <el-button 
                             slot="trigger" 
-                            size="small" 
+                            size="mini" 
                             type="primary"
                             @click="handleIndex(index, 'RAMAN')">
                             点击选取
@@ -244,13 +248,15 @@
 
 <script>
 export default {
-  name: 'DevicePartCard',
+  name: 'DevicePartForm',
   props: {
     index: {
       type: Number,
       default: 0
     },
-    devPartData: Object,
+    devPartData: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -272,7 +278,15 @@ export default {
       this.$emit('delete-device-part', index)
     },
 
-    /* upload file */
+    /*  Upload  */
+    handleExceed(files, fileList) {
+      this.$message({
+        message: `限制最多上传20个文件，本次选择了${files.length}个，共选择了${files.length + fileList.length}个文件`,
+        type: 'warning',
+        duration: 9000,
+      })
+    },
+
     handleChange(file, fileList) {
       console.log('- - Change - - file:', file.raw)
       console.log('- - Change - - fileList:', fileList)
@@ -295,33 +309,25 @@ export default {
         default:
           console.log('! Error NO devPartType !')
       }
-
       for(let fileItem of fileList) {
         // console.log('- - Change - - fileItem:', fileItem)
       }
     },
 
     handlePreview(file) {
-      console.log('- - Preview - - file:', file.name, file)
+      console.log('- - Preview - - file:', file.name)
+      return this.$alert(`  ${ file.name }`, `${ this.devPartType }`, {
+        confirmButtonText: '确定',
+        type: 'success'
+      })
     },
 
     beforeRemove(file, fileList) {
-      return  this.$confirm(`确定删除 ${ file.name } 吗？`, '提 示', {
-                confirmButtonText: '确定删除',
-                cancelButtonText: '取 消',
-                type: 'warning'
-              }).then(() => {
-                this.$message({
-                  message: '正在删除...',
-                  type: 'warning'
-                })
-                return true
-              }).catch(() => {
-                this.$message({
-                  message: '取消操作'
-                })
-                return false
-              })
+      return  this.$confirm(`确定删除 < ${ file.name } > 吗？`, '提 示', {
+        confirmButtonText: '确定删除',
+        cancelButtonText: '取 消',
+        type: 'warning'
+      })
     },
     handleRemove(file, fileList) {
       console.log('- - Remove - - file:', file.name)

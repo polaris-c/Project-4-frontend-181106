@@ -44,10 +44,10 @@
 }
 
 div.el-card__header {
-  color: rgb(250, 250, 250);
+  // color: rgb(250, 250, 250);
   background-color:rgb(68, 85, 106);
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   padding-right: 0;
 }
 .el-card__body {
@@ -81,7 +81,36 @@ div.el-card__header {
   color: whitesmoke;
 }
 
+div.el-card__header {
+  color: whitesmoke;
+}
+
 // el-row-col布局
 .el-row-style {
   margin-bottom: 15px;
 }
+
+// el-collapse in el-card
+.card-collapse {
+  margin-left: -20px;
+  margin-right: -25px;
+}
+
+.el-collapse-item__header {
+  color: whitesmoke;
+  background-color: rgb(68, 85, 106);
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 16px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.el-collapse-item__wrap {
+  background-color: whitesmoke; 
+  padding-top: 15px;
+  padding-left: 12px;
+  padding-right: 12px;
+  overflow: visible;
+}
+

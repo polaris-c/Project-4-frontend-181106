@@ -83,11 +83,11 @@
       v-for="(devPartData, index) in devPartDataList"
       :key="devPartData.key">
       <el-col :span="24">
-        <device-part-card 
+        <device-part-form 
           :devPartData="devPartData"
           :index="index"
           @delete-device-part="handleDeleteDevPart">
-        </device-part-card>
+        </device-part-form>
       </el-col>
     </el-row>
 
@@ -117,7 +117,7 @@ import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
 import DeleteButton from '@/components/Buttons/delete-button'
-import DevicePartCard from '@/views/sample-management/device-sample/device-part-card'
+import DevicePartForm from '@/views/sample-management/device-sample/device-part-form'
 
 export default {
   name: 'DeviceCreation',
@@ -179,7 +179,7 @@ export default {
     GobackButton,
     SubmitButton,
     DeleteButton,
-    DevicePartCard
+    DevicePartForm
   },
   computed: {
     ...mapGetters([
