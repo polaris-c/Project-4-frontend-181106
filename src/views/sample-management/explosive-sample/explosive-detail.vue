@@ -26,6 +26,7 @@
     </el-card>
 
     <el-tabs 
+      class="el-row-style"
       type="border-card"
       v-model="activeTabName"
       @tab-click="handleTabClick">
@@ -35,11 +36,25 @@
       <el-tab-pane label="XRD" name="XRDtab">XRD</el-tab-pane>
       <el-tab-pane label="GCMS" name="GCMStab">GCMS</el-tab-pane>
     </el-tabs>
+
+    <!-- 页面操作按键 -->
+    <el-card shadow="hover">
+      <el-row class="">
+        <el-col :span="22">
+          <goback-button @goback-confirm="goBcak"></goback-button>
+        </el-col>
+        <el-col :span="2">
+          <submit-button @submit-confirm="handleSubmit"></submit-button>
+        </el-col>
+      </el-row>
+    </el-card>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import GobackButton from '@/components/Buttons/goback-button'
+import SubmitButton from '@/components/Buttons/submit-button'
 
 export default {
   name: 'DeviceDetail',
@@ -58,6 +73,10 @@ export default {
       },
       activeTabName: "FTIRtab"
     }
+  },
+  components: {
+    GobackButton,
+    SubmitButton
   },
   computed: {
     ...mapGetters([
@@ -86,7 +105,15 @@ export default {
     handleTabClick(tab, event) {
       console.log('- - Detail - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
       console.log('- - Detail - - handleTabClick activeTabName: ', this.activeTabName)
-    }
+    },
+
+    /** 页面操作按键 */
+    handleSubmit() {
+      console.log('- - submit - - formData:', this.formData.sname)
+    },
+    goBcak() {
+      this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveList')
+    },
   }
 }
 </script>

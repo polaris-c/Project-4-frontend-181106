@@ -61,7 +61,7 @@
     </el-row>
 
      <!-- 检测方法  -->
-    <el-row :gutter="20" class="el-row-style">
+    <el-row :gutter="15" class="el-row-style">
 
       <el-col :span="8">
         <el-card shadow="hover">
@@ -73,7 +73,7 @@
               ref="FTIR" 
               :model="FTIRData"
               :label-position="labelPosition"
-              label-width="100px">
+              label-width="80px">
               <el-form-item label="检测设备">
                 <el-input v-model="FTIRData.devDetect"></el-input>
               </el-form-item>
@@ -108,7 +108,7 @@
               ref="FTIR" 
               :model="FTIRData"
               :label-position="labelPosition"
-              label-width="100px">
+              label-width="80px">
               <el-form-item label="检测设备">
                 <el-input v-model="FTIRData.devDetect"></el-input>
               </el-form-item>
@@ -133,7 +133,7 @@
               ref="FTIR" 
               :model="FTIRData"
               :label-position="labelPosition"
-              label-width="100px">
+              label-width="80px">
               <el-form-item label="检测设备">
                 <el-input v-model="FTIRData.devDetect"></el-input>
               </el-form-item>
@@ -150,7 +150,7 @@
 
     </el-row>
 
-    <el-row :gutter="20" class="el-row-style">
+    <el-row :gutter="15" class="el-row-style">
 
       <el-col :span="8">
         <el-card shadow="hover">
@@ -162,7 +162,7 @@
             ref="FTIR" 
             :model="FTIRData"
             :label-position="labelPosition"
-            label-width="100px">
+            label-width="80px">
             <el-form-item label="检测设备">
               <el-input v-model="FTIRData.devDetect"></el-input>
             </el-form-item>
@@ -184,7 +184,7 @@
             ref="FTIR" 
             :model="FTIRData"
             :label-position="labelPosition"
-            label-width="100px">
+            label-width="80px">
             <el-form-item label="检测设备">
               <el-input v-model="FTIRData.devDetect"></el-input>
             </el-form-item>
