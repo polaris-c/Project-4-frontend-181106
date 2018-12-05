@@ -1,10 +1,11 @@
 <template>
   <div>
     <el-card shadow="hover">
+      <!-- 卡片标题 -->
       <div slot="header">
         <el-row>
-          <el-col :span="23">
-            <span>零件信息   ( {{ index+1 }} )</span>
+          <el-col :span="23"  style="padding-top: 5px;">
+            <span>零件信息  < {{ index+1 }} ></span>
           </el-col>
           <el-col :span="1">
             <el-button
@@ -18,107 +19,109 @@
         </el-row>
       </div>
 
-      <!-- 零件基本信息 -->
-      <div>
-        <el-form 
-          ref="devPartForm" 
-          :model="devPartData"
-          :label-position="labelPosition"
-          label-width="80px">
-
-          <el-row :gutter="40">
-            <el-col :span="12">
-              <el-form-item label="零件名称">
-                <el-input v-model="devPartData.sname"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="">
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row :gutter="40">
-            <el-col :span="12">
-              <el-form-item label="零件产地">
-                <el-input v-model="devPartData.Origin"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="零件厂家">
-                <el-input v-model="devPartData.Factory"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row :gutter="40">
-            <el-col :span="12">
-              <el-form-item label="零件型号">
-                <el-input v-model="devPartData.Model"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="零件商标">
-                <el-input v-model="devPartData.Logo"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row :gutter="40">
-            <el-col :span="12">
-              <el-form-item label="零件颜色">
-                <el-input v-model="devPartData.Color"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="零件材质">
-                <el-input v-model="devPartData.Material"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row :gutter="40">
-            <el-col :span="12">
-              <el-form-item label="零件形状">
-                <el-input v-model="devPartData.Shape"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="零件厚度">
-                <el-input v-model="devPartData.thickness"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row :gutter="40">
-            <el-col :span="12">
-              <el-form-item label="零件功能">
-                <el-input v-model="devPartData.function"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="备注">
-                <el-input 
-                  v-model="devPartData.note"
-                  type="textarea"
-                  placeholder="请输入...">
-                </el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-        </el-form>
-      </div>
-
-      <!-- 零件特征 -->
+      <!-- 零件表单 -->
       <div class="card-collapse">
-        <el-collapse > 
-          <el-collapse-item title="成分特征" name="ingredient">
-            <el-row :gutter="12" class="el-row-style">
 
+        <el-collapse v-model="activeNames"> 
+          <!-- 零件基本信息 -->
+          <el-collapse-item title="基本信息" name="baseInfo">
+            <div>
+              <el-form 
+                ref="devPartForm" 
+                :model="devPartData"
+                :label-position="labelPosition"
+                label-width="80px">
+
+                <el-row :gutter="40">
+                  <el-col :span="12">
+                    <el-form-item label="零件名称">
+                      <el-input v-model="devPartData.sname"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="">
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="40">
+                  <el-col :span="12">
+                    <el-form-item label="零件产地">
+                      <el-input v-model="devPartData.Origin"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="零件厂家">
+                      <el-input v-model="devPartData.Factory"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="40">
+                  <el-col :span="12">
+                    <el-form-item label="零件型号">
+                      <el-input v-model="devPartData.Model"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="零件商标">
+                      <el-input v-model="devPartData.Logo"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="40">
+                  <el-col :span="12">
+                    <el-form-item label="零件颜色">
+                      <el-input v-model="devPartData.Color"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="零件材质">
+                      <el-input v-model="devPartData.Material"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="40">
+                  <el-col :span="12">
+                    <el-form-item label="零件形状">
+                      <el-input v-model="devPartData.Shape"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="零件厚度">
+                      <el-input v-model="devPartData.thickness"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="40">
+                  <el-col :span="12">
+                    <el-form-item label="零件功能">
+                      <el-input v-model="devPartData.function"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="备注">
+                      <el-input 
+                        v-model="devPartData.note"
+                        type="textarea"
+                        placeholder="请输入...">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+              </el-form>
+            </div>
+          </el-collapse-item>
+
+          <!-- 成分 -->
+          <el-collapse-item title="成分特征" name="ingredient">
+            <el-row :gutter="15" class="el-row-style">
               <el-col :span="8">
-                <el-card 
-                  shadow="hover">
+                <el-card shadow="hover">
                   <div slot="header">
                     <span>FTIR</span>
                   </div>
@@ -231,14 +234,21 @@
                   </div>
                 </el-card>
               </el-col>
-
             </el-row>
           </el-collapse-item>
-        </el-collapse>
 
-        <el-collapse > 
+          <!-- 图片 -->
           <el-collapse-item title="形态特征" name="appearance">
-            2
+            <!-- <el-upload
+              class=""
+              action=""
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list=""
+              list-type="picture">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
+            </el-upload> -->
           </el-collapse-item>
         </el-collapse>
       </div>
@@ -260,6 +270,7 @@ export default {
   },
   data() {
     return {
+      activeNames: ['baseInfo'],
       labelPosition: 'left',
       devPartIndex: 0,
       devPartType: '',
@@ -308,9 +319,6 @@ export default {
           break
         default:
           console.log('! Error NO devPartType !')
-      }
-      for(let fileItem of fileList) {
-        // console.log('- - Change - - fileItem:', fileItem)
       }
     },
 

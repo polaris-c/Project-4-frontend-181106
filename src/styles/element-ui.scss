@@ -43,15 +43,17 @@
   line-height: 32px;
 }
 
-div.el-card__header {
+.el-card__header {
   // color: rgb(250, 250, 250);
+  color: whitesmoke;
   background-color:rgb(68, 85, 106);
   padding-top: 8px;
   padding-bottom: 8px;
+  padding-left: 15px;
   padding-right: 0;
 }
 .el-card__body {
-  padding: 10px 25px 10px 20px;
+  padding: 10px 20px 10px 15px;
 }
 
 .el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
@@ -81,9 +83,9 @@ div.el-card__header {
   color: whitesmoke;
 }
 
-div.el-card__header {
-  color: whitesmoke;
-}
+// div.el-card__header {
+//   color: whitesmoke;
+// }
 
 // el-row-col布局
 .el-row-style {
@@ -92,13 +94,15 @@ div.el-card__header {
 
 // el-collapse in el-card
 .card-collapse {
-  margin-left: -20px;
-  margin-right: -25px;
+  // margin-left: -10px;
+  // margin-right: -15px;
 }
 
 .el-collapse-item__header {
-  color: whitesmoke;
-  background-color: rgb(68, 85, 106);
+  color: black;
+  background-color: whitesmoke;
+  margin-left: -13px;
+  margin-right: -18px;
   padding-left: 15px;
   padding-right: 15px;
   font-size: 16px;
@@ -107,10 +111,10 @@ div.el-card__header {
 }
 
 .el-collapse-item__wrap {
-  background-color: whitesmoke; 
+  background-color: white; 
   padding-top: 15px;
-  padding-left: 12px;
-  padding-right: 12px;
+  // padding-left: 5px;
+  // padding-right: 5px;
   overflow: visible;
 }
 
