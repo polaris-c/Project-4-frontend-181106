@@ -57,7 +57,7 @@ export default {
 
           var toPath = pathToRegexp.compile(item.path)
           item.path = toPath(params)
-          console.log('* * * * Breadcrumb-pathToRegexp-path:', item.path)
+          // console.log('* * * * Breadcrumb-pathToRegexp-path:', item.path)
           return true
         }
       })

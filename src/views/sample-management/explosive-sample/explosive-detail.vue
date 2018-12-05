@@ -21,21 +21,23 @@
           <el-col :span="8">录入日期：{{ detailData.inputDate }}</el-col>
           <el-col :span="8">备注：{{ detailData.note }}</el-col>
         </el-row>
-        <el-button type="primary" @click="update">Update</el-button>
       </div>
     </el-card>
 
-    <el-tabs 
-      class="el-row-style"
-      type="border-card"
-      v-model="activeTabName"
-      @tab-click="handleTabClick">
-      <el-tab-pane label="FTIR" name="FTIRtab">FTIR</el-tab-pane>
-      <el-tab-pane label="RAMAN" name="RAMANtab">RAMAN</el-tab-pane>
-      <el-tab-pane label="XRF" name="XRFtab">XRF</el-tab-pane>
-      <el-tab-pane label="XRD" name="XRDtab">XRD</el-tab-pane>
-      <el-tab-pane label="GCMS" name="GCMStab">GCMS</el-tab-pane>
-    </el-tabs>
+    <el-card shadow="hover" class="el-row-style">
+      <el-tabs 
+        type="border-card"
+        v-model="activeTabName"
+        @tab-click="handleTabClick">
+        <el-tab-pane label="FTIR" name="FTIRtab" >
+          <test-chart></test-chart>
+        </el-tab-pane>
+        <el-tab-pane label="RAMAN" name="RAMANtab">RAMAN</el-tab-pane>
+        <el-tab-pane label="XRF" name="XRFtab">XRF</el-tab-pane>
+        <el-tab-pane label="XRD" name="XRDtab">XRD</el-tab-pane>
+        <el-tab-pane label="GCMS" name="GCMStab">GCMS</el-tab-pane>
+      </el-tabs>
+    </el-card>
 
     <!-- 页面操作按键 -->
     <el-card shadow="hover">
@@ -44,7 +46,13 @@
           <goback-button @goback-confirm="goBcak"></goback-button>
         </el-col>
         <el-col :span="2">
-          <submit-button @submit-confirm="handleSubmit"></submit-button>
+          <el-button 
+            type="primary" 
+            @click="update"
+            icon="el-icon-edit"
+            plain>
+            修改
+          </el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -55,6 +63,7 @@
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
+import TestChart from '@/components/Charts/test-chart'
 
 export default {
   name: 'DeviceDetail',
@@ -76,7 +85,8 @@ export default {
   },
   components: {
     GobackButton,
-    SubmitButton
+    SubmitButton,
+    TestChart,
   },
   computed: {
     ...mapGetters([
@@ -99,17 +109,14 @@ export default {
     console.log('- - - - detail route.params: ', this.$route.params.id)
   },
   methods: {
-    update() {
-      this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveUpdate/' + this.$route.params.id)
-    },
     handleTabClick(tab, event) {
       console.log('- - Detail - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
       console.log('- - Detail - - handleTabClick activeTabName: ', this.activeTabName)
     },
 
     /** 页面操作按键 */
-    handleSubmit() {
-      console.log('- - submit - - formData:', this.formData.sname)
+    update() {
+      this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveUpdate/' + this.$route.params.id)
     },
     goBcak() {
       this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveList')
