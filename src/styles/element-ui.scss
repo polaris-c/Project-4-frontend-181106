@@ -28,6 +28,10 @@
   }
 }
 
+// el-row-col布局
+.el-row-style {
+  margin-bottom: 15px;
+}
 
 // 
 .el-form-item {
@@ -44,7 +48,6 @@
 }
 
 .el-card__header {
-  // color: rgb(250, 250, 250);
   color: whitesmoke;
   background-color:rgb(68, 85, 106);
   padding-top: 8px;
@@ -83,13 +86,22 @@
   color: whitesmoke;
 }
 
-// div.el-card__header {
-//   color: whitesmoke;
-// }
+// el-upload
+.el-upload-list--picture .el-upload-list__item {
+  width: 60%;
+  height: 100px;
+  padding: 5px 5px 5px 150px;
+}
 
-// el-row-col布局
-.el-row-style {
-  margin-bottom: 15px;
+.el-upload-list--picture .el-upload-list__item-thumbnail {
+  width: 130px;
+  height: 88px;
+  margin-left: -140px;
+}
+
+.el-upload-list--picture-card .el-upload-list__item {
+  width: 225px;
+  height: 150px;
 }
 
 // el-collapse in el-card

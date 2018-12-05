@@ -166,6 +166,8 @@ export default {
             fileList: [],
             uploadFile: new FormData()
           },
+          srcImgList: [],
+          uploadImg: new FormData(),
         },
       ],
       uploadFile: {},
@@ -231,6 +233,8 @@ export default {
             fileList: [],
             uploadFile: new FormData()
           },
+          srcImgList: [],
+          uploadImg: new FormData(),
         }
       )
 
@@ -248,10 +252,9 @@ export default {
     /* submit */ 
     handleSubmit() {
       console.log('- - submit - - devData:', this.devData.sname)
-      // console.log('- - submit - - devPartDataList:', this.devPartDataList)
       for(const devPartData of this.devPartDataList) {
         console.log('- - submit - - devPartData:', devPartData.sname)
-        console.log('- - submit - - devPartData:', devPartData.FTIRdata.fileList)
+        // console.log('- - submit - - devPartData:', devPartData.FTIRdata.fileList)
       }
     },
     goBcak() {

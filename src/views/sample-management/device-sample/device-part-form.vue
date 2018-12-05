@@ -1,12 +1,14 @@
 <template>
   <div>
     <el-card shadow="hover">
-      <!-- 卡片标题 -->
+      <!-- 卡片头部 -->
       <div slot="header">
         <el-row>
+          <!-- 卡片标题 -->
           <el-col :span="23"  style="padding-top: 5px;">
-            <span>零件信息  < {{ index+1 }} ></span>
+            <span>零件信息  [ {{ index+1 }} ]</span>
           </el-col>
+          <!-- 删除卡片按钮 -->
           <el-col :span="1">
             <el-button
               type="danger" 
@@ -239,18 +241,27 @@
 
           <!-- 图片 -->
           <el-collapse-item title="形态特征" name="appearance">
-            <!-- <el-upload
-              class=""
-              action=""
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :file-list=""
-              list-type="picture">
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
-            </el-upload> -->
+            <div @mousedown="handleIndex(index, 'IMG')">
+              <el-upload
+                class=""
+                action=""
+                list-type="picture-card"
+                :file-list="devPartData.srcImgList"
+                :limit="20"
+                :on-exceed="handleExceed"
+                :on-change="handleChange"
+                :on-preview="handlePreview"
+                :before-remove="beforeRemove"
+                :on-remove="handleRemove"
+                :auto-upload="false"
+                multiple>
+                <el-button size="mini" type="primary">点击选取</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
+              </el-upload>
+            </div>
           </el-collapse-item>
         </el-collapse>
+        
       </div>
     </el-card>
   </div>
@@ -274,8 +285,7 @@ export default {
       labelPosition: 'left',
       devPartIndex: 0,
       devPartType: '',
-      devRule: {
-      },
+      devRule: { },
     }
   },
   methods: {
@@ -286,7 +296,21 @@ export default {
     },
     handleDeleteDevPart(index) {
       console.log('- - DeleteDevPart - - index: ', index)
-      this.$emit('delete-device-part', index)
+      this.$confirm('确定删除吗？', '提 示', {
+        confirmButtonText: '确定删除',
+        cancelButtonText: '取 消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          message: '正在删除...',
+          type: 'warning'
+        })
+        this.$emit('delete-device-part', index)
+      }).catch(() => {
+        this.$message({
+          message: '取消操作'
+        })
+      })
     },
 
     /*  Upload  */
@@ -297,39 +321,43 @@ export default {
         duration: 9000,
       })
     },
-
     handleChange(file, fileList) {
-      console.log('- - Change - - file:', file.raw)
-      console.log('- - Change - - fileList:', fileList)
+      console.log('- - Change - - file.raw:', file.raw)
+      // console.log('- - Change - - fileList:', fileList)
       switch (this.devPartType) {
         case 'FTIR':
           this.devPartData.FTIRdata.fileList.push(file)
           // this.devPartData.FTIRdata.uploadFile.append('txtURL', file)
-          console.log('- - Change - - .FTIRdata.fileList:', this.devPartData.FTIRdata.fileList)
+          // console.log('- - Change - - .FTIRdata.fileList:', this.devPartData.FTIRdata.fileList)
           break
         case 'RAMAN':
           this.devPartData.RAMANdata.fileList.push(file)
           // this.devPartData.RAMANdata.uploadFile.append('txtURL', file)
-          console.log('- - Change - - .RAMANdata.fileList:', this.devPartData.RAMANdata.fileList)
+          // console.log('- - Change - - .RAMANdata.fileList:', this.devPartData.RAMANdata.fileList)
           break
         case 'XRF':
           this.devPartData.XRFdata.fileList.push(file)
           // this.devPartData.XRFdata.uploadFile.append('txtURL', file)
-          console.log('- - Change - - .XRFdata.fileList:', this.devPartData.XRFdata.fileList)
+          // console.log('- - Change - - .XRFdata.fileList:', this.devPartData.XRFdata.fileList)
+          break
+        case 'IMG':
+          this.devPartData.srcImgList.push(file)
+          // this.devPartData.uploadImg.append('srcImgURL', file)
+          // console.log('- - Change - - .srcImgList:', this.devPartData.srcImgList)
           break
         default:
-          console.log('! Error NO devPartType !')
+          console.log('!!! Error NO devPartType !!!')
       }
     },
-
     handlePreview(file) {
       console.log('- - Preview - - file:', file.name)
-      return this.$alert(`  ${ file.name }`, `${ this.devPartType }`, {
+      return this.$alert(` ${ file.name }  (${ file.size }字节)`, `${ this.devPartType }`, {
         confirmButtonText: '确定',
         type: 'success'
+      }).then(() => {
+      }).catch(() => {
       })
     },
-
     beforeRemove(file, fileList) {
       return  this.$confirm(`确定删除 < ${ file.name } > 吗？`, '提 示', {
         confirmButtonText: '确定删除',
@@ -339,7 +367,7 @@ export default {
     },
     handleRemove(file, fileList) {
       console.log('- - Remove - - file:', file.name)
-      console.log('- - Remove - - fileList:', fileList)
+      // console.log('- - Remove - - fileList:', fileList)
       switch (this.devPartType) {
         case 'FTIR':
           this.devPartData.FTIRdata.fileList = fileList
@@ -353,8 +381,12 @@ export default {
           this.devPartData.XRFdata.fileList = fileList
           console.log('- - Remove - - .XRFdata.fileList:', this.devPartData.XRFdata.fileList)
           break
+        case 'IMG':
+          this.devPartData.srcImgList = fileList
+          console.log('- - Remove - - .srcImgList:', this.devPartData.srcImgList)
+          break
         default:
-          console.log('! Error NO devPartType !')
+          console.log('!!! Error NO devPartType !!!')
       }
     }
   },
