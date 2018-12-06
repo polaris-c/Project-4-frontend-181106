@@ -1,5 +1,5 @@
 <template>
-  <div class="highcharts-container"></div>
+  <div class="highcharts-container" style="min-width:600px; height:600px"></div>
 </template>
 
 <script>
@@ -24,14 +24,25 @@ export default {
           text: 'title_text'
         },
         chart:{
-          zoomType: 'x',
+          zoomType: 'xy',
           panning: true,
           panKey: 'shift',
-          // backgroundColor: 'whitesmoke',  //'rgba(250, 250, 250, 0.9)',
-          borderWidth: 0,
-          plotBackgroundColor: 'whitesmoke',
-          // plotShadow: true,
-          // plotBorderWidth: 0
+          // backgroundColor: 'whitesmoke',  // 全部背景
+          // borderWidth: 1,  // 外边框
+          plotBackgroundColor: 'whitesmoke',   // 绘图区背景
+          // plotBorderColor: 'rgb(50, 50, 50)',  // 绘图区边框颜色
+          // plotBorderWidth: 2  // 绘图区边框
+          // plotShadow: true,  // 绘图区阴影
+          style: {
+            fontSize: '16px',
+            fontWeight: 'bold',
+            color: 'black',
+          },
+          events: {
+            click() {
+              console.log('options-chart-Click')
+            },
+          },
         },
         subtitle: {
           text: document.ontouchstart === undefined ?
@@ -65,11 +76,12 @@ export default {
             // lineWidth: 1,
             data: [12, 15, 20, 28, 40, 45, 30, 20, 16]
           }
-        ]
+        ],
       },
       styles: {
         // width: 1150,
-        height: 600,
+        // 'min-width': 400px,
+        // height: 600,
       },
     }
   },
@@ -80,7 +92,7 @@ export default {
     initChart() {
       console.log(this.$el);
       // this.$el.style.width = (this.styles.width || 900) + 'px';
-      this.$el.style.height = (this.styles.height || 600) + 'px';
+      // this.$el.style.height = (this.styles.height || 600) + 'px';
       this.chart = new Highcharts.Chart(this.$el, this.options);
     }
   },

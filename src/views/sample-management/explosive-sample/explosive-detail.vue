@@ -7,17 +7,17 @@
       </div>
       <div>
         <!-- <div>route.params: {{ routeParams }}</div> -->
-        <el-row>
+        <el-row class="el-row-style">
           <el-col :span="8">样本编号: {{ detailData.id }}</el-col>
           <el-col :span="8">样本名称：{{ detailData.sname }}</el-col>
           <el-col :span="8">样本缩写：{{ detailData.snameAbbr }}</el-col>
         </el-row>
-        <el-row>
+        <el-row class="el-row-style">
           <el-col :span="8">样本产地：{{ detailData.sampleOrigin }}</el-col>
           <el-col :span="8">样本厂家：{{ detailData.factory }}</el-col>
           <el-col :span="8">处理人员：{{ detailData.user }}</el-col>
         </el-row>
-        <el-row>
+        <el-row class="el-row-style">
           <el-col :span="8">录入日期：{{ detailData.inputDate }}</el-col>
           <el-col :span="8">备注：{{ detailData.note }}</el-col>
         </el-row>
@@ -29,13 +29,27 @@
         type="border-card"
         v-model="activeTabName"
         @tab-click="handleTabClick">
+
         <el-tab-pane label="FTIR" name="FTIRtab" >
-          <test-chart></test-chart>
+          <test-chart ></test-chart>
         </el-tab-pane>
-        <el-tab-pane label="RAMAN" name="RAMANtab">RAMAN</el-tab-pane>
-        <el-tab-pane label="XRF" name="XRFtab">XRF</el-tab-pane>
-        <el-tab-pane label="XRD" name="XRDtab">XRD</el-tab-pane>
-        <el-tab-pane label="GCMS" name="GCMStab">GCMS</el-tab-pane>
+
+        <el-tab-pane label="RAMAN" name="RAMANtab">RAMAN
+          <test-chart ></test-chart>
+        </el-tab-pane>
+
+        <el-tab-pane label="XRF" name="XRFtab">XRF
+          <test-chart ></test-chart>
+        </el-tab-pane>
+
+        <el-tab-pane label="XRD" name="XRDtab">XRD
+          <test-chart ></test-chart>
+        </el-tab-pane>
+
+        <el-tab-pane label="GCMS" name="GCMStab">GCMS
+          <test-chart ></test-chart>
+        </el-tab-pane>
+        
       </el-tabs>
     </el-card>
 

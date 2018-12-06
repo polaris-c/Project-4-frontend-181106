@@ -179,11 +179,6 @@ export default {
       tablePageIndex: 1
     }
   },
-  components: {
-    DeleteButton,
-    SearchInput,
-    Pagination
-  },
   computed: {
     ...mapGetters([
       'name',
@@ -194,6 +189,11 @@ export default {
       'avatar',
     ])
   },
+  components: {
+    DeleteButton,
+    SearchInput,
+    Pagination
+  },
   methods: {
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -203,6 +203,8 @@ export default {
       console.log('- - list-detail row:', row.id, row.sname)
       this.$router.push({path: '/sampleManagement/explosiveSample/explosiveIndexList/explosiveDetail/' + row.id})
     },
+
+    /** 页面按键功能 */
     handleDelete() {
       console.log('- - delete: ', this.multipleSelection)
     },

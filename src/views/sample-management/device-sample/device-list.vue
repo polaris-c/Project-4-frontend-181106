@@ -1,9 +1,16 @@
 <template>
-  <div class="dashboard-container">
-    sample-device-list
-    <div>name:{{ name }}</div>
+  <div class="app-main-container">
+    <el-row>
+      <el-col :span="22">
+        <search-input @emit-search="handleSearch"></search-input>
+      </el-col>
+      <el-col :span="2">
+        <delete-button @delete-confirm="handleDelete"></delete-button>
+      </el-col>
+    </el-row>
 
     <el-table
+      class="app-main-table"
       ref="deviceList"
       :data="tableData"
       style="width: 100%"
@@ -28,7 +35,7 @@
         <template slot-scope="scope">
           <el-button 
             type="text"
-            @click="detail((scope.row))">
+            @click="handleDetail(scope.row)">
             {{ scope.row.id }}
           </el-button>
         </template>
@@ -102,11 +109,19 @@
       </el-table-column>
 
     </el-table>
+
+    <pagination 
+      :currentPage="tablePageIndex"
+      @change-page="handleChangePage">
+    </pagination>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import DeleteButton from '@/components/Buttons/delete-button'
+import SearchInput from '@/components/SearchInput'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'DeviceList',
@@ -153,7 +168,8 @@ export default {
           inputDate: '2018-11-19',
           note: '1113'
         },
-      ]
+      ],
+      tablePageIndex: 1
     }
   },
   computed: {
@@ -166,26 +182,47 @@ export default {
       'avatar',
     ])
   },
+  components: {
+    DeleteButton,
+    SearchInput,
+    Pagination
+  },
   methods: {
     handleSelectionChange(val) {
       this.multipleSelection = val
       console.log('- - - - multipleSeletion:', this.multipleSelection)
     },
-    detail(row) {
+    handleDetail(row) {
       this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetail/' + row.id)
+    },
+
+    /** 页面按键功能 */
+    handleDelete() {
+      console.log('- - delete: ', this.multipleSelection)
+    },
+    handleSearch(searchInputData) {
+      console.log('- - search: ', searchInputData)
+    },
+    handleChangePage(pageIndex) {
+      console.log('- - ExplosiveList - - pageIndex: ', pageIndex)
+      this.tablePageIndex = pageIndex
     }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
+.app-main {
   &-container {
-    margin: 30px;
+    padding: 15px;
   }
   &-text {
     font-size: 30px;
     line-height: 46px;
+  }
+  &-table {
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 </style>
