@@ -46,6 +46,13 @@
         label="组件样本名称"
         align="center"
         width="150">
+        <template slot-scope="scope">
+          <el-button 
+            type="text"
+            @click="handleDetail(scope.row)">
+            {{ scope.row.sname }}
+          </el-button>
+        </template>
       </el-table-column>
 
       <el-table-column

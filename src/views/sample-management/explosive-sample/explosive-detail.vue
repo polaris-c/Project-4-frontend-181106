@@ -80,7 +80,7 @@ import SubmitButton from '@/components/Buttons/submit-button'
 import TestChart from '@/components/Charts/test-chart'
 
 export default {
-  name: 'DeviceDetail',
+  name: 'ExplosiveDetail',
   data() {
     return {
       routeParams: null,
@@ -97,11 +97,6 @@ export default {
       activeTabName: "FTIRtab"
     }
   },
-  components: {
-    GobackButton,
-    SubmitButton,
-    TestChart,
-  },
   computed: {
     ...mapGetters([
       'name',
@@ -112,15 +107,20 @@ export default {
       'avatar',
     ])
   },
-  watch: {
-    $route() {
-      this.routeParams = this.$route.params
-      console.log('- - - - detail route.params: ', this.$route.params.id)
-    }
+  // watch: {
+  //   $route() {
+  //     this.routeParams = this.$route.params
+  //     console.log('- - - - detail route.params: ', this.$route.params.id)
+  //   }
+  // },
+  components: {
+    GobackButton,
+    SubmitButton,
+    TestChart,
   },
   mounted() {
     this.routeParams = this.$route.params
-    console.log('- - - - detail route.params: ', this.$route.params.id)
+    console.log('- - ExplosiveDetail - - $route.params: ', this.$route.params.id)
   },
   methods: {
     handleTabClick(tab, event) {
