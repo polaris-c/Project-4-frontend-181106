@@ -52,6 +52,35 @@
       </el-col>
     </el-row>
 
+    <el-card shadow="hover" class="el-row-style">
+      <el-tabs 
+        type="border-card"
+        v-model="activeTabName"
+        @tab-click="handleTabClick">
+
+        <el-tab-pane label="FTIR" name="FTIRtab" >
+          <test-chart ></test-chart>
+        </el-tab-pane>
+
+        <el-tab-pane label="RAMAN" name="RAMANtab">RAMAN
+          <test-chart ></test-chart>
+        </el-tab-pane>
+
+        <el-tab-pane label="XRF" name="XRFtab">XRF
+          <test-chart ></test-chart>
+        </el-tab-pane>
+
+        <el-tab-pane label="XRD" name="XRDtab">XRD
+          <test-chart ></test-chart>
+        </el-tab-pane>
+
+        <el-tab-pane label="GCMS" name="GCMStab">GCMS
+          <test-chart ></test-chart>
+        </el-tab-pane>
+        
+      </el-tabs>
+    </el-card>
+
     <!-- 页面操作按键 -->
     <el-card shadow="hover">
       <el-row class="">
@@ -64,6 +93,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import GoBack from '@/components/Buttons/go-back'
+import TestChart from '@/components/Charts/test-chart'
 
 export default {
   name: 'DeviceDetailIngredient',
@@ -104,6 +134,7 @@ export default {
         srcImgList: [],
         uploadImg: new FormData(),
       },
+      activeTabName: "FTIRtab",
     }
   },
   computed: {
@@ -118,11 +149,16 @@ export default {
   },
   components: {
     GoBack,
+    TestChart,
   },
   mounted() {
     console.log('- - DeviceDetailIngredient - - $route.params:', this.$route.params)
   },
   methods: {
+    handleTabClick(tab, event) {
+      console.log('- - Detail - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
+      console.log('- - Detail - - handleTabClick activeTabName: ', this.activeTabName)
+    },
     ingredient() {
       this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailIngredient/'+ this.$route.params.id)
     },

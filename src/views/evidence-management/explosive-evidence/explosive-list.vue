@@ -1,9 +1,16 @@
 <template>
-  <div class="dashboard-container">
-    evidence-explosive-list
-    <div>name:{{ name }}</div>
+  <div class="app-main-container">
+    <el-row>
+      <el-col :span="22">
+        <search-input @emit-search="handleSearch"></search-input>
+      </el-col>
+      <el-col :span="2">
+        <delete-button @delete-confirm="handleDelete"></delete-button>
+      </el-col>
+    </el-row>
     
     <el-table
+      class="app-main-table"
       ref="explosiveList"
       :data="tableData"
       style="width: 100%"
@@ -67,14 +74,22 @@
       </el-table-column>
 
     </el-table>
+
+    <pagination 
+      :currentPage="tablePageIndex"
+      @change-page="handleChangePage">
+    </pagination>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import DeleteButton from '@/components/Buttons/delete-button'
+import SearchInput from '@/components/SearchInput'
+import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'DeviceList',
+  name: 'ExplosiveList',
   data() {
     return {
       multipleSelection: [],
@@ -103,7 +118,8 @@ export default {
           inputDate: '2018-11-19',
           note: '1113'
         },
-      ]
+      ],
+      tablePageIndex: 1
     }
   },
   computed: {
@@ -116,14 +132,31 @@ export default {
       'avatar',
     ])
   },
+  components: {
+    DeleteButton,
+    SearchInput,
+    Pagination
+  },
   methods: {
     handleSelectionChange(val) {
       this.multipleSelection = val
-      console.log('- - - - multipleSeletion:', this.multipleSelection)
+      console.log('- - ExplosiveList - - multipleSelection:', this.multipleSelection)
     },
     detail(row) {
-      console.log('- - - - list-detail row:', row.id, row.sname)
+      console.log('- - ExplosiveList - - row:', row.id, row.evidenceName)
       this.$router.push({path: '/evidenceManagement/explosiveEvidence/explosiveIndexList/explosiveDetail/' + row.id})
+    },
+
+    /** 页面按键功能 */
+    handleDelete() {
+      console.log('- - delete: ', this.multipleSelection)
+    },
+    handleSearch(searchInputData) {
+      console.log('- - search: ', searchInputData)
+    },
+    handleChangePage(pageIndex) {
+      console.log('- - ExplosiveList - - pageIndex: ', pageIndex)
+      this.tablePageIndex = pageIndex
     }
   }
 }

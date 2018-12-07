@@ -177,12 +177,6 @@ export default {
       },
     }
   },
-  components: {
-    GobackButton,
-    SubmitButton,
-    DeleteButton,
-    DevicePartForm
-  },
   computed: {
     ...mapGetters([
       'name',
@@ -192,6 +186,12 @@ export default {
       'token',
       'avatar',
     ]),
+  },
+  components: {
+    GobackButton,
+    SubmitButton,
+    DeleteButton,
+    DevicePartForm
   },
 
   mounted() {

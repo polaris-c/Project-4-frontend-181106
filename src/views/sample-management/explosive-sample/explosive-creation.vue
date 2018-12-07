@@ -10,7 +10,7 @@
           <div>
             <el-form 
               ref="baseForm" 
-              :model="formData"
+              :model="sampleData"
               :rules="formRule"
               :label-position="labelPosition"
               label-width="80px">
@@ -18,12 +18,12 @@
               <el-row :gutter="40">
                 <el-col :span="12">
                   <el-form-item label="样本名称">
-                    <el-input v-model="formData.sname"></el-input>
+                    <el-input v-model="sampleData.sname"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="名称缩写">
-                    <el-input v-model="formData.snameAbbr"></el-input>
+                    <el-input v-model="sampleData.snameAbbr"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -31,12 +31,12 @@
               <el-row :gutter="40">
                 <el-col :span="12">
                   <el-form-item label="样本产地">
-                    <el-input v-model="formData.sampleOrigin"></el-input>
+                    <el-input v-model="sampleData.sampleOrigin"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="样本厂家">
-                    <el-input v-model="formData.factory"></el-input>
+                    <el-input v-model="sampleData.factory"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -45,7 +45,7 @@
                 <el-col :span="12">
                   <el-form-item label="备注">
                     <el-input 
-                      v-model="formData.note"
+                      v-model="sampleData.note"
                       type="textarea"
                       placeholder="请输入...">
                     </el-input>
@@ -71,26 +71,35 @@
           <div>
             <el-form 
               ref="FTIR" 
-              :model="FTIRData"
+              :model="sampleData.FTIRdata"
               :label-position="labelPosition"
               label-width="80px">
               <el-form-item label="检测设备">
-                <el-input v-model="FTIRData.devDetect"></el-input>
+                <el-input v-model="sampleData.FTIRdata.devDetect"></el-input>
               </el-form-item>
               <el-form-item label="检测方法">
-                <el-input v-model="FTIRData.methodDetect"></el-input>
+                <el-input v-model="sampleData.FTIRdata.methodDetect"></el-input>
               </el-form-item>
               <el-form-item label="上传文件">
                 <el-upload
                   action=""
                   ref="uploadFTIR"
-                  :limit="10"
-                  :file-list="FTIRFile"
+                  :file-list="sampleData.FTIRdata.fileList"
+                  :limit="20"
+                  :on-exceed="handleExceed"
                   :on-change="handleChange"
                   :on-preview="handlePreview"
-                  :before-upload="beforeFileUpload"> 
-                  <!-- :on-change="handleChange"  :auto-upload="false"-->
-                  <el-button slot="trigger" size="small" type="primary">点击选取</el-button>
+                  :before-remove="beforeRemove"
+                  :on-remove="handleRemove"
+                  :auto-upload="false"
+                  multiple> 
+                  <el-button 
+                    slot="trigger"
+                    size="mini" 
+                    type="primary"
+                    @click="handleIndex('FTIR')">
+                    点击选取
+                  </el-button>
                 </el-upload>
               </el-form-item>
             </el-form>
@@ -105,18 +114,37 @@
           </div>
           <div>
             <el-form 
-              ref="FTIR" 
-              :model="FTIRData"
+              ref="RAMAN" 
+              :model="sampleData.RAMANdata"
               :label-position="labelPosition"
               label-width="80px">
               <el-form-item label="检测设备">
-                <el-input v-model="FTIRData.devDetect"></el-input>
+                <el-input v-model="sampleData.RAMANdata.devDetect"></el-input>
               </el-form-item>
               <el-form-item label="检测方法">
-                <el-input v-model="FTIRData.methodDetect"></el-input>
+                <el-input v-model="sampleData.RAMANdata.methodDetect"></el-input>
               </el-form-item>
               <el-form-item label="上传文件">
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-upload
+                  action=""
+                  ref="uploadRAMAN"
+                  :file-list="sampleData.RAMANdata.fileList"
+                  :limit="20"
+                  :on-exceed="handleExceed"
+                  :on-change="handleChange"
+                  :on-preview="handlePreview"
+                  :before-remove="beforeRemove"
+                  :on-remove="handleRemove"
+                  :auto-upload="false"
+                  multiple> 
+                  <el-button 
+                    slot="trigger" 
+                    size="mini" 
+                    type="primary"
+                    @click="handleIndex('RAMAN')">
+                    点击选取
+                  </el-button>
+                </el-upload>
               </el-form-item>
             </el-form>
           </div>
@@ -130,18 +158,37 @@
           </div>
           <div>
             <el-form 
-              ref="FTIR" 
-              :model="FTIRData"
+              ref="XRF" 
+              :model="sampleData.XRFdata"
               :label-position="labelPosition"
               label-width="80px">
               <el-form-item label="检测设备">
-                <el-input v-model="FTIRData.devDetect"></el-input>
+                <el-input v-model="sampleData.XRFdata.devDetect"></el-input>
               </el-form-item>
               <el-form-item label="检测方法">
-                <el-input v-model="FTIRData.methodDetect"></el-input>
+                <el-input v-model="sampleData.XRFdata.methodDetect"></el-input>
               </el-form-item>
               <el-form-item label="上传文件">
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-upload
+                  action=""
+                  ref="uploadXRF"
+                  :file-list="sampleData.XRFdata.fileList"
+                  :limit="20"
+                  :on-exceed="handleExceed"
+                  :on-change="handleChange"
+                  :on-preview="handlePreview"
+                  :before-remove="beforeRemove"
+                  :on-remove="handleRemove"
+                  :auto-upload="false"
+                  multiple> 
+                  <el-button 
+                    slot="trigger" 
+                    size="mini" 
+                    type="primary"
+                    @click="handleIndex('XRF')">
+                    点击选取
+                  </el-button>
+                </el-upload>
               </el-form-item>
             </el-form>
           </div>
@@ -159,17 +206,39 @@
           </div>
           <div>
             <el-form 
-            ref="FTIR" 
-            :model="FTIRData"
-            :label-position="labelPosition"
-            label-width="80px">
-            <el-form-item label="检测设备">
-              <el-input v-model="FTIRData.devDetect"></el-input>
-            </el-form-item>
-            <el-form-item label="检测方法">
-              <el-input v-model="FTIRData.methodDetect"></el-input>
-            </el-form-item>
-          </el-form>
+              ref="XRD" 
+              :model="sampleData.XRDdata"
+              :label-position="labelPosition"
+              label-width="80px">
+              <el-form-item label="检测设备">
+                <el-input v-model="sampleData.XRDdata.devDetect"></el-input>
+              </el-form-item>
+              <el-form-item label="检测方法">
+                <el-input v-model="sampleData.XRDdata.methodDetect"></el-input>
+              </el-form-item>
+              <el-form-item label="上传文件">
+                <el-upload
+                  action=""
+                  ref="uploadXRD"
+                  :file-list="sampleData.XRDdata.fileList"
+                  :limit="20"
+                  :on-exceed="handleExceed"
+                  :on-change="handleChange"
+                  :on-preview="handlePreview"
+                  :before-remove="beforeRemove"
+                  :on-remove="handleRemove"
+                  :auto-upload="false"
+                  multiple> 
+                  <el-button 
+                    slot="trigger" 
+                    size="mini" 
+                    type="primary"
+                    @click="handleIndex('XRD')">
+                    点击选取
+                  </el-button>
+                </el-upload>
+              </el-form-item>
+            </el-form>
           </div>
         </el-card>
       </el-col>
@@ -181,17 +250,39 @@
           </div>
           <div>
             <el-form 
-            ref="FTIR" 
-            :model="FTIRData"
-            :label-position="labelPosition"
-            label-width="80px">
-            <el-form-item label="检测设备">
-              <el-input v-model="FTIRData.devDetect"></el-input>
-            </el-form-item>
-            <el-form-item label="检测方法">
-              <el-input v-model="FTIRData.methodDetect"></el-input>
-            </el-form-item>
-          </el-form>
+              ref="GCMS" 
+              :model="sampleData.GCMSdata"
+              :label-position="labelPosition"
+              label-width="80px">
+              <el-form-item label="检测设备">
+                <el-input v-model="sampleData.GCMSdata.devDetect"></el-input>
+              </el-form-item>
+              <el-form-item label="检测方法">
+                <el-input v-model="sampleData.GCMSdata.methodDetect"></el-input>
+              </el-form-item>
+              <el-form-item label="上传文件">
+                <el-upload
+                  action=""
+                  ref="uploadGCMS"
+                  :file-list="sampleData.GCMSdata.fileList"
+                  :limit="20"
+                  :on-exceed="handleExceed"
+                  :on-change="handleChange"
+                  :on-preview="handlePreview"
+                  :before-remove="beforeRemove"
+                  :on-remove="handleRemove"
+                  :auto-upload="false"
+                  multiple> 
+                  <el-button 
+                    slot="trigger" 
+                    size="mini" 
+                    type="primary"
+                    @click="handleIndex('GCMS')">
+                    点击选取
+                  </el-button>
+                </el-upload>
+              </el-form-item>
+            </el-form>
           </div>
         </el-card>
       </el-col>
@@ -225,24 +316,49 @@ export default {
   data() {
     return {
       labelPosition: 'left',
-      formData: {
-          sname: '',
-          snameAbbr: '',
-          sampleOrigin: '',
-          factory: '',
-          user: '',
-          inputDate: '',
-          note: '',
-          picURL: ''
+      sampleData: {
+        sname: '',
+        snameAbbr: '',
+        sampleOrigin: '',
+        factory: '',
+        user: '',
+        inputDate: '',
+        note: '',
+        picURL: '',
+        FTIRdata: {
+          devDetect: '',
+          methodDetect: '',
+          fileList: [],
+          uploadFile: new FormData()
+        },
+        RAMANdata: {
+          devDetect: '',
+          methodDetect: '',
+          fileList: [],
+          uploadFile: new FormData()
+        },
+        XRFdata: {
+          devDetect: '',
+          methodDetect: '',
+          fileList: [],
+          uploadFile: new FormData()
+        },
+        XRDdata: {
+          devDetect: '',
+          methodDetect: '',
+          fileList: [],
+          uploadFile: new FormData()
+        },
+        GCMSdata: {
+          devDetect: '',
+          methodDetect: '',
+          fileList: [],
+          uploadFile: new FormData()
+        },
       },
       formRule: {
       },
-      FTIRData: {
-        devDetect: '',
-        methodDetect: ''
-      },
-      FTIRFile: [],
-      uploadFTIRFile: {}
+      devPartType: '',
     }
   },
   components: {
@@ -266,39 +382,90 @@ export default {
   },
 
   methods: {
-    handleChange(file, fileList) {
-      for(let fileItem of fileList) {
-        // console.log('- - Change - - fileItem:', fileItem)
-      }
-      // this.FTIRFile = fileList
-      // console.log('- - Change - - FTIRFile:', this.FTIRFile)
-      // console.log('- - Change - - file:', file)
-      // this.uploadFTIRFile.set('txtURL', file)
-      // console.log('- - Change - - uploadFTIRFile.txtURL:', this.uploadFTIRFile)
+    handleIndex(type) {
+      this.devPartType = type
+      console.log('- - handleIndex - - :', this.devPartType)
     },
-    beforeFileUpload(file) {
-      console.log('- - before - - file:', file)
 
-      this.FTIRFile.push(file)
-      console.log('- - before - - FTIRFile:', this.FTIRFile)
-      
-      this.uploadFTIRFile.append('txtURL', file)
-      // console.log('- - before- - uploadFTIRFile:', this.uploadFTIRFile)
-
-      for(let key of this.uploadFTIRFile.keys()) {
-        // console.log('- - before- - uploadFTIRFile key:', key)
+    /*  Upload  */
+    handleExceed(files, fileList) {
+      this.$message({
+        message: `限制最多上传20个文件，本次选择了${files.length}个，共选择了${files.length + fileList.length}个文件`,
+        type: 'warning',
+        duration: 9000,
+      })
+    },
+    handleChange(file, fileList) {
+      console.log('- - Change - - file.raw:', file.raw)
+      // console.log('- - Change - - fileList:', fileList)
+      switch (this.devPartType) {
+        case 'FTIR':
+          this.sampleData.FTIRdata.fileList.push(file)
+          // this.sampleData.FTIRdata.uploadFile.append('txtURL', file)
+          // console.log('- - Change - - .FTIRdata.fileList:', this.sampleData.FTIRdata.fileList)
+          break
+        case 'RAMAN':
+          this.sampleData.RAMANdata.fileList.push(file)
+          // this.sampleData.RAMANdata.uploadFile.append('txtURL', file)
+          // console.log('- - Change - - .RAMANdata.fileList:', this.sampleData.RAMANdata.fileList)
+          break
+        case 'XRF':
+          this.sampleData.XRFdata.fileList.push(file)
+          // this.sampleData.XRFdata.uploadFile.append('txtURL', file)
+          // console.log('- - Change - - .XRFdata.fileList:', this.sampleData.XRFdata.fileList)
+          break
+        case 'IMG':
+          this.sampleData.srcImgList.push(file)
+          // this.sampleData.uploadImg.append('srcImgURL', file)
+          // console.log('- - Change - - .srcImgList:', this.sampleData.srcImgList)
+          break
+        default:
+          console.log('!!! Error NO devPartType !!!')
       }
-      for(let value of this.uploadFTIRFile.values()) {
-        console.log('- - before- - uploadFTIRFile value:', value)
-      }
-      return false
     },
     handlePreview(file) {
-      console.log('- - Preview - - file:', file.name, file)
+      console.log('- - Preview - - file:', file.name)
+      return this.$alert(` ${ file.name }  (${ file.size }字节)`, `${ this.devPartType }`, {
+        confirmButtonText: '确定',
+        type: 'success'
+      }).then(() => {
+      }).catch(() => {
+      })
+    },
+    beforeRemove(file, fileList) {
+      return  this.$confirm(`确定删除 < ${ file.name } > 吗？`, '提 示', {
+        confirmButtonText: '确定删除',
+        cancelButtonText: '取 消',
+        type: 'warning'
+      })
+    },
+    handleRemove(file, fileList) {
+      console.log('- - Remove - - file:', file.name)
+      // console.log('- - Remove - - fileList:', fileList)
+      switch (this.devPartType) {
+        case 'FTIR':
+          this.sampleData.FTIRdata.fileList = fileList
+          console.log('- - Remove - - .FTIRdata.fileList:', this.sampleData.FTIRdata.fileList)
+          break
+        case 'RAMAN':
+          this.sampleData.RAMANdata.fileList = fileList
+          console.log('- - Remove - - .RAMANdata.fileList:', this.sampleData.RAMANdata.fileList)
+          break
+        case 'XRF':
+          this.sampleData.XRFdata.fileList = fileList
+          console.log('- - Remove - - .XRFdata.fileList:', this.sampleData.XRFdata.fileList)
+          break
+        case 'IMG':
+          this.sampleData.srcImgList = fileList
+          console.log('- - Remove - - .srcImgList:', this.sampleData.srcImgList)
+          break
+        default:
+          console.log('!!! Error NO devPartType !!!')
+      }
     },
 
     handleSubmit() {
-      console.log('- - submit - - formData:', this.formData.sname)
+      console.log('- - submit - - sampleData:', this.sampleData.sname)
     },
     goBcak() {
       this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveList')

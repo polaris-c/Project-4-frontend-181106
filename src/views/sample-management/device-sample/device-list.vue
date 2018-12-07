@@ -219,17 +219,5 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.app-main {
-  &-container {
-    padding: 15px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-  &-table {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-}
+
 </style>
