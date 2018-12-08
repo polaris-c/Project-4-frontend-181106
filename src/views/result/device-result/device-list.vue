@@ -140,7 +140,7 @@ import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'DeviceList',
+  name: 'ResultDeviceList',
   data() {
     return {
       multipleSelection: [],
@@ -214,8 +214,8 @@ export default {
       this.multipleSelection = val
       console.log('- - DeviceList - - multipleSeletion:', this.multipleSelection)
     },
-    detail() {
-      this.$router.push('/result/deviceResult/deviceDetail')
+    detail(row) {
+      this.$router.push('/result/deviceResult/deviceDetail/' + row.id)
     },
 
     /** 页面按键功能 */

@@ -91,7 +91,7 @@ import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'ExplosiveList',
+  name: 'ResultExplosiveList',
   data() {
     return {
       multipleSelection: [],
@@ -144,8 +144,8 @@ export default {
       this.multipleSelection = val
       console.log('- - ExplosiveList - - multipleSelection:', this.multipleSelection)
     },
-    detail() {
-      this.$router.push('/result/explosiveResult/explosiveDetail')
+    detail(row) {
+      this.$router.push('/result/explosiveResult/explosiveDetail/' + row.id)
     },
 
     /** 页面按键功能 */

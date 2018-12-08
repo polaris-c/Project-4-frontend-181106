@@ -404,7 +404,7 @@ export const constantRouterMap = [
             meta: { title: 'ExplosiveList' }
           },
           {
-            path: 'explosiveDetail',
+            path: 'explosiveDetail/:id',
             name: 'ExplosiveDetail',
             component: () => import('@/views/analysis/explosive-analysis/explosive-detail'),
             meta: { title: 'ExplosiveDetail' },
@@ -426,7 +426,7 @@ export const constantRouterMap = [
             meta: { title: 'DeviceList' }
           },
           {
-            path: 'deviceDetail',
+            path: 'deviceDetail/:id',
             name: 'DeviceDetail',
             component: () => import('@/views/analysis/device-analysis/device-detail'),
             meta: { title: 'DeviceDetail' },
@@ -486,7 +486,7 @@ export const constantRouterMap = [
             meta: { title: 'ExplosiveList' }
           },
           {
-            path: 'explosiveDetail',
+            path: 'explosiveDetail/:id',
             name: 'ExplosiveDetail',
             component: () => import('@/views/result/explosive-result/explosive-detail'),
             meta: { title: 'ExplosiveDetail' },
@@ -508,7 +508,7 @@ export const constantRouterMap = [
             meta: { title: 'DeviceList' }
           },
           {
-            path: 'deviceDetail',
+            path: 'deviceDetail/:id',
             name: 'DeviceDetail',
             component: () => import('@/views/result/device-result/device-detail'),
             meta: { title: 'DeviceDetail' },

@@ -75,6 +75,7 @@
 //   box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
 // }
 
+// el-table
 .el-table th.is-center {
   font-weight: initial;
   color: whitesmoke;
@@ -83,6 +84,10 @@
 
 .el-table td.is-center {
   text-align: center;
+}
+
+.el-table td {
+  padding: 3px 0;
 }
 
 // 检测数据卡片
