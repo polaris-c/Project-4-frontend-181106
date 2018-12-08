@@ -149,10 +149,10 @@ export default {
 
     /** 页面按键功能 */
     handleDelete() {
-      console.log('- - delete: ', this.multipleSelection)
+      console.log('- - ExplosiveList - - delete: ', this.multipleSelection)
     },
     handleSearch(searchInputData) {
-      console.log('- - search: ', searchInputData)
+      console.log('- - ExplosiveList - - search: ', searchInputData)
     },
     handleChangePage(pageIndex) {
       console.log('- - ExplosiveList - - pageIndex: ', pageIndex)

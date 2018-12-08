@@ -13,7 +13,12 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Dashboard',
+  name: 'DeviceDetail',
+  data() {
+    return {
+
+    }
+  },
   computed: {
     ...mapGetters([
       'name',

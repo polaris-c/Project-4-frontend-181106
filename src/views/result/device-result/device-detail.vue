@@ -2,9 +2,6 @@
   <div class="dashboard-container">
     device-detail!
     <div class="dashboard-text">name:{{ name }}</div>
-    <el-button type="primary" @click="analysisIngredient">Ingredient</el-button>
-    <el-button type="primary" @click="analysisAppearance">Appearance</el-button>
-    <el-button type="primary" @click="analysisFilter">Filter</el-button>
   </div>
 </template>
 
@@ -12,7 +9,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Dashboard',
+  name: 'DeviceDetail',
   computed: {
     ...mapGetters([
       'name',
