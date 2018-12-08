@@ -249,7 +249,7 @@ export default {
       this.devPartType = type
     },
 
-    /* submit */ 
+    /*  */ 
     handleSubmit() {
       console.log('- - submit - - devData:', this.devData.sname)
       for(const devPartData of this.devPartDataList) {

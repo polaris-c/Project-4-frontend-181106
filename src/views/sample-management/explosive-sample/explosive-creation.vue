@@ -68,7 +68,7 @@
           <div slot="header">
             <span>FTIR</span>
           </div>
-          <div>
+          <div @click="handleIndex('FTIR')">
             <el-form 
               ref="FTIR" 
               :model="sampleData.FTIRdata"
@@ -112,7 +112,7 @@
           <div slot="header">
             <span>RAMAN</span>
           </div>
-          <div>
+          <div @click="handleIndex('RAMAN')">
             <el-form 
               ref="RAMAN" 
               :model="sampleData.RAMANdata"
@@ -156,7 +156,7 @@
           <div slot="header">
             <span>XRF</span>
           </div>
-          <div>
+          <div @click="handleIndex('XRF')">
             <el-form 
               ref="XRF" 
               :model="sampleData.XRFdata"
@@ -204,7 +204,7 @@
           <div slot="header">
             <span>XRD</span>
           </div>
-          <div>
+          <div @click="handleIndex('XRD')">
             <el-form 
               ref="XRD" 
               :model="sampleData.XRDdata"
@@ -248,7 +248,7 @@
           <div slot="header">
             <span>GCMS</span>
           </div>
-          <div>
+          <div @click="handleIndex('GCMS')">
             <el-form 
               ref="GCMS" 
               :model="sampleData.GCMSdata"
@@ -414,6 +414,16 @@ export default {
           // this.sampleData.XRFdata.uploadFile.append('txtURL', file)
           // console.log('- - Change - - .XRFdata.fileList:', this.sampleData.XRFdata.fileList)
           break
+        case 'XRD':
+          this.sampleData.XRDdata.fileList.push(file)
+          // this.sampleData.XRDdata.uploadFile.append('txtURL', file)
+          // console.log('- - Change - - .XRDdata.fileList:', this.sampleData.XRDdata.fileList)
+          break
+        case 'GCMS':
+          this.sampleData.GCMSdata.fileList.push(file)
+          // this.sampleData.GCMSdata.uploadFile.append('txtURL', file)
+          // console.log('- - Change - - .GCMSdata.fileList:', this.sampleData.GCMSdata.fileList)
+          break
         case 'IMG':
           this.sampleData.srcImgList.push(file)
           // this.sampleData.uploadImg.append('srcImgURL', file)
@@ -455,6 +465,14 @@ export default {
           this.sampleData.XRFdata.fileList = fileList
           console.log('- - Remove - - .XRFdata.fileList:', this.sampleData.XRFdata.fileList)
           break
+        case 'XRD':
+          this.sampleData.XRDdata.fileList = fileList
+          console.log('- - Remove - - .XRDdata.fileList:', this.sampleData.XRDdata.fileList)
+          break
+        case 'GCMS':
+          this.sampleData.GCMSdata.fileList = fileList
+          console.log('- - Remove - - .GCMSdata.fileList:', this.sampleData.GCMSdata.fileList)
+          break
         case 'IMG':
           this.sampleData.srcImgList = fileList
           console.log('- - Remove - - .srcImgList:', this.sampleData.srcImgList)
@@ -464,6 +482,7 @@ export default {
       }
     },
 
+    /**  */
     handleSubmit() {
       console.log('- - submit - - sampleData:', this.sampleData.sname)
     },
@@ -476,24 +495,5 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.app-main {
-  &-container {
-    padding: 15px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
-
-.main {
-  &-form {
-    width: 400px;
-  }
-}
-
-.el-row-style {
-  margin-bottom: 15px;
-}
 
 </style>
