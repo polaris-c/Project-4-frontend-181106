@@ -13,15 +13,19 @@ HighchartsDrilldown(Highcharts);
 Highcharts3D(Highcharts);
 
 export default {
-  name: 'chart',
+  name: 'AnalysisTabChart',
   props: {
+    detectionType: {
+      type: String,
+      default: 'Unknown',
+    },
   },
   data() {
     return {
       chart: null,
       options: {
         title: {
-          text: 'title_text'
+          text: this.detectionType
         },
         chart:{
           zoomType: 'x',

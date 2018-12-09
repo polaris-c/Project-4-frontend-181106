@@ -426,7 +426,7 @@ export default {
       }
     },
     goBcak() {
-      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceList')
+      this.$router.push('/evidenceManagement/deviceEvidence/deviceIndexList/deviceList')
     }
   },
 }
