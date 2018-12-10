@@ -5,6 +5,18 @@
       </el-col>
 
       <el-col :span="6">
+        <el-row>
+          <el-col :span="8">
+            <RecognitionButton @recognition-confirm="handleRecognition"></RecognitionButton>
+          </el-col>
+          <el-col :span="16">
+            <CheckButton 
+            v-if="detectionType === 'Summary'"
+              @check-confirm="handleCheck">
+            </CheckButton>
+          </el-col>
+        </el-row>
+        
         <el-table
           class="app-main-table"
           ref="explosiveList"
@@ -32,14 +44,14 @@
           </el-table-column>
 
           <el-table-column
-            label="物证名称"
+            label="样本名称"
             align="center"
             width="100">
             <template slot-scope="scope">
               <el-button 
                 type="text"
                 @click="handleDetail(scope.row)">
-                {{ scope.row.evidenceName }}
+                {{ scope.row.sName }}
               </el-button>
             </template>
           </el-table-column>
@@ -52,12 +64,20 @@
           </el-table-column>
 
         </el-table>
+
+        <pagination
+          :currentPage="tablePageIndex"
+          @change-page="handleChangePage">
+        </pagination>
       </el-col>
     </el-row>
 </template>
 
 <script>
 import TabChart from '@/components/AnalysisTab/analysis-tab-chart'
+import RecognitionButton from '@/components/Buttons/recognition-button'
+import CheckButton from '@/components/Buttons/check-button'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'AnalysisTab',
@@ -72,65 +92,86 @@ export default {
       tableData: [
         {
           id: '001',
-          evidenceName: 'A001',
+          sName: 'A001',
           Score: '90',
         },
         {
           id: '002',
-          evidenceName: 'A002',
+          sName: 'A002',
           Score: '80',
         },
         {
           id: '003',
-          evidenceName: 'A003',
+          sName: 'A003',
           Score: '70',
         },
         {
           id: '004',
-          evidenceName: 'A004',
+          sName: 'A004',
           Score: '60',
         },
         {
           id: '005',
-          evidenceName: 'A005',
+          sName: 'A005',
           Score: '50',
         },
         {
           id: '006',
-          evidenceName: 'A006',
+          sName: 'A006',
           Score: '40',
         },
         {
           id: '007',
-          evidenceName: 'A007',
+          sName: 'A007',
           Score: '30',
         },
         {
           id: '008',
-          evidenceName: 'A008',
+          sName: 'A008',
           Score: '20',
         },
         {
           id: '009',
-          evidenceName: 'A009',
+          sName: 'A009',
           Score: '10',
         },
+        {
+          id: '0010',
+          sName: 'A0010',
+          Score: '0',
+        },
       ],
+      currentSample: {},
       tablePageIndex: 1
     }
   },
   components: {
     TabChart,
+    RecognitionButton,
+    CheckButton,
+    Pagination,
   },
   mounted() {
     console.log('- - AnalysisExplosiveDetail - - detectionType:', this.detectionType)
   },
   methods: {
+    handleRecognition() {
+      console.log('- - AnalysisExplosiveDetail - - handleRecognition:', this.$route.params)
+    },
+    handleCheck() {
+      console.log('- - AnalysisExplosiveDetail - - handleCheck:', this.currentSample.id)
+    },
     handleDetail(row) {
-      console.log('- - AnalysisExplosiveDetail - - handleDetail row:', row.evidenceName)
+      console.log('- - AnalysisExplosiveDetail - - handleDetail:', row.sName)
+      this.currentSample = row
     },
     handleCurrentChange(currentRow) {
-      console.log('- - AnalysisExplosiveDetail - - handleCurrentChange currentRow:', currentRow.evidenceName)
+      console.log('- - AnalysisExplosiveDetail - - handleCurrentChange:', currentRow.sName)
+      // this.currentSample = currentRow
+    },
+    handleChangePage(pageIndex) {
+      console.log('- - AnalysisExplosiveDetail - - pageIndex: ', pageIndex)
+      this.tablePageIndex = pageIndex
     }
   },
 }

@@ -41,8 +41,11 @@
     <!-- 页面操作按键 -->
     <el-card shadow="hover">
       <el-row class="">
-        <el-col :span="22">
+        <el-col :span="19">
           <goback-button @goback-confirm="goBcak"></goback-button>
+        </el-col>
+        <el-col :span="3">
+          <message-button @message-confirm="handleMessage"></message-button>
         </el-col>
         <el-col :span="2">
           <report-button @report-confirm="handleReport"></report-button>
@@ -56,6 +59,7 @@
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import ReportButton from '@/components/Buttons/report-button'
+import MessageButton from '@/components/Buttons/message-button'
 import AnalysisTab from '@/components/AnalysisTab/analysis-tab'
 
 export default {
@@ -63,7 +67,7 @@ export default {
   data() {
     return {
       activeTabName: "FTIR",
-      detectionTypeList: ['FTIR', 'RAMAN', 'XRF', 'XRD', 'GCMS'],
+      detectionTypeList: ['FTIR', 'RAMAN', 'XRF', 'XRD', 'GCMS', 'Summary'],
     }
   },
   computed: {
@@ -79,6 +83,7 @@ export default {
   components: {
     GobackButton,
     ReportButton,
+    MessageButton,
     AnalysisTab,
   },
   methods: {
@@ -90,6 +95,9 @@ export default {
     /** */
     handleReport() {
 
+    },
+    handleMessage() {
+      this.$router.push('/message/messageCreation')
     },
     goBcak() {
       this.$router.push('/analysis/explosiveAnalysis/explosiveList')
