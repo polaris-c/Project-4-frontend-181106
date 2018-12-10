@@ -56,6 +56,13 @@
       </el-table-column>
 
       <el-table-column
+        prop="eviType"
+        label="物证类型"
+        align="center"
+        width="150">
+      </el-table-column>
+
+      <el-table-column
         prop="Factory"
         label="物证厂家"
         align="center"
@@ -148,6 +155,7 @@ export default {
           id: '001',
           evidenceName: 'A001',
           caseName: 'A1',
+          eviType: '1',
           Factory: 'AF',
           Model: 'AM',
           Logo: 'AL',
@@ -163,6 +171,7 @@ export default {
           id: '002',
           evidenceName: 'A002',
           caseName: 'A2',
+          eviType: '2',
           Factory: 'AF',
           Model: 'AM',
           Logo: 'AL',
@@ -178,6 +187,7 @@ export default {
           id: '003',
           evidenceName: 'A003',
           caseName: 'A3',
+          eviType: '3',
           Factory: 'AF',
           Model: 'AM',
           Logo: 'AL',

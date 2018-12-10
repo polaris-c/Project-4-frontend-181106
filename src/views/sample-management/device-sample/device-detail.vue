@@ -60,22 +60,23 @@
               <el-col :span="8">零件厚度：{{ devPartData.thickness }}</el-col>
             </el-row>
             <el-row class="el-row-style">
-              <el-col :span="20">备注：{{ devPartData.note }}</el-col>
-              <el-col :span="2">
+              <el-col :span="8">备注：{{ devPartData.note }}</el-col>
+            </el-row>
+            <hr>
+            <el-row>
+              <el-col :span="2" :offset="20">
                 <el-button 
                   type="primary"
-                  size="small"
-                  @click="ingredient"
-                  plain>
+                  size="medium"
+                  @click="ingredient">
                   成分特征
                 </el-button>
               </el-col>
               <el-col :span="2">
                 <el-button 
                   type="primary"
-                  size="small"
-                  @click="appearance"
-                  plain>
+                  size="medium"
+                  @click="appearance">
                   形态特征
                 </el-button>
               </el-col>
@@ -98,7 +99,7 @@
             @click="update"
             icon="el-icon-edit"
             plain>
-            修改
+            修 改
           </el-button>
         </el-col>
       </el-row>
@@ -237,5 +238,8 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
+hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 </style>

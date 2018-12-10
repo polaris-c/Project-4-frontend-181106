@@ -64,7 +64,7 @@
 // }
 
 .el-card__body {
-  padding: 10px 15px 10px 15px;
+  padding: 12px 15px 15px 15px;
 }
 
 .el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
@@ -92,7 +92,7 @@
 
 // 检测数据卡片
 .el-card__body > .el-tabs {
-  margin: -11px -16px -11px -16px;
+  margin: -13px -16px -16px -16px;
 }
 
 .el-tabs__nav-scroll {
@@ -103,8 +103,6 @@
   color: whitesmoke;
   background-color: rgb(68, 85, 106);
 }
-
-
 
 // el-upload
 .el-upload-list--picture .el-upload-list__item {
@@ -150,3 +148,7 @@
   overflow: visible;
 }
 
+// el-checkbox
+.el-checkbox {
+  width: 90%;
+}
