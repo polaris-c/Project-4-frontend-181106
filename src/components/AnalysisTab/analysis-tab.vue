@@ -1,80 +1,82 @@
 <template>
-    <el-row :gutter="10">
-      <el-col :span="18">
-        <TabChart :detectionType="detectionType"></TabChart>
-      </el-col>
+  <el-row :gutter="10">
+    <el-col :span="18">
+      <TabImg v-if="isImgTab" :detectionType="detectionType"></TabImg>
+      <TabChart v-else :detectionType="detectionType"></TabChart>
+    </el-col>
 
-      <el-col :span="6">
-        <el-row>
-          <el-col :span="8">
-            <RecognitionButton @recognition-confirm="handleRecognition"></RecognitionButton>
-          </el-col>
-          <el-col :span="16">
-            <CheckButton 
+    <el-col :span="6">
+      <el-row>
+        <el-col :span="8">
+          <RecognitionButton @recognition-confirm="handleRecognition"></RecognitionButton>
+        </el-col>
+        <el-col :span="16">
+          <CheckButton 
             v-if="detectionType === 'Summary'"
-              @check-confirm="handleCheck">
-            </CheckButton>
-          </el-col>
-        </el-row>
-        
-        <el-table
-          class="app-main-table"
-          ref="explosiveList"
-          :data="tableData"
-          style="width: 100%"
-          tooltip-effect="dark"
-          @current-change="handleCurrentChange"
-          fit
-          stripe
-          border
-          highlight-current-row>
+            @check-confirm="handleCheck">
+          </CheckButton>
+        </el-col>
+      </el-row>
+      
+      <el-table
+        class="app-main-table"
+        ref="explosiveList"
+        :data="tableData"
+        style="width: 100%"
+        tooltip-effect="dark"
+        @current-change="handleCurrentChange"
+        fit
+        stripe
+        border
+        highlight-current-row>
 
-          <el-table-column
-            label="编号"
-            align="center"
-            width=""
-            fixed="left">
-            <template slot-scope="scope">
-              <el-button 
-                type="text"
-                @click="handleDetail(scope.row)">
-                {{ scope.row.id }}
-              </el-button>
-            </template>
-          </el-table-column>
+        <el-table-column
+          label="编号"
+          align="center"
+          width=""
+          fixed="left">
+          <template slot-scope="scope">
+            <el-button 
+              type="text"
+              @click="handleDetail(scope.row)">
+              {{ scope.row.id }}
+            </el-button>
+          </template>
+        </el-table-column>
 
-          <el-table-column
-            label="样本名称"
-            align="center"
-            width="100">
-            <template slot-scope="scope">
-              <el-button 
-                type="text"
-                @click="handleDetail(scope.row)">
-                {{ scope.row.sName }}
-              </el-button>
-            </template>
-          </el-table-column>
+        <el-table-column
+          label="样本名称"
+          align="center"
+          width="100">
+          <template slot-scope="scope">
+            <el-button 
+              type="text"
+              @click="handleDetail(scope.row)">
+              {{ scope.row.sName }}
+            </el-button>
+          </template>
+        </el-table-column>
 
-          <el-table-column
-            prop="Score"
-            label="相似分"
-            align="center"
-            width="">
-          </el-table-column>
+        <el-table-column
+          prop="Score"
+          label="相似分"
+          align="center"
+          width="">
+        </el-table-column>
 
-        </el-table>
+      </el-table>
 
-        <pagination
-          :currentPage="tablePageIndex"
-          @change-page="handleChangePage">
-        </pagination>
-      </el-col>
-    </el-row>
+      <pagination
+        :currentPage="tablePageIndex"
+        @change-page="handleChangePage">
+      </pagination>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
 import TabChart from '@/components/AnalysisTab/analysis-tab-chart'
+import TabImg from '@/components/AnalysisTab/analysis-tab-img'
 import RecognitionButton from '@/components/Buttons/recognition-button'
 import CheckButton from '@/components/Buttons/check-button'
 import Pagination from '@/components/Pagination'
@@ -82,6 +84,10 @@ import Pagination from '@/components/Pagination'
 export default {
   name: 'AnalysisTab',
   props: {
+    isImgTab: {
+      type: Boolean,
+      default: false,
+    },
     detectionType: {
       type: String,
       default: 'Unknown',
@@ -147,30 +153,37 @@ export default {
   },
   components: {
     TabChart,
+    TabImg,
     RecognitionButton,
     CheckButton,
     Pagination,
   },
   mounted() {
-    console.log('- - AnalysisExplosiveDetail - - detectionType:', this.detectionType)
+    // console.log('- - AnalysisTab - - detectionType:', this.detectionType)
+    console.log('- - AnalysisTab - - isImgTab:', this.isImgTab)
   },
   methods: {
     handleRecognition() {
-      console.log('- - AnalysisExplosiveDetail - - handleRecognition:', this.$route.params)
+      console.log('- - AnalysisTab - - handleRecognition:', this.$route.params)
     },
     handleCheck() {
-      console.log('- - AnalysisExplosiveDetail - - handleCheck:', this.currentSample.id)
+      console.log('- - AnalysisTab - - handleCheck:', this.currentSample.id)
     },
     handleDetail(row) {
-      console.log('- - AnalysisExplosiveDetail - - handleDetail:', row.sName)
-      this.currentSample = row
+      if (this.isImgTab) {
+        this.$router.push('/analysis/deviceAnalysis/deviceAppearanceCompare')
+      }
+      else {
+        console.log('- - AnalysisTab - - handleDetail:', row.sName)
+        this.currentSample = row
+      }
     },
     handleCurrentChange(currentRow) {
-      console.log('- - AnalysisExplosiveDetail - - handleCurrentChange:', currentRow.sName)
+      console.log('- - AnalysisTab - - handleCurrentChange:', currentRow.sName)
       // this.currentSample = currentRow
     },
     handleChangePage(pageIndex) {
-      console.log('- - AnalysisExplosiveDetail - - pageIndex: ', pageIndex)
+      console.log('- - AnalysisTab - - pageIndex: ', pageIndex)
       this.tablePageIndex = pageIndex
     }
   },
