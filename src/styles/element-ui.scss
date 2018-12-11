@@ -87,7 +87,16 @@
 }
 
 .el-table td {
-  padding: 3px 0;
+  padding: 2px 0;
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped.current-row td, 
+.el-table__body tr.current-row > td, 
+.el-table__body tr.hover-row.current-row > td, 
+.el-table__body tr.hover-row.el-table__row--striped.current-row > td, 
+.el-table__body tr.hover-row.el-table__row--striped > td, 
+.el-table__body tr.hover-row > td {
+  background-color: lightgrey;
 }
 
 // 检测数据卡片
@@ -151,4 +160,12 @@
 // el-checkbox
 .el-checkbox {
   width: 90%;
+}
+
+hr {
+  border-top: 3px solid lightgrey;  //rgb(68, 85, 106)  //  #3d7e9a
+  height: 0;
+  margin: 12px 5px;
+  box-sizing: border-box;
+  // max-width: 95%;
 }

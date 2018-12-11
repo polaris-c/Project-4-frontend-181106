@@ -9,22 +9,6 @@
 
         <!-- <el-tab-pane label="FTIR" name="FTIRtab" >
           <AnalysisTab detectionType="FTIR"></AnalysisTab>
-        </el-tab-pane>
-
-        <el-tab-pane label="RAMAN" name="RAMANtab">RAMAN
-          <AnalysisTab detectionType="RAMAN"></AnalysisTab>
-        </el-tab-pane>
-
-        <el-tab-pane label="XRF" name="XRFtab">
-          <AnalysisTab :detectionType="XRF"></AnalysisTab>
-        </el-tab-pane>
-
-        <el-tab-pane label="XRD" name="XRDtab">
-          <AnalysisTab :detectionType="XRD"></AnalysisTab>
-        </el-tab-pane>
-
-        <el-tab-pane label="GCMS" name="GCMStab">
-          <AnalysisTab :detectionType="GCMS"></AnalysisTab>
         </el-tab-pane> -->
 
         <el-tab-pane 

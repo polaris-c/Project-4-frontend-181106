@@ -238,8 +238,5 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-hr {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
+
 </style>

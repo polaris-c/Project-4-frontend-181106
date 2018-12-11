@@ -87,13 +87,15 @@
               </el-checkbox-group>
             </el-row>
 
-            <span>已选物证属性:</span>
-            <el-tag
-              v-for="checkItem in checkListTranslation" 
-              :key="checkItem"
-              class="tag-check">
-              {{ checkItem }}
-            </el-tag>
+            <el-row class="el-row-style">
+              <span>已选物证属性:</span>
+              <el-tag
+                v-for="checkItem in checkListTranslation" 
+                :key="checkItem"
+                class="tag-check">
+                {{ checkItem }}
+              </el-tag>
+            </el-row>
 
             <hr>
 
@@ -117,85 +119,71 @@
               </el-table-column>
 
               <el-table-column
-                label="物证序号"
+                label="组件样本序号"
                 align="center"
                 width="150"
                 fixed="left">
                 <template slot-scope="scope">
                   <el-button 
                     type="text"
-                    @click="detail(scope.row)">
+                    @click="handleDetail(scope.row)">
                     {{ scope.row.id }}
                   </el-button>
                 </template>
               </el-table-column>
 
               <el-table-column
-                prop="evidenceName"
-                label="物证名称"
+                prop="sname"
+                label="组件样本名称"
+                align="center"
+                width="150">
+                <template slot-scope="scope">
+                  <el-button 
+                    type="text"
+                    @click="handleDetail(scope.row)">
+                    {{ scope.row.sname }}
+                  </el-button>
+                </template>
+              </el-table-column>
+
+              <el-table-column
+                prop="Type"
+                label="组件类型"
                 align="center"
                 width="150">
               </el-table-column>
 
               <el-table-column
-                prop="caseName"
-                label="案件名称"
-                align="center"
-                width="150">
-              </el-table-column>
-
-              <el-table-column
-                prop="eviType"
-                label="物证类型"
+                prop="Origin"
+                label="组件产地"
                 align="center"
                 width="150">
               </el-table-column>
 
               <el-table-column
                 prop="Factory"
-                label="物证厂家"
+                label="组件厂家"
                 align="center"
                 width="150">
               </el-table-column>
 
               <el-table-column
                 prop="Model"
-                label="物证型号"
+                label="组件型号"
                 align="center"
                 width="150">
               </el-table-column>
 
               <el-table-column
                 prop="Logo"
-                label="物证商标"
+                label="组件商标"
                 align="center"
                 width="150">
               </el-table-column>
 
               <el-table-column
-                prop="Color"
-                label="物证颜色"
-                align="center"
-                width="150">
-              </el-table-column>
-
-              <el-table-column
-                prop="Material"
-                label="物证材质"
-                align="center"
-                width="150">
-              </el-table-column>
-
-              <el-table-column
-                prop="Shape"
-                label="物证形状"
-                align="center"
-                width="150">
-              </el-table-column>
-
-              <el-table-column
-                prop="thickness"
-                label="物证厚度"
+                prop="function"
+                label="组件功能"
                 align="center"
                 width="150">
               </el-table-column>
@@ -232,9 +220,10 @@
         <el-col :span="2">
           <goback-button @goback-confirm="goBcak"></goback-button>
         </el-col>
-        <el-col 
-          :span="2"
-          :offset="20">
+        <el-col :span="3" :offset="17">
+          <message-button @message-confirm="handleMessage"></message-button>
+        </el-col>
+        <el-col :span="2">
           <report-button @report-confirm="handleReport"></report-button>
         </el-col>
       </el-row>
@@ -245,6 +234,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
+import MessageButton from '@/components/Buttons/message-button'
 import ReportButton from '@/components/Buttons/report-button'
 
 export default {
@@ -273,48 +263,39 @@ export default {
       tableData: [
         {
           id: '001',
-          evidenceName: 'A001',
-          caseName: 'A1',
-          eviType: '1',
+          sname: 'A001',
+          Type: 'A1',
+          Origin: 'AO',
           Factory: 'AF',
           Model: 'AM',
           Logo: 'AL',
-          Color: 'AF',
-          Material: 'AF',
-          Shape: 'AF',
-          thickness: 'AF',
+          function: 'AF',
           user: 'user001',
           inputDate: '2018-11-19',
           note: '1111'
         },
         {
           id: '002',
-          evidenceName: 'A002',
-          caseName: 'A2',
-          eviType: '2',
+          sname: 'A002',
+          Type: 'A2',
+          Origin: 'AO',
           Factory: 'AF',
           Model: 'AM',
           Logo: 'AL',
-          Color: 'AC',
-          Material: 'AM',
-          Shape: 'AS',
-          thickness: 'AF',
+          function: 'AF',
           user: 'user002',
           inputDate: '2018-11-19',
           note: '1112'
         },
         {
           id: '003',
-          evidenceName: 'A003',
-          caseName: 'A3',
-          eviType: '3',
+          sname: 'A003',
+          Type: 'A3',
+          Origin: 'AO',
           Factory: 'AF',
           Model: 'AM',
           Logo: 'AL',
-          Color: 'AC',
-          Material: 'AM',
-          Shape: 'AS',
-          thickness: 'AF',
+          function: 'AF',
           user: 'user003',
           inputDate: '2018-11-19',
           note: '1113'
@@ -355,6 +336,7 @@ export default {
   },
   components:{
     GobackButton,
+    MessageButton,
     ReportButton,
   },
   methods: {
@@ -374,14 +356,17 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
-      console.log('- - DeviceList - - multipleSeletion:', this.multipleSelection)
+      console.log('- - AnalysisDeviceDetail - - multipleSeletion:', this.multipleSelection)
     },
-    detail(row) {
-      console.log('- - ExplosiveList - - row:', row.id, row.evidenceName)
-      this.$router.push('/evidenceManagement/deviceEvidence/deviceIndexList/deviceDetail/' + row.id)
+    handleDetail(row) {
+      console.log('- - AnalysisDeviceDetail - - row:', row.id, row.sname)
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetail/' + row.id)
     },
 
     /** 页面操作按键 */
+    handleMessage() {
+      this.$router.push('/message/messageCreation')
+    },
     handleReport() {
 
     },
@@ -393,10 +378,6 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-hr {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 .tag-check {
   margin-left: 10px;
 }
