@@ -361,10 +361,6 @@ export default {
       devPartType: '',
     }
   },
-  components: {
-    GobackButton,
-    SubmitButton
-  },
   computed: {
     ...mapGetters([
       'name',
@@ -375,10 +371,12 @@ export default {
       'avatar',
     ])
   },
+  components: {
+    GobackButton,
+    SubmitButton
+  },
 
   mounted() {
-    this.uploadFTIRFile = new FormData()
-    console.log('+ + ExplosiveCreation mounted + + uploadFTIRFile is OK')
   },
 
   methods: {

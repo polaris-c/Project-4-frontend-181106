@@ -1,9 +1,17 @@
 <template>
   <div class="app-main-container">
-    user-management-List
+    <el-row>
+      <el-col :span="22">
+        <search-input @emit-search="handleSearch"></search-input>
+      </el-col>
+      <el-col :span="2">
+        <delete-button @delete-confirm="handleDelete"></delete-button>
+      </el-col>
+    </el-row>
 
     <el-table
-      ref="deviceList"
+      class="app-main-table"
+      ref="UserList"
       :data="tableData"
       style="width: 100%"
       tooltip-effect="dark"
@@ -124,16 +132,25 @@
       </el-table-column> -->
 
     </el-table>
+
+    <pagination 
+      :currentPage="tablePageIndex"
+      @change-page="handleChangePage">
+    </pagination>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import DeleteButton from '@/components/Buttons/delete-button'
+import SearchInput from '@/components/SearchInput'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'UserList',
   data() {
     return {
+      multipleSelection: [],
       tableData: [
         {
           id: 1,
@@ -200,7 +217,8 @@ export default {
           isDelete: true,
           note: 'aaa2'
         }
-      ]
+      ],
+      tablePageIndex: 1
     }
   },
   computed: {
@@ -213,14 +231,31 @@ export default {
       'avatar',
     ])
   },
+  components: {
+    DeleteButton,
+    SearchInput,
+    Pagination
+  },
   methods: {
     handleSelectionChange(val) {
       this.multipleSelection = val
-      console.log('- - - - multipleSeletion:', this.multipleSelection)
+      console.log('- - UserList - - multipleSeletion:', this.multipleSelection)
     },
     detail(row) {
       this.$router.push('/userManagement/userIndexList/userDetail/' + row.id)
     },
+
+    /** 页面按键功能 */
+    handleDelete() {
+      console.log('- - UserList - - delete: ', this.multipleSelection)
+    },
+    handleSearch(searchInputData) {
+      console.log('- - UserList - - search: ', searchInputData)
+    },
+    handleChangePage(pageIndex) {
+      console.log('- - UserList - - pageIndex: ', pageIndex)
+      this.tablePageIndex = pageIndex
+    }
   }
 }
 </script>
