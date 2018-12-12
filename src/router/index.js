@@ -35,7 +35,7 @@ export const constantRouterMap = [
         path: 'index',
         name: 'HandbookIndex',
         component: () => import('@/views/handbook/index'),
-        meta: { title: 'Handbook', icon: 'handbook' }
+        meta: { title: '指 南', icon: 'handbook' }
       }
     ]
   },
@@ -45,44 +45,44 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/userProfile',
     name: 'Home',
-    meta: { title: 'Home', icon: 'example' },
+    meta: { title: '用户主页', icon: 'example' },
     children: [
       {
         path: 'userProfile',
         name: 'UserProfile',
         component: () => import('@/views/home/user-profile'),
-        meta: { title: 'UserProfile', icon: 'user' }
+        meta: { title: '用户信息', icon: 'user' }
       },
       {
         path: 'message',
         name: 'Message',
         component: () => import('@/views/home/message/home-index-message'),
         redirect: '/message/messageCreation',
-        meta: { title: 'Message', icon: 'email' },
+        meta: { title: '咨询消息', icon: 'email' },
         children: [
           {
             path: 'messageCreation',
             name: 'MessageCreation',
             component: () => import('@/views/home/message/message-form'),
-            meta: { title: 'MsgCreation', icon: 'form' }
+            meta: { title: '消息创建', icon: 'form' }
           },
           {
             path: 'messageSent',
             name: 'MessageSent',
             component: () => import('@/views/home/message/message-sent'),
-            meta: { title: 'MsgSent', icon: 'guide' }
+            meta: { title: '已发送', icon: 'guide' }
           },
           {
             path: 'messageReceived',
             name: 'MessageReceived',
             component: () => import('@/views/home/message/message-received'),
-            meta: { title: 'MsgReceived', icon: 'message' }
+            meta: { title: '已接收', icon: 'message' }
           },
           {
             path: 'messageDetail',
             name: 'MessageDetail',
             component: () => import('@/views/home/message/message-detail'),
-            meta: { title: 'MsgDetail' },
+            meta: { title: '消息详情' },
             hidden: true
           }
         ]
@@ -95,13 +95,13 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/userManagement/userIndexList/userList',
     name: 'UserManagement',
-    meta: { title: 'UserMag', icon: 'peoples' },
+    meta: { title: '人员管理', icon: 'peoples' },
     children: [
       {
         path: 'userCreation',
         name: 'UserCreation',
         component: () => import('@/views/user-management/user-creation'),
-        meta: { title: 'UserCreation', icon: 'people' }
+        meta: { title: '人员创建', icon: 'people' }
       },
       {
         path: 'userIndexList',
@@ -113,20 +113,20 @@ export const constantRouterMap = [
             path: 'userList',
             name: 'UserList',
             component: () => import('@/views/user-management/user-list'),
-            meta: { title: 'UserList', icon: 'list' }
+            meta: { title: '人员列表', icon: 'list' }
           },
           {
             path: 'userDetail/:id',
             name: 'UserDetail',
             component: () => import('@/views/user-management/user-detail'),
-            meta: { title: 'UserDetail', icon: '' },
+            meta: { title: '人员详情', icon: '' },
             hidden: true
           },
           {
             path: 'userUpdate/:id',
             name: 'UserUpdate',
             component: () => import('@/views/user-management/user-update'),
-            meta: { title: 'UserUpdate', icon: '' },
+            meta: { title: '人员修改', icon: '' },
             hidden: true
           }
         ]
@@ -138,19 +138,19 @@ export const constantRouterMap = [
     path: '/options',
     component: Layout,
     name: 'Options',
-    meta: { title: 'Options', icon: 'options' },
+    meta: { title: '检测设置', icon: 'options' },
     children: [
       {
         path: 'detectionDevice',
         name: 'DetectionDevice',
         component: () => import('@/views/options/device-detection'),
-        meta: { title: 'Device', icon: 'devices' }
+        meta: { title: '检测设备', icon: 'devices' }
       },
       {
         path: 'detectionMethod',
         name: 'DetectionMethod',
         component: () => import('@/views/options/method-detection'),
-        meta: { title: 'Method', icon: 'method' }
+        meta: { title: '检测方法', icon: 'method' }
       }
     ]
   },
@@ -160,20 +160,20 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/sampleManagement/explosiveSample',
     name: 'SampleManagement',
-    meta: { title: 'Sample', icon: 'tab' },
+    meta: { title: '样本管理', icon: 'tab' },
     children: [
       {
         path: 'explosiveSample',
         name: 'ExplosiveSample',
         component: () => import('@/views/sample-management/explosive-sample/explosive-index'),
         redirect: '/sampleManagement/explosiveSample/explosiveIndexList/explosiveList',
-        meta: { title: 'ExplosiveSample', icon: '' },
+        meta: { title: '炸药与原材料', icon: '' },
         children: [
           {
             path: 'explosiveCreation',
             name: 'ExplosiveCreation',
             component: () => import('@/views/sample-management/explosive-sample/explosive-creation'),
-            meta: { title: 'ExplosiveCreation' }
+            meta: { title: '新增样本' }
           },
           {
             path: 'explosiveIndexList',
@@ -186,20 +186,20 @@ export const constantRouterMap = [
                 path: 'explosiveList',
                 name: 'ExplosiveList',
                 component: () => import('@/views/sample-management/explosive-sample/explosive-list'),
-                meta: { title: 'ExplosiveList' }
+                meta: { title: '样本列表' }
               },
               {
                 path: 'explosiveDetail/:id',
                 name: 'ExplosiveDetail',
                 component: () => import('@/views/sample-management/explosive-sample/explosive-detail'),
-                meta: { title: 'ExplosiveDetail' },
+                meta: { title: '样本详情' },
                 hidden: true
               },
               {
                 path: 'explosiveUpdate/:id',
                 name: 'ExplosiveUpdate',
                 component: () => import('@/views/sample-management/explosive-sample/explosive-update'),
-                meta: { title: 'ExplosiveUpdate' },
+                meta: { title: '样本修改' },
                 hidden: true
               },
             ]
@@ -211,14 +211,14 @@ export const constantRouterMap = [
         name: 'DeviceSample',
         component: () => import('@/views/sample-management/device-sample/device-index'),
         redirect: '/sampleManagement/deviceSample/deviceIndexList/deviceList',
-        meta: { title: 'DeviceSample' },
+        meta: { title: '爆炸装置' },
         // hidden: true,
         children: [
           {
             path: 'deviceCreation',
             name: 'DeviceCreation',
             component: () => import('@/views/sample-management/device-sample/device-creation'),
-            meta: { title: 'DeviceCreation', icon: '' },
+            meta: { title: '新增样本', icon: '' },
             // hidden: true
           },
           {
@@ -232,34 +232,34 @@ export const constantRouterMap = [
                 path: 'deviceList',
                 name: 'DeviceList',
                 component: () => import('@/views/sample-management/device-sample/device-list'),
-                meta: { title: 'DeviceList', icon: '' },
+                meta: { title: '样本列表', icon: '' },
               },
               {
                 path: 'deviceUpdate/:id',
                 name: 'DeviceUpdate',
                 component: () => import('@/views/sample-management/device-sample/device-update'),
-                meta: { title: 'DeviceUpdate', icon: '' },
+                meta: { title: '样本修改', icon: '' },
                 hidden: true
               },
               {
                 path: 'deviceDetail/:id',
                 name: 'DeviceDetail',
                 component: () => import('@/views/sample-management/device-sample/device-detail'),
-                meta: { title: 'DeviceDetail', icon: '' },
+                meta: { title: '样本详情', icon: '' },
                 hidden: true
               },
               {
                 path: 'deviceDetailIngredient/:id',
                 name: 'DeviceDetailIngredient',
                 component: () => import('@/views/sample-management/device-sample/device-detail-ingredient'),
-                meta: { title: 'DeviceDetailIngredient', icon: '' },
+                meta: { title: '零件成分', icon: '' },
                 hidden: true
               },
               {
                 path: 'deviceDetailAppearance/:id',
                 name: 'DeviceDetailAppearance',
                 component: () => import('@/views/sample-management/device-sample/device-Detail-Appearance'),
-                meta: { title: 'DeviceDetailAppearance', icon: '' },
+                meta: { title: '零件形态', icon: '' },
                 hidden: true
               }
             ]
@@ -274,20 +274,20 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/evidenceManagement/deviceEvidence',
     name: 'EvidenceManagement',
-    meta: { title: 'Evidence', icon: 'dashboard' },
+    meta: { title: '物证管理', icon: 'dashboard' },
     children: [
       {
         path: 'explosiveEvidence',
         name: 'ExplosiveEvidence',
         component: () => import('@/views/evidence-management/explosive-evidence/explosive-index'),
         redirect: '/evidenceManagement/explosiveEvidence/explosiveIndexList/explosiveList',
-        meta: { title: 'ExplosiveEvidence', icon: '' },
+        meta: { title: '炸药与原材料', icon: '' },
         children: [
           {
             path: 'explosiveCreation',
             name: 'ExplosiveCreation',
             component: () => import('@/views/evidence-management/explosive-evidence/explosive-creation'),
-            meta: { title: 'ExplosiveCreation' }
+            meta: { title: '新增物证' }
           },
           {
             path: 'explosiveIndexList',
@@ -300,20 +300,20 @@ export const constantRouterMap = [
                 path: 'explosiveList',
                 name: 'ExplosiveList',
                 component: () => import('@/views/evidence-management/explosive-evidence/explosive-list'),
-                meta: { title: 'ExplosiveList' }
+                meta: { title: '物证列表' }
               },
               {
                 path: 'explosiveDetail/:id',
                 name: 'ExplosiveDetail',
                 component: () => import('@/views/evidence-management/explosive-evidence/explosive-detail'),
-                meta: { title: 'ExplosiveDetail' },
+                meta: { title: '物证详情' },
                 hidden: true
               },
               {
                 path: 'explosiveUpdate/:id',
                 name: 'ExplosiveUpdate',
                 component: () => import('@/views/evidence-management/explosive-evidence/explosive-update'),
-                meta: { title: 'ExplosiveUpdate' },
+                meta: { title: '物证更新' },
                 hidden: true
               },
             ]
@@ -325,14 +325,14 @@ export const constantRouterMap = [
         name: 'DeviceEvidence',
         component: () => import('@/views/evidence-management/device-evidence/device-index'),
         redirect: '/evidenceManagement/deviceEvidence/deviceIndexList/deviceList',
-        meta: { title: 'DeviceEvidence' },
+        meta: { title: '爆炸装置残片' },
         // hidden: true,
         children: [
           {
             path: 'deviceCreation',
             name: 'DeviceCreation',
             component: () => import('@/views/evidence-management/device-evidence/device-creation'),
-            meta: { title: 'DeviceCreation', icon: '' },
+            meta: { title: '新增物证', icon: '' },
             // hidden: true
           },
           {
@@ -346,34 +346,34 @@ export const constantRouterMap = [
                 path: 'deviceList',
                 name: 'DeviceList',
                 component: () => import('@/views/evidence-management/device-evidence/device-list'),
-                meta: { title: 'DeviceList', icon: '' },
+                meta: { title: '物证列表', icon: '' },
               },
               {
                 path: 'deviceUpdate/:id',
                 name: 'DeviceUpdate',
                 component: () => import('@/views/evidence-management/device-evidence/device-update'),
-                meta: { title: 'DeviceUpdate', icon: '' },
+                meta: { title: '物证修改', icon: '' },
                 hidden: true
               },
               {
                 path: 'deviceDetail/:id',
                 name: 'DeviceDetail',
                 component: () => import('@/views/evidence-management/device-evidence/device-detail'),
-                meta: { title: 'DeviceDetail', icon: '' },
+                meta: { title: '物证详情', icon: '' },
                 hidden: true
               },
               {
                 path: 'deviceDetailIngredient/:id',
                 name: 'DeviceDetailIngredient',
                 component: () => import('@/views/evidence-management/device-evidence/device-detail-ingredient'),
-                meta: { title: 'DeviceDetailIngredient', icon: '' },
+                meta: { title: '残片成分', icon: '' },
                 hidden: true
               },
               {
                 path: 'deviceDetailAppearance/:id',
                 name: 'DeviceDetailAppearance',
                 component: () => import('@/views/evidence-management/device-evidence/device-Detail-Appearance'),
-                meta: { title: 'DeviceDetailAppearance', icon: '' },
+                meta: { title: '残片形态', icon: '' },
                 hidden: true
               }
             ]
@@ -388,26 +388,26 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/analysis/explosiveAnalysis',
     name: 'Analysis',
-    meta: { title: 'Analysis', icon: 'chart' },
+    meta: { title: '分析研判', icon: 'chart' },
     children: [
       {
         path: 'explosiveAnalysis',
         name: 'ExplosiveAnalysis',
         component: () => import('@/views/analysis/explosive-analysis/explosive-index'),
         redirect: '/analysis/explosiveAnalysis/explosiveList',
-        meta: { title: 'ExplosiveAnalysis', icon: 'table' },
+        meta: { title: '', icon: 'table' },
         children: [
           {
             path: 'explosiveList',
             name: 'ExplosiveList',
             component: () => import('@/views/analysis/explosive-analysis/explosive-list'),
-            meta: { title: 'ExplosiveList' }
+            meta: { title: '炸药与原材料' }
           },
           {
             path: 'explosiveDetail/:id',
             name: 'ExplosiveDetail',
             component: () => import('@/views/analysis/explosive-analysis/explosive-detail'),
-            meta: { title: 'ExplosiveDetail' },
+            meta: { title: '炸药与原材料比对' },
             hidden: true
           }
         ]
@@ -417,19 +417,19 @@ export const constantRouterMap = [
         name: 'DeviceAnalysis',
         component: () => import('@/views/analysis/device-analysis/device-index'),
         redirect: '/analysis/deviceAnalysis/deviceList',
-        meta: { title: 'DeviceAnalysis', icon: 'table' },
+        meta: { title: '', icon: 'table' },
         children: [
           {
             path: 'deviceList',
             name: 'DeviceList',
             component: () => import('@/views/analysis/device-analysis//device-list'),
-            meta: { title: 'DeviceList' }
+            meta: { title: '爆炸装置残片' }
           },
           {
             path: 'deviceDetail/:id',
             name: 'DeviceDetail',
             component: () => import('@/views/analysis/device-analysis/device-detail'),
-            meta: { title: 'DeviceDetail' },
+            meta: { title: '残片详情' },
             hidden: true
           },
           {
@@ -443,21 +443,21 @@ export const constantRouterMap = [
             path: 'deviceIngredient',
             name: 'DeviceIngredient',
             component: () => import('@/views/analysis/device-analysis/device-detail-ingredient'),
-            meta: { title: 'DeviceIngredient' },
+            meta: { title: '残片成分比对' },
             hidden: true
           },
           {
             path: 'deviceAppearance',
             name: 'DeviceAppearance',
             component: () => import('@/views/analysis/device-analysis/device-detail-appearance'),
-            meta: { title: 'DeviceAppearance' },
+            meta: { title: '残片形态比对' },
             hidden: true
           },
           {
             path: 'deviceAppearanceCompare',
             name: 'DeviceAppearanceCompare',
             component: () => import('@/views/analysis/device-analysis/device-detail-appearance-Compare'),
-            meta: { title: 'DeviceAppearanceCompare' },
+            meta: { title: '形态比对详情' },
             hidden: true
           },
         ]
@@ -470,26 +470,26 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/result/explosiveResult/explosiveList',
     name: 'Result',
-    meta: { title: 'Result', icon: 'clipboard' },
+    meta: { title: '研判结果', icon: 'clipboard' },
     children: [
       {
         path: 'explosiveResult',
         name: 'ExplosiveResult',
         component: () => import('@/views/result/explosive-result/explosive-index'),
         redirect: '/result/explosiveResult/explosiveList',
-        meta: { title: 'ExplosiveResult', icon: 'table' },
+        meta: { title: '', icon: 'table' },
         children: [
           {
             path: 'explosiveList',
             name: 'ExplosiveList',
             component: () => import('@/views/result/explosive-result/explosive-list'),
-            meta: { title: 'ExplosiveList' }
+            meta: { title: '炸药与原材料' }
           },
           {
             path: 'explosiveDetail/:id',
             name: 'ExplosiveDetail',
             component: () => import('@/views/result/explosive-result/explosive-detail'),
-            meta: { title: 'ExplosiveDetail' },
+            meta: { title: '结果报告' },
             hidden: true
           }
         ]
@@ -499,19 +499,19 @@ export const constantRouterMap = [
         name: 'DeviceResult',
         component: () => import('@/views/result/device-result/device-index'),
         redirect: '/result/deviceResult/deviceList',
-        meta: { title: 'DeviceResult', icon: 'table' },
+        meta: { title: '', icon: 'table' },
         children: [
           {
             path: 'deviceList',
             name: 'DeviceList',
             component: () => import('@/views/result/device-result/device-list'),
-            meta: { title: 'DeviceList' }
+            meta: { title: '爆炸装置残片' }
           },
           {
             path: 'deviceDetail/:id',
             name: 'DeviceDetail',
             component: () => import('@/views/result/device-result/device-detail'),
-            meta: { title: 'DeviceDetail' },
+            meta: { title: '结果报告' },
             hidden: true
           }
         ]

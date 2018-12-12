@@ -1,10 +1,10 @@
 <template>
-  <div class="dashboard-container">
+  <div class="app-main-container">
     user-profile
     <div class="dashboard-text">name:{{ name }}</div>
     <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
-    <!-- <div class="dashboard-text">sidebar:{{ sidebar }}</div> -->
-    <!-- <div class="dashboard-text">device:{{ device }}</div> -->
+    <div class="dashboard-text">sidebar:{{ sidebar }}</div>
+    <div class="dashboard-text">device:{{ device }}</div>
     <div class="dashboard-text">token:{{ token }}</div>
     <div class="dashboard-text">avatar:{{ avatar }}</div>
   </div>
@@ -29,13 +29,5 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
+
 </style>

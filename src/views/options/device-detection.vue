@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div class="app-main-container">
     device-detection
     <div class="dashboard-text">name:{{ name }}</div>
   </div>
@@ -24,13 +24,5 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
+
 </style>

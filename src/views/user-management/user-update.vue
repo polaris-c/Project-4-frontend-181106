@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div class="app-main-container">
     user-management-update
     <div>name:{{ name }}</div>
     {{ $route.params }}
@@ -10,7 +10,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Dashboard',
+  name: 'UserUpdate',
   computed: {
     ...mapGetters([
       'name',
@@ -25,13 +25,5 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
+
 </style>

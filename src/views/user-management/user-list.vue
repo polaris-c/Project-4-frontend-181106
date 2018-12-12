@@ -1,7 +1,6 @@
 <template>
-  <div class="dashboard-container">
+  <div class="app-main-container">
     user-management-List
-    <div>name:{{ name }}</div>
 
     <el-table
       ref="deviceList"
@@ -23,7 +22,7 @@
       <el-table-column
         label="人员编号"
         align="center"
-        width="150"
+        width="100"
         fixed="left">
         <template slot-scope="scope">
           <el-button 
@@ -39,6 +38,13 @@
         label="人员姓名"
         align="center"
         width="150">
+        <template slot-scope="scope">
+          <el-button 
+            type="text"
+            @click="detail(scope.row)">
+            {{ scope.row.name }}
+          </el-button>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -220,13 +226,5 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
+
 </style>

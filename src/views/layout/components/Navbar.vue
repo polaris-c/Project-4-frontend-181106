@@ -32,7 +32,7 @@
           class="inlineBlock" 
           to="/">
           <el-dropdown-item>
-            Home
+            用户主页
           </el-dropdown-item>
         </router-link>
         <!-- 退出登录 -->
@@ -40,7 +40,7 @@
           <span 
             style="display:block;" 
             @click="logout">
-            LogOut
+            登 出
           </span>
         </el-dropdown-item>
       </el-dropdown-menu>
