@@ -367,6 +367,8 @@ export default {
     },
 
     /** 页面操作按键 */
+    handleReport() {
+    },
     handleMessage() {
       // this.$router.push('/message/messageCreation')
       // const evidenceID = this.$route.params.id
@@ -379,9 +381,6 @@ export default {
           evidenceID: this.$route.params.id,
         }
       }) 
-    },
-    handleReport() {
-
     },
     goBcak() {
       this.$router.push('/analysis/deviceAnalysis/deviceList')

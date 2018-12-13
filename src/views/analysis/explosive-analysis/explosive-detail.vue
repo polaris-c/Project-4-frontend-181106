@@ -78,7 +78,6 @@ export default {
 
     /** */
     handleReport() {
-
     },
     handleMessage() {
       // this.$router.push('/message/messageCreation')

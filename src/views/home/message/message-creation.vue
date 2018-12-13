@@ -146,7 +146,7 @@ export default {
         {
           id: 1,
           name: 'Aaa1',
-          posts: '爆炸物',
+          posts: '爆炸装置',
         },
         {
           id: 2,
@@ -156,12 +156,12 @@ export default {
         {
           id: 3,
           name: 'Aaa2',
-          posts: '爆炸物',
+          posts: '爆炸装置',
         },
         {
           id: 5,
           name: 'Aaa3',
-          posts: '爆炸物',
+          posts: '爆炸装置',
         },
         {
           id: 6,
@@ -218,7 +218,7 @@ export default {
     /** 从分析研判模块直接传入物证信息 */
     if (this.$route.params.evidenceType && this.$route.params.evidenceID) {
       console.log('- - MessageCreation - - $route.params:', this.$route.params.evidenceType, this.$route.params.evidenceID)
-      console.log('- - MessageCreation - - $route:', this.$route)
+      // console.log('- - MessageCreation - - $route:', this.$route)
       this.evidenceInfo.evidenceType = this.$route.params.evidenceType
       this.evidenceInfo.evidenceID = this.$route.params.evidenceID
       this.evidenceInfo.evidenceDisabled = true
