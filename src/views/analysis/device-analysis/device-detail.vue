@@ -365,7 +365,14 @@ export default {
 
     /** 页面操作按键 */
     handleMessage() {
-      this.$router.push('/message/messageCreation')
+      // this.$router.push('/message/messageCreation')
+      this.$router.push({ 
+        name: 'MessageCreation', 
+        params: { 
+          evidenceType: 'device',
+          evidenceID: this.$route.params.id,
+        }
+      }) 
     },
     handleReport() {
 

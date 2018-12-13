@@ -81,7 +81,14 @@ export default {
 
     },
     handleMessage() {
-      this.$router.push('/message/messageCreation')
+      // this.$router.push('/message/messageCreation')
+      this.$router.push({ 
+        name: 'MessageCreation', 
+        params: { 
+          evidenceType: 'explosive',
+          evidenceID: this.$route.params.id,
+        }
+      }) 
     },
     goBcak() {
       this.$router.push('/analysis/explosiveAnalysis/explosiveList')

@@ -97,6 +97,7 @@
                   <el-form-item label="备注">
                     <el-input 
                       v-model="userData.note"
+                      :rows="8"
                       type="textarea"
                       placeholder="请输入...">
                     </el-input>
@@ -180,6 +181,6 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .userCard {
-  height: 600px;
+  // height: 600px;
 }
 </style>
