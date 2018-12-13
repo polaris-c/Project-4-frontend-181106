@@ -63,7 +63,7 @@ export const constantRouterMap = [
           {
             path: 'messageCreation',
             name: 'MessageCreation',
-            component: () => import('@/views/home/message/message-form'),
+            component: () => import('@/views/home/message/message-creation'),
             meta: { title: '消息创建', icon: 'form' }
           },
           {

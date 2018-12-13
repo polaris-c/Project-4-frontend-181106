@@ -206,7 +206,7 @@ export default {
           this.messageData.exploEviId = ''
         }
       }
-    }
+    },
   },
   components: {
     GobackButton,
@@ -218,6 +218,7 @@ export default {
     /** 从分析研判模块直接传入物证信息 */
     if (this.$route.params.evidenceType && this.$route.params.evidenceID) {
       console.log('- - MessageCreation - - $route.params:', this.$route.params.evidenceType, this.$route.params.evidenceID)
+      console.log('- - MessageCreation - - $route:', this.$route)
       this.evidenceInfo.evidenceType = this.$route.params.evidenceType
       this.evidenceInfo.evidenceID = this.$route.params.evidenceID
       this.evidenceInfo.evidenceDisabled = true

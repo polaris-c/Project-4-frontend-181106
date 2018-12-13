@@ -339,6 +339,9 @@ export default {
     MessageButton,
     ReportButton,
   },
+  mounted() {
+    console.log('- - AnalysisDeviceDetail - - $route.params.id:', this.$route.params.id)
+  },
   methods: {
     analysisIngredient() {
       this.$router.push('/analysis/deviceAnalysis/deviceIngredient')
@@ -366,6 +369,9 @@ export default {
     /** 页面操作按键 */
     handleMessage() {
       // this.$router.push('/message/messageCreation')
+      // const evidenceID = this.$route.params.id
+      // this.$router.push({path:`/message/messageCreation/${evidenceID}`})
+      // this.$router.push({ name: 'MessageCreation', params: {evidenceID} })
       this.$router.push({ 
         name: 'MessageCreation', 
         params: { 
