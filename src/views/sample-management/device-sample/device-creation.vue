@@ -84,10 +84,11 @@
       :key="devPartData.key">
       <el-col :span="24">
         <device-part-form 
-          :devPartData="devPartData"
+          :dev-part-data="devPartData"
           :index="index"
           @delete-device-part="handleDeleteDevPart">
         </device-part-form>
+        <!-- :devPartData="devPartData" -->
       </el-col>
     </el-row>
 

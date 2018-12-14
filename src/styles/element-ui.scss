@@ -83,7 +83,7 @@
 }
 
 .el-table td.is-center {
-  text-align: center;
+  // text-align: center;
 }
 
 .el-table td {
@@ -97,6 +97,14 @@
 .el-table__body tr.hover-row.el-table__row--striped > td, 
 .el-table__body tr.hover-row > td {
   background-color: lightgrey;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: lightgray;
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped td {
+  // background-color: lightgray;
 }
 
 // 检测数据卡片
