@@ -4,7 +4,7 @@
       shadow="hover"
       class="el-row-style">
       <div slot="header">
-        新增检测设备
+        检测设备
       </div>
       <div>
         <el-form
@@ -25,7 +25,7 @@
             </el-col>
           </el-row>
           
-          <el-row :gutter="40">
+          <el-row :gutter="40" class="el-row-style">
             <el-col :span="12">
               <el-form-item label="设备厂家">
                 <el-input v-model="detectionDeviceData.detectMrfs"></el-input>
@@ -43,20 +43,15 @@
           </el-row>
         </el-form>
 
-        <hr>
-
         <el-row>
           <el-col :span="2" :offset="22">
             <submit-button @submit-confirm="handleSubmit"></submit-button>
           </el-col>
         </el-row>
       </div>
-    </el-card>
 
-    <el-card shadow="hover">
-      <div slot="header">
-        <span>检测设备列表</span>
-      </div>
+      <hr>
+
       <div>
         <el-table
           class="form-table"
@@ -79,7 +74,7 @@
 
           <el-table-column
             prop="deviceName"
-            label="名称缩写"
+            label="设备名称"
             align="center"
             width="160">
           </el-table-column>
@@ -106,8 +101,6 @@
           </el-table-column>
 
         </el-table>
-
-        <hr>
 
         <el-row>
           <el-col :span="2" :offset="22">
@@ -197,7 +190,11 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+hr {
+  margin: 20px 0;
+}
+
 .form-table {
-  // margin: 15px 0;
+  margin: 20px 0;
 }
 </style>
