@@ -11,6 +11,7 @@
         <el-row>
           <el-col :span="8" :offset="1">
             <ul>
+              -{{ userList }}-
               <li>编 号 : {{ userData.id }}</li>
               <li>姓 名 : {{ userData.name }}</li>
               <li>账号(手机) : {{ userData.username }}</li>
@@ -41,11 +42,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import GoBack from '@/components/Buttons/go-back'
+import { getList } from '@/api/user-info'
 
 export default {
   name: 'UserProfile',
   data() {
     return {
+      userList: {},
       userData: {
         id: 1,
         name: 'Admin01',
@@ -75,10 +78,20 @@ export default {
     GoBack,
   },
   mounted() {
-
+    this.fetchList()
   },
   methods: {
-
+    fetchList() {
+      getList().then(res => {
+        console.log('- - UserProfile - - getList res:', res)
+        this.userList = res
+      }).catch(err => {
+        this.$message({
+          message: '获取用户信息错误',
+          type: 'error'
+        })
+      })
+    },
   }
 }
 </script>
