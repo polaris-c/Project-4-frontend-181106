@@ -13,7 +13,8 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
-      if (store.getters.roles.length === 0) {
+      const currentRole = store.getters.role
+      if (currentRole !== 1 && currentRole !== 2 && currentRole !== 3) {
         store.dispatch('GetInfo').then(res => { // 拉取用户信息
           next()
         }).catch(() => {

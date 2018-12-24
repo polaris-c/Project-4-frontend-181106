@@ -1,9 +1,12 @@
 <template>
   <el-pagination
+    :current-page="page"
+    :total="count"
+    :page-sizes="[20, 50, 100]"
+    :page-size="size"
     @current-change="handleCurrentChange"
-    :current-page="currentPage"
-    :total="23"
-    layout="total, prev, pager, next, jumper">
+    @size-change="handleSizeChange"
+    layout="total, sizes, prev, pager, next, jumper">
   </el-pagination>
 </template>
 
@@ -11,9 +14,17 @@
 export default {
   name: 'Pagination',
   props: {
-    currentPage: {
-      type: Number,
+    count: {
+      type: [String, Number],
       default: 1
+    },
+    page: {
+      type: [String, Number],
+      default: 1
+    },
+    size: {
+      type: [String, Number],
+      default: 20
     }
   },
   data() {
@@ -23,8 +34,13 @@ export default {
   methods: {
     handleCurrentChange(pageIndex) {
       console.log('- - Pagination - - pageIndex: ', pageIndex)
-      console.log('- - Pagination - - currentPage: ', this.currentPage)
+      console.log('- - Pagination - - current page: ', this.page)
       this.$emit('change-page', pageIndex)
+    },
+    handleSizeChange(pageSize) {
+      console.log('- - Pagination - - pageSize: ', pageSize)
+      console.log('- - Pagination - - current size: ', this.size)
+      this.$emit('change-size', pageSize)
     }
   }
 }

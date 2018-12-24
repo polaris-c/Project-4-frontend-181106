@@ -16,7 +16,7 @@ service.interceptors.request.use(
     if (store.getters.token) {
       // config.headers['Cookie'] = 'csrftoken=' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
       config.headers['Authorization'] = 'JWT ' + getToken()
-      console.log('* * * * request JWT is OK: ', config.headers)
+      console.log('* * * * request JWT is OK: ', config.headers['Authorization'])
     }
     return config
   },
@@ -31,7 +31,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     console.log('>>>> Axios interceptors Over ==== ==== \n ')
-    return response
+    return response.data
   },
   error => {
     console.log('* * * * response error: ', error) // for debug

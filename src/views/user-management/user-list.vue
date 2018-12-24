@@ -56,7 +56,7 @@
       </el-table-column>
 
       <el-table-column
-        prop="mobile"
+        prop="username"
         label="手机"
         align="center"
         width="180">
@@ -134,8 +134,9 @@
     </el-table>
 
     <pagination 
-      :currentPage="tablePageIndex"
-      @change-page="handleChangePage">
+      v-bind="tableParams"
+      @change-page="handleChangePage"
+      @change-size="handleChangeSize">
     </pagination>
   </div>
 </template>
@@ -145,6 +146,7 @@ import { mapGetters } from 'vuex'
 import DeleteButton from '@/components/Buttons/delete-button'
 import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
+import { getList } from '@/api/user-management'
 
 export default {
   name: 'UserList',
@@ -218,7 +220,12 @@ export default {
           note: 'aaa2'
         }
       ],
-      tablePageIndex: 1
+      tableParams: {
+        search: null,
+        page: 1,
+        size: 20,
+        count: 1,
+      }
     }
   },
   computed: {
@@ -236,7 +243,21 @@ export default {
     SearchInput,
     Pagination
   },
+  mounted() {
+    this.fetchData(this.tableParams)
+  },
   methods: {
+    fetchData(tableParams){
+      getList(tableParams).then(res => {
+        this.tableData = res.data
+        this.tableParams.count =  res.count
+      }).catch(err => {
+        this.$message({
+          message: '获取用户列表错误' + err.message,
+          type: 'error'
+        })
+      })
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val
       console.log('- - UserList - - multipleSeletion:', this.multipleSelection)
@@ -251,11 +272,21 @@ export default {
     },
     handleSearch(searchInputData) {
       console.log('- - UserList - - search: ', searchInputData)
+      this.tableParams.search = searchInputData
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
     },
     handleChangePage(pageIndex) {
       console.log('- - UserList - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
-    }
+      this.tableParams.page = pageIndex
+      this.fetchData(this.tableParams)
+    },
+    handleChangeSize(pageSize) {
+      console.log('- - UserList - - pageSize: ', pageSize)
+      this.tableParams.size = pageSize
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
+    },
   }
 }
 </script>

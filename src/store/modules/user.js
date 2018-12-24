@@ -1,19 +1,25 @@
 import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, getUserName, setUserName, removeUserName } from '@/utils/auth'
 import { Message, MessageBox } from 'element-ui'
 
 const user = {
   state: {
     token: getToken(),
+    username: getUserName(),
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    role: 0
   },
 
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
       // console.log('* * * * store * * SET_TOKEN:', state.token)
+    },
+    SET_USERNAME: (state, username) => {
+      state.username = username
+      // console.log('* * * * store * * SET_NAME:', state.name)
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -24,7 +30,11 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
-      console.log('* * * * store * * SET_ROLES:', state.roles)
+      // console.log('* * * * store * * SET_ROLES:', state.roles)
+    },
+    SET_ROLE: (state, role) => {
+      state.role = role
+      console.log('* * * * store * * SET_ROLE:', state.role)
     }
   },
 
@@ -39,10 +49,13 @@ const user = {
         // resolve()
         login(username, userInfo.password).then(response => {
           console.log('* * * * store * * Login:', response)
-          const data = response.data
+          const data = response
+          /** Cookies */
           setToken(data.token)
+          setUserName(userInfo.username)
+          /** Vuex store state*/
           commit('SET_TOKEN', data.token)
-          commit('SET_NAME', userInfo.username)
+          commit('SET_USERNAME', userInfo.username)
           resolve()
         }).catch(error => {
           console.log('* * * * store * * Login: 登录失败 ', error)
@@ -63,7 +76,7 @@ const user = {
         // commit('SET_NAME', 'admin')
         // commit('SET_AVATAR', '')
         // resolve()
-        getInfo(state.token, state.name).then(response => {
+        getInfo(state.username).then(response => {
           console.log('* * * * store * * GetInfo:', response)
           const data = response.data
           // if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
@@ -72,6 +85,7 @@ const user = {
           //   reject('getInfo: roles must be a non-null array !')
           // }
           commit('SET_NAME', data.name)
+          commit('SET_ROLE', data.role)
           commit('SET_AVATAR', data.avatar)
           resolve(response)
         }).catch(error => {
@@ -91,6 +105,8 @@ const user = {
       return new Promise((resolve, reject) => {
         commit('SET_TOKEN', '')
         removeToken()
+        removeUserName()
+        console.log('* * * * store * * LogOut')
         resolve()
         // logout(state.token).then(() => {
         //   commit('SET_TOKEN', '')
@@ -108,6 +124,8 @@ const user = {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
         removeToken()
+        removeUserName()
+        console.log('* * * * store * * FedLogOut')
         resolve()
       })
     }
