@@ -246,5 +246,73 @@ export function deleteExploSampleXRDTestFiles(id) {
 }
 
 /** XRF **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** */
+/** exploSampleXRFs */
+export function getExploSampleXRFsList(params) {
+  return request({
+    url: '/exploSampleXRFs/',
+    method: 'get',
+    params
+  })
+}
+export function getExploSampleXRFsInfo(id) {
+  return request({
+    url: '/exploSampleXRFs/' + id + '/',
+    method: 'get'
+  })
+}
+export function createExploSampleXRFs(data) {
+  return request({
+    url: '/exploSampleXRFs/',
+    method: 'post',
+    data
+  })
+}
+export function updateExploSampleXRFs(id, data) {
+  return request({
+    url: '/exploSampleXRFs/' + id + '/',
+    method: 'patch',
+    data
+  })
+}
+export function deleteExploSampleXRFs(id) {
+  return request({
+    url: '/exploSampleXRFs/' + id + '/',
+    method: 'delete'
+  })
+}
+/** exploSampleXRFTestFiles */
+export function getExploSampleXRFTestFilesList(params) {
+  return request({
+    url: '/exploSampleXRFTestFiles/',
+    method: 'get',
+    params
+  })
+}
+export function getExploSampleXRFTestFilesInfo(id) {
+  return request({
+    url: '/exploSampleXRFTestFiles/' + id + '/',
+    method: 'get'
+  })
+}
+export function createExploSampleXRFTestFiles(data) {
+  return request({
+    url: '/exploSampleXRFTestFiles/',
+    method: 'post',
+    data
+  })
+}
+export function updateExploSampleXRFTestFiles(id, data) {
+  return request({
+    url: '/exploSampleXRFTestFiles/' + id + '/',
+    method: 'patch',
+    data
+  })
+}
+export function deleteExploSampleXRFTestFiles(id) {
+  return request({
+    url: '/exploSampleXRFTestFiles/' + id + '/',
+    method: 'delete'
+  })
+}
 
 /** GCMS **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** */

@@ -109,7 +109,7 @@ import { mapGetters } from 'vuex'
 import DeleteButton from '@/components/Buttons/delete-button'
 import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
-import { getExplosiveSampleList, deleteExplosiveSample } from '@/api/sample-management'
+import { getExplosiveSampleList, deleteExplosiveSample } from '@/api/sample-explosive'
 
 export default {
   name: 'ExplosiveList',

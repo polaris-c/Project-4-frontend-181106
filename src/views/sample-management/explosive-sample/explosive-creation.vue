@@ -313,7 +313,7 @@ import SubmitButton from '@/components/Buttons/submit-button'
 import { createExplosiveSample, 
           createExploSampleFTIRs, createExploSampleFTIRTestFiles, 
           createExploSampleRamans, createExploSampleRamanTestFiles,
-          createExploSampleXRDs, createExploSampleXRDTestFiles} from '@/api/sample-management'
+          createExploSampleXRDs, createExploSampleXRDTestFiles} from '@/api/sample-explosive'
 
 export default {
   name: 'ExplosiveCreation',
