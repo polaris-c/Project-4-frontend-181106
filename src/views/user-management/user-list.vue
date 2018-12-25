@@ -10,6 +10,7 @@
     </el-row>
 
     <el-table
+      v-loading="loading"
       class="app-main-table"
       ref="UserList"
       :data="tableData"
@@ -35,7 +36,7 @@
         <template slot-scope="scope">
           <el-button 
             type="text"
-            @click="detail(scope.row)">
+            @click="handleDetail(scope.row)">
             {{ scope.row.id }}
           </el-button>
         </template>
@@ -49,7 +50,7 @@
         <template slot-scope="scope">
           <el-button 
             type="text"
-            @click="detail(scope.row)">
+            @click="handleDetail(scope.row)">
             {{ scope.row.name }}
           </el-button>
         </template>
@@ -60,6 +61,13 @@
         label="账号（手机）"
         align="center"
         width="180">
+        <template slot-scope="scope">
+          <el-button 
+            type="text"
+            @click="handleDetail(scope.row)">
+            {{ scope.row.username }}
+          </el-button>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -101,7 +109,8 @@
         prop="isDelete"
         label="在任情况"
         align="center"
-        width="150">
+        width="100"
+        fixed="right">
         <template slot-scope="scope">
           <el-tag
            :type="scope.row.isDelete === false ? 'success' : 'danger'">
@@ -114,12 +123,12 @@
         prop="role"
         label="权限"
         align="center"
-        width="150"
+        width="100"
         fixed="right">
         <template slot-scope="scope">
           <el-tag
-           :type="scope.row.role === 'user' ? 'warning' : ''">
-           {{ scope.row.role }}
+           :type="scope.row.role === 3 ? 'info' : ''">
+           {{ scope.row.role === 3 ? '普通用户' : '管理员'}}
           </el-tag>
         </template>
       </el-table-column>
@@ -146,80 +155,15 @@ import { mapGetters } from 'vuex'
 import DeleteButton from '@/components/Buttons/delete-button'
 import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
-import { getList } from '@/api/user-management'
+import { getList, deleteUser } from '@/api/user-management'
 
 export default {
   name: 'UserList',
   data() {
     return {
+      loading: false,
       multipleSelection: [],
-      tableData: [
-        {
-          id: 1,
-          name: 'Admin01',
-          mobile: '123456',
-          phone: '321456',
-          email: '123456@outlook.com',
-          unit: 'AAA',
-          department: 'aaa',
-          posts: 'UPA',
-          role: 'admin',
-          isDelete: true,
-          note: 'aaa1'
-        },
-        {
-          id: 2,
-          name: 'Admin02',
-          mobile: '123456',
-          phone: '321456',
-          email: '123456@outlook.com',
-          unit: 'AAA',
-          department: 'aaa',
-          posts: 'UPA',
-          role: 'admin',
-          isDelete: false,
-          note: 'aaa2'
-        },
-        {
-          id: 3,
-          name: 'Admin03',
-          mobile: '123456',
-          phone: '321456',
-          email: '123456@outlook.com',
-          unit: 'AAA',
-          department: 'aaa',
-          posts: 'UPA',
-          role: 'admin',
-          isDelete: true,
-          note: 'aaa3'
-        },
-        {
-          id: 4,
-          name: 'User01',
-          mobile: '123456',
-          phone: '321456',
-          email: '123456@outlook.com',
-          unit: 'AAA',
-          department: 'aaa',
-          posts: 'UPA',
-          role: 'user',
-          isDelete: true,
-          note: 'aaa1'
-        },
-        {
-          id: 5,
-          name: 'User02',
-          mobile: '123456',
-          phone: '321456',
-          email: '123456@outlook.com',
-          unit: 'AAA',
-          department: 'aaa',
-          posts: 'UPA',
-          role: 'user',
-          isDelete: true,
-          note: 'aaa2'
-        }
-      ],
+      tableData: [],
       tableParams: {
         search: null,
         page: 1,
@@ -244,13 +188,16 @@ export default {
     Pagination
   },
   mounted() {
+    this.loading = true
     this.fetchData(this.tableParams)
   },
   methods: {
     fetchData(tableParams){
+      this.loading = true
       getList(tableParams).then(res => {
         this.tableData = res.results
         this.tableParams.count =  res.count
+        this.loading = false
       }).catch(err => {
         this.$message({
           message: '获取用户列表错误' + err.message,
@@ -262,13 +209,26 @@ export default {
       this.multipleSelection = val
       console.log('- - UserList - - multipleSeletion:', this.multipleSelection)
     },
-    detail(row) {
+    handleDetail(row) {
       this.$router.push('/userManagement/userIndexList/userDetail/' + row.id)
     },
 
     /** 页面按键功能 */
     handleDelete() {
-      console.log('- - UserList - - delete: ', this.multipleSelection)
+      this.loading = true
+      this.multipleSelection.forEach(val => {
+        deleteUser(val.username).then(res =>{
+        }).catch(err => {
+          console.log('- - UserList - - handleDelete: 删除失败 ', err)
+          this.$message({
+            message: '删除失败' + err.message,
+            type: 'error'
+          })
+        })
+      })
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
+      this.loading = false
     },
     handleSearch(searchInputData) {
       console.log('- - UserList - - search: ', searchInputData)
