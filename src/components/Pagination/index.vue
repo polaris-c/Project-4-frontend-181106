@@ -2,7 +2,7 @@
   <el-pagination
     :current-page="page"
     :total="count"
-    :page-sizes="[20, 50, 100]"
+    :page-sizes="[10, 20, 50, 100]"
     :page-size="page_size"
     @current-change="handleCurrentChange"
     @size-change="handleSizeChange"
@@ -24,12 +24,32 @@ export default {
     },
     page_size: {
       type: [String, Number],
-      default: 20
+      default: 10
     }
   },
   data() {
     return {
     }
+  },
+  watch: {
+    count() {
+      this.$nextTick(() => {
+        console.log('---- Pagination -- watch count: ', this.count)
+      })
+    },
+    page() {
+      this.$nextTick(() => {
+        console.log('---- Pagination -- watch page: ', this.page)
+      })
+    },
+    page_size() {
+      this.$nextTick(() => {
+        console.log('---- Pagination -- watch page_size: ', this.page_size)
+      })
+    }
+  },
+  mounted() {
+    console.log('---- Pagination -- init count: ', this.count)
   },
   methods: {
     handleCurrentChange(pageIndex) {

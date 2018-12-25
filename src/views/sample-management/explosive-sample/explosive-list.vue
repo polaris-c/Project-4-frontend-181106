@@ -97,7 +97,8 @@
     </el-table>
 
     <pagination 
-      :currentPage="tablePageIndex"
+      v-bind="tableParams"
+      @change-size="handleChangeSize"
       @change-page="handleChangePage">
     </pagination>
   </div>
@@ -108,75 +109,22 @@ import { mapGetters } from 'vuex'
 import DeleteButton from '@/components/Buttons/delete-button'
 import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
+import { getExplosiveSampleList, deleteExplosiveSample } from '@/api/sample-management'
 
 export default {
   name: 'ExplosiveList',
   data() {
     return {
+      loading: false,
       multipleSelection: [],
-      tableData: [
-        {
-          id: '001',
-          sname: 'A001',
-          snameAbbr: 'A1',
-          sampleOrigin: 'AP',
-          factory: 'AF',
-          user: 'user001',
-          inputDate: '2018-11-19',
-          note: '1111'
-        },
-        {
-          id: '002',
-          sname: 'A002',
-          snameAbbr: 'A2',
-          sampleOrigin: 'AP',
-          factory: 'AF',
-          user: 'user002',
-          inputDate: '2018-11-19',
-          note: '2222'
-        },
-        {
-          id: '003',
-          sname: 'A003',
-          snameAbbr: 'A3',
-          sampleOrigin: 'AP',
-          factory: 'AF',
-          user: 'user003',
-          inputDate: '2018-11-19',
-          note: '3333'
-        },
-        {
-          id: '004',
-          sname: 'A004',
-          snameAbbr: 'A4',
-          sampleOrigin: 'AP',
-          factory: 'AF',
-          user: 'user004',
-          inputDate: '2018-11-19',
-          note: '4444'
-        },
-        {
-          id: '005',
-          sname: 'A005',
-          snameAbbr: 'A5',
-          sampleOrigin: 'AP',
-          factory: 'AF',
-          user: 'user005',
-          inputDate: '2018-11-19',
-          note: '3333'
-        },
-        {
-          id: '006',
-          sname: 'A006',
-          snameAbbr: 'A6',
-          sampleOrigin: 'AP',
-          factory: 'AF',
-          user: 'user006',
-          inputDate: '2018-11-19',
-          note: '4444'
-        },
-      ],
-      tablePageIndex: 1
+      tableData: [],
+      tablePageIndex: 1,
+      tableParams: {
+        search: null,
+        page: 1,
+        page_size: 20,
+        count: 1,
+      }
     }
   },
   computed: {
@@ -194,10 +142,27 @@ export default {
     SearchInput,
     Pagination
   },
+  mounted() {
+    this.loading = true
+    this.fetchData(this.tableParams)
+  },
   methods: {
+    fetchData(tableParams){
+      this.loading = true
+      getExplosiveSampleList(tableParams).then(res => {
+        this.tableData = res.results
+        this.tableParams.count =  res.count
+        this.loading = false
+      }).catch(err => {
+        this.$message({
+          message: '获取列表错误' + err.message,
+          type: 'error'
+        })
+      })
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val
-      console.log('- - multipleSeletion:', this.multipleSelection)
+      console.log('- - ExplosiveList - - multipleSeletion:', this.multipleSelection)
     },
     handleDetail(row) {
       console.log('- - list-detail row:', row.id, row.sname)
@@ -206,15 +171,48 @@ export default {
 
     /** 页面按键功能 */
     handleDelete() {
-      console.log('- - delete: ', this.multipleSelection)
+      this.loading = true
+      this.multipleSelection.forEach(val => {
+        deleteExplosiveSample(val.username).then(res =>{
+        }).catch(err => {
+          console.log('- - ExplosiveList - - handleDelete: 删除失败 ', err)
+          this.$message({
+            message: '删除失败' + err.message,
+            type: 'error'
+          })
+        })
+      })
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
+      this.loading = false
     },
     handleSearch(searchInputData) {
-      console.log('- - search: ', searchInputData)
+      console.log('- - ExplosiveList - - search: ', searchInputData)
+      this.tableParams.search = searchInputData
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
     },
     handleChangePage(pageIndex) {
       console.log('- - ExplosiveList - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
-    }
+      this.tableParams.page = pageIndex
+      this.fetchData(this.tableParams)
+    },
+    handleChangeSize(pageSize) {
+      console.log('- - ExplosiveList - - pageSize: ', pageSize)
+      this.tableParams.page_size = pageSize
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
+    },
+    // handleDelete() {
+    //   console.log('- - delete: ', this.multipleSelection)
+    // },
+    // handleSearch(searchInputData) {
+    //   console.log('- - search: ', searchInputData)
+    // },
+    // handleChangePage(pageIndex) {
+    //   console.log('- - ExplosiveList - - pageIndex: ', pageIndex)
+    //   this.tablePageIndex = pageIndex
+    // }
   }
 }
 </script>

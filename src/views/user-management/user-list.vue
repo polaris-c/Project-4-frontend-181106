@@ -167,7 +167,7 @@ export default {
       tableParams: {
         search: null,
         page: 1,
-        page_size: 20,
+        page_size: 10,
         count: 1,
       }
     }
@@ -197,6 +197,7 @@ export default {
       getList(tableParams).then(res => {
         this.tableData = res.results
         this.tableParams.count =  res.count
+        // console.log('- - UserList - - tableParams.count:', this.tableParams.count)
         this.loading = false
       }).catch(err => {
         this.$message({
