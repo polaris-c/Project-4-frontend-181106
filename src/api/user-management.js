@@ -23,7 +23,7 @@ export function createUser(data) {
   })
 }
 
-export function updatePeople(username, data) {
+export function updateUser(username, data) {
   return request({
     url: '/users/' + username + '/',
     method: 'patch',

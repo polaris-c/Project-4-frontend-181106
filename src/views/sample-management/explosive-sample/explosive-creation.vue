@@ -310,6 +310,7 @@
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
+import { createExplosiveSample, createExploSampleFTIRs, createExploSampleFTIRTestFiles } from '@/api/sample-management'
 
 export default {
   name: 'ExplosiveCreation',
@@ -317,6 +318,7 @@ export default {
     return {
       labelPosition: 'left',
       sampleData: {
+        id: null,
         sname: '',
         snameAbbr: '',
         sampleOrigin: '',
@@ -326,39 +328,39 @@ export default {
         note: '',
         picURL: '',
         FTIRdata: {
+          id: null,
+          exploSample: null,
           devDetect: '',
           methodDetect: '',
           fileList: [],
-          uploadFile: new FormData()
         },
         RAMANdata: {
           devDetect: '',
           methodDetect: '',
           fileList: [],
-          uploadFile: new FormData()
         },
         XRFdata: {
           devDetect: '',
           methodDetect: '',
           fileList: [],
-          uploadFile: new FormData()
         },
         XRDdata: {
           devDetect: '',
           methodDetect: '',
           fileList: [],
-          uploadFile: new FormData()
         },
         GCMSdata: {
           devDetect: '',
           methodDetect: '',
           fileList: [],
-          uploadFile: new FormData()
         },
       },
       formRule: {
       },
-      devPartType: '',
+      dataType: '',
+      uploadSample: {},
+      uploadSampleDataInfo: {},
+      uploadSampleDataFile: {}
     }
   },
   computed: {
@@ -377,15 +379,19 @@ export default {
   },
 
   mounted() {
+    this.uploadSample = new FormData()
+    this.uploadSampleDataInfo = new FormData()
+    this.uploadSampleDataFile = new FormData()
   },
 
   methods: {
+    /**  */
     handleIndex(type) {
-      this.devPartType = type
-      console.log('- - handleIndex - - :', this.devPartType)
+      this.dataType = type
+      console.log('- - handleIndex - - :', this.dataType)
     },
 
-    /*  Upload  */
+    /**  Upload  */
     handleExceed(files, fileList) {
       this.$message({
         message: `限制最多上传20个文件，本次选择了${files.length}个，共选择了${files.length + fileList.length}个文件`,
@@ -396,7 +402,7 @@ export default {
     handleChange(file, fileList) {
       console.log('- - Change - - file.raw:', file.raw)
       // console.log('- - Change - - fileList:', fileList)
-      switch (this.devPartType) {
+      switch (this.dataType) {
         case 'FTIR':
           this.sampleData.FTIRdata.fileList.push(file)
           // this.sampleData.FTIRdata.uploadFile.append('txtURL', file)
@@ -428,12 +434,12 @@ export default {
           // console.log('- - Change - - .srcImgList:', this.sampleData.srcImgList)
           break
         default:
-          console.log('!!! Error NO devPartType !!!')
+          console.log('!!! Error NO dataType !!!')
       }
     },
     handlePreview(file) {
       console.log('- - Preview - - file:', file.name)
-      return this.$alert(` ${ file.name }  (${ file.size }字节)`, `${ this.devPartType }`, {
+      return this.$alert(` ${ file.name }  (${ file.size }字节)`, `${ this.dataType }`, {
         confirmButtonText: '确定',
         type: 'success'
       }).then(() => {
@@ -450,7 +456,7 @@ export default {
     handleRemove(file, fileList) {
       console.log('- - Remove - - file:', file.name)
       // console.log('- - Remove - - fileList:', fileList)
-      switch (this.devPartType) {
+      switch (this.dataType) {
         case 'FTIR':
           this.sampleData.FTIRdata.fileList = fileList
           console.log('- - Remove - - .FTIRdata.fileList:', this.sampleData.FTIRdata.fileList)
@@ -476,14 +482,69 @@ export default {
           console.log('- - Remove - - .srcImgList:', this.sampleData.srcImgList)
           break
         default:
-          console.log('!!! Error NO devPartType !!!')
+          console.log('!!! Error NO dataType !!!')
       }
     },
 
-    /**  */
+    /** 页面上传操作 */
+    /** 1.样本基本信息 */
     handleSubmit() {
-      console.log('- - submit - - sampleData:', this.sampleData.sname)
+      for(let prop in this.sampleData) {
+        if(this.sampleData.hasOwnProperty(prop)) {
+          this.uploadSample.append(prop, this.sampleData[prop])
+        }
+      }
+      createExplosiveSample(this.uploadSample).then(res => {
+        this.sampleData.id = res.id
+        this.sampleData.FTIRdata.exploSample = res.id
+        this.submitDataInfo()  // 上传检测信息
+      }).catch(err => {
+        this.$message({
+          message: '基本信息错误' + err.message,
+          type: 'error'
+        })
+      })
+      
     },
+    /** 2.检测信息 */
+    submitDataInfo() {
+      for(let prop in this.sampleData.FTIRdata) {
+        if(this.sampleData.FTIRdata.hasOwnProperty(prop)) {
+          this.uploadSampleDataInfo.append(prop, this.sampleData.FTIRdata[prop])
+        }
+      }
+      createExploSampleFTIRs(this.uploadSampleDataInfo).then(res => {
+        this.sampleData.FTIRdata.id = res.id
+        this.submitDataFile()  // 上传数据文件
+      }).catch(err => {
+        this.$message({
+          message: '检测信息错误' + err.message,
+          type: 'error'
+        })
+      })
+    },
+    /** 3.检测数据文件 */
+    submitDataFile() {
+      this.sampleData.FTIRdata.fileList.forEach((file, index) => {
+        this.uploadSampleDataFile = new FormData()
+        this.uploadSampleDataFile.append('exploSampleFTIR', this.sampleData.FTIRdata.id)
+        this.uploadSampleDataFile.append('FTIRs', file.raw)
+        createExploSampleFTIRTestFiles(this.uploadSampleDataFile).then(res => {
+          this.$message({
+            message: `数据文件${index}-${file.raw.name}上传完毕`,
+            type: 'success'
+          })
+          this.goBcak()
+        }).catch(err => {
+          this.$message({
+            message: '数据文件错误' + err.message,
+            type: 'error'
+          })
+        })
+      })
+
+    },
+
     goBcak() {
       this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveList')
     }

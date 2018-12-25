@@ -203,6 +203,7 @@ export default {
     /** 页面操作 */
     handleSubmit() {
       console.log('- - UserCreation - - name:', this.userData.name)
+      /** 载入FormData */
       for(let prop in this.userData) {
         if(this.userData.hasOwnProperty(prop)) {
           this.uploadForm.append(prop, this.userData[prop])
