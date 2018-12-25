@@ -13,10 +13,10 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     console.log('\n ==== ==== Axios interceptors start <<<<')
+    /** 让每个请求携带自定义token */
     if (store.getters.token) {
-      // config.headers['Cookie'] = 'csrftoken=' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
       config.headers['Authorization'] = 'JWT ' + getToken()
-      console.log('* * * * request JWT is OK: ', config.headers['Authorization'])
+      // console.log('* * * * request JWT is OK: ', config.headers['Authorization'])
     }
     return config
   },

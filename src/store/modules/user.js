@@ -43,18 +43,13 @@ const user = {
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        // let token = 'MockToken'
-        // setToken(token)
-        // commit('SET_TOKEN', token)
-        // resolve()
-        login(username, userInfo.password).then(response => {
-          console.log('* * * * store * * Login:', response)
-          const data = response
+        login(username, userInfo.password).then(res => {
+          console.log('* * * * store * * Login:', res)
           /** Cookies */
-          setToken(data.token)
+          setToken(res.token)
           setUserName(userInfo.username)
           /** Vuex store state*/
-          commit('SET_TOKEN', data.token)
+          commit('SET_TOKEN', res.token)
           commit('SET_USERNAME', userInfo.username)
           resolve()
         }).catch(error => {
@@ -72,22 +67,12 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        // commit('SET_ROLES', 'admin')
-        // commit('SET_NAME', 'admin')
-        // commit('SET_AVATAR', '')
-        // resolve()
-        getInfo(state.username).then(response => {
-          console.log('* * * * store * * GetInfo:', response)
-          const data = response.data
-          // if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-          //   commit('SET_ROLES', data.roles)
-          // } else {
-          //   reject('getInfo: roles must be a non-null array !')
-          // }
-          commit('SET_NAME', data.name)
-          commit('SET_ROLE', data.role)
-          commit('SET_AVATAR', data.avatar)
-          resolve(response)
+        getInfo(state.username).then(res => {
+          console.log('* * * * store * * GetInfo:', res)
+          commit('SET_NAME', res.name)
+          commit('SET_ROLE', res.role)
+          commit('SET_AVATAR', res.picUrl)
+          resolve(res)
         }).catch(error => {
           console.log('* * * * store * * GetInfo: 获取用户信息失败 ', error)
           Message({
@@ -108,14 +93,6 @@ const user = {
         removeUserName()
         console.log('* * * * store * * LogOut')
         resolve()
-        // logout(state.token).then(() => {
-        //   commit('SET_TOKEN', '')
-        //   commit('SET_ROLES', [])
-        //   removeToken()
-        //   resolve()
-        // }).catch(error => {
-        //   reject(error)
-        // })
       })
     },
 

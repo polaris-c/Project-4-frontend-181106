@@ -15,7 +15,8 @@ router.beforeEach((to, from, next) => {
     } else {
       const currentRole = store.getters.role
       if (currentRole !== 1 && currentRole !== 2 && currentRole !== 3) {
-        store.dispatch('GetInfo').then(res => { // 拉取用户信息
+        /** 没有role,则拉取用户信息 */
+        store.dispatch('GetInfo').then(res => {
           next()
         }).catch(() => {
           store.dispatch('FedLogOut').then(() => {

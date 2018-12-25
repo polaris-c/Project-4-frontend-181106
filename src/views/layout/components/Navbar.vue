@@ -3,49 +3,52 @@
     class="navbar" 
     mode="horizontal">
 
-    <!-- 收放侧栏 -->
-    <hamburger 
-      :toggle-click="toggleSideBar" 
-      :is-active="sidebar.opened" 
-      class="hamburger-container"/>
+        <!-- 收放侧栏 -->
+        <hamburger 
+          :toggle-click="toggleSideBar" 
+          :is-active="sidebar.opened" 
+          class="hamburger-container"/>
 
-    <!-- 面包屑路径 -->
-    <breadcrumb />
+        <!-- 面包屑路径 -->
+        <breadcrumb />
 
-    <el-dropdown 
-      class="avatar-container" 
-      trigger="click">
+        <!-- <span>账号:{{ username }} || 用户姓名:{{ name }}</span> -->
 
-      <!-- 用户头像  -->
-      <div class="avatar-wrapper">
-        <img 
-          :src="avatar+'?imageView2/1/w/80/h/80'" 
-          class="user-avatar">
-        <i class="el-icon-caret-bottom"/>
-      </div>
+        <el-dropdown 
+          class="avatar-container" 
+          trigger="click">
 
-      <el-dropdown-menu 
-        slot="dropdown" 
-        class="user-dropdown">
-        <!-- 用户主页 -->
-        <router-link 
-          class="inlineBlock" 
-          to="/">
-          <el-dropdown-item>
-            用户主页
-          </el-dropdown-item>
-        </router-link>
-        <!-- 退出登录 -->
-        <el-dropdown-item divided>
-          <span 
-            style="display:block;" 
-            @click="logout">
-            登 出
-          </span>
-        </el-dropdown-item>
-      </el-dropdown-menu>
+          <!-- 用户头像  -->
+          <div class="avatar-wrapper">
+            <img 
+              v-if="avatar"
+              :src="avatar+'?imageView2/1/w/80/h/80'" 
+              class="user-avatar">
+            <i v-else class="el-icon-picture avatar-null-small-icon"></i>
+          </div>
 
-    </el-dropdown>
+          <el-dropdown-menu 
+            slot="dropdown" 
+            class="user-dropdown">
+            <!-- 用户主页 -->
+            <router-link 
+              class="inlineBlock" 
+              to="/">
+              <el-dropdown-item>
+                用户主页
+              </el-dropdown-item>
+            </router-link>
+            <!-- 退出登录 -->
+            <el-dropdown-item divided>
+              <span 
+                style="display:block;" 
+                @click="logout">
+                登 出
+              </span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+
+        </el-dropdown>
 
   </el-menu>
 </template>
@@ -62,6 +65,8 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'username',
+      'name',
       'sidebar',
       'avatar'
     ])
@@ -109,7 +114,15 @@ export default {
       .user-avatar {
         width: 40px;
         height: 40px;
-        border-radius: 10px;
+        border-radius: 6px;
+      }
+      .avatar-null-small-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+        line-height: 40px;
+        text-align: center;
+        background-color: antiquewhite;
       }
       .el-icon-caret-bottom {
         position: absolute;
@@ -119,6 +132,7 @@ export default {
       }
     }
   }
+
 }
 </style>
 

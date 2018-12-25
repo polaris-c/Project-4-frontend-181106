@@ -8,6 +8,17 @@
     <sidebar class="sidebar-container"/>
 
     <div class="main-container">
+      <!-- <el-row>
+        <el-col :span="24">
+          <navbar/>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <app-main/>
+        </el-col>
+      </el-row> -->
+
       <navbar/>
       <app-main/>
       <!-- <appMain/> -->

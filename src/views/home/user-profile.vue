@@ -11,7 +11,7 @@
         <el-row>
           <el-col :span="8" :offset="1">
             <ul>
-              -{{ name }} - {{ username }} - {{ role }} -
+              —— 用户详情 ——
               <li>编 号 : {{ userData.id }}</li>
               <li>姓 名 : {{ userData.name }}</li>
               <li>账号(手机) : {{ userData.username }}</li>
@@ -27,7 +27,13 @@
             
           </el-col>
           <el-col :span="8" :offset="1">
-            <div class="avatar-container">用户照片</div>
+            <div class="avatar-container">
+              <img 
+                v-if="userData.picUrl" 
+                :src="userData.picUrl" 
+                class="avatar">
+              <i v-else class="el-icon-picture avatar-null-icon">-未上传照片</i>
+            </div>
           </el-col>
         </el-row>
       </div>
@@ -85,7 +91,7 @@ export default {
     fetchData() {
       getInfo(this.username).then(res => {
         // console.log('- - UserProfile - - getInfo res:', res)
-        this.userData = res.data
+        this.userData = res
       }).catch(err => {
         this.$message({
           message: '获取用户信息错误' + err.message,
@@ -104,9 +110,28 @@ export default {
 
 .avatar-container {
   margin-top: 50px;
+  padding: 5px;
   width: 200px;
   height: 200px;
+  border-radius: 6px;
   background-color: antiquewhite;
+}
+
+.avatar-null-icon {
+  font-size: 16px;
+  color: grey; // #8c939d;
+  width: 190px;
+  height: 190px;
+  border-radius: 6px;
+  line-height: 190px;
+  text-align: center;
+}
+
+.avatar {
+  width: 190px;
+  height: 190px;
+  border-radius: 6px;
+  display: block;
 }
 
 ul {

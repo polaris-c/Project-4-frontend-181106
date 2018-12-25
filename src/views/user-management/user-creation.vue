@@ -5,7 +5,7 @@
       <el-col :span="24">
         <el-card 
           shadow="hover"
-          class="userCard">
+          class="">
           <div slot="header">
             <span>人员基本信息</span>
           </div>
@@ -85,7 +85,12 @@
               <el-row :gutter="40">
                 <el-col :span="12">
                   <el-form-item label="系统权限">
-                    <el-input v-model="userData.role"></el-input>
+                    <el-select 
+                      v-model="userData.role" 
+                      placeholder="请选择权限">
+                      <el-option label="管理员" value="2">管理员</el-option>
+                      <el-option label="普通用户" value="3">普通用户</el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -103,9 +108,24 @@
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12"></el-col>
+                <el-col :span="12">
+                  <el-form-item label="用户照片">
+                    <el-upload
+                      class="avatar-uploader"
+                      action=""
+                      :show-file-list="false"
+                      :on-change="handleChange"
+                      :auto-upload="false">
+                      <img 
+                        v-if="userData.picDisplayURL" 
+                        :src="userData.picDisplayURL" 
+                        class="avatar">
+                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                  </el-form-item>
+                </el-col>
               </el-row>
-              
+
             </el-form>
           </div>
         </el-card>
@@ -130,6 +150,7 @@
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
+import { createUser } from '@/api/user-management'
 
 export default {
   name: 'UserCreation',
@@ -147,10 +168,12 @@ export default {
         department: '',
         posts: '',
         role: '',
-        picURL: '',
+        picUrl: '',
+        picDisplayURL: '',
         note: ''
       },
-      userDataRule: { }
+      userDataRule: { },
+      uploadForm: { }
     }
   },
   computed: {
@@ -167,10 +190,36 @@ export default {
     GobackButton,
     SubmitButton
   },
+  mounted() {
+    this.uploadForm = new FormData()
+  },
   methods: {
-    /**  */
+    handleChange(file, fileList) {
+      window.URL = window.URL || window.webkitURL
+      this.userData.picDisplayURL = window.URL.createObjectURL(file.raw)
+      console.log('- - handleChange - - file:', this.userData.picDisplayURL)
+      this.userData.picUrl = file.raw
+    },
+    /** 页面操作 */
     handleSubmit() {
       console.log('- - UserCreation - - name:', this.userData.name)
+      for(let prop in this.userData) {
+        if(this.userData.hasOwnProperty(prop)) {
+          this.uploadForm.append(prop, this.userData[prop])
+        }
+      }
+      createUser(this.uploadForm).then(res => {
+        this.$message({
+          message: '创建用户成功',
+          type: 'success'
+        })
+        this.goBcak()
+      }).catch(err => {
+        this.$message({
+          message: '创建用户错误' + err.message,
+          type: 'error'
+        })
+      })
     },
     goBcak() {
       this.$router.push('/userManagement/userIndexList/userList')
@@ -180,7 +229,31 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.userCard {
-  // height: 600px;
+.avatar-uploader {
+  border: 2px dashed lightgrey;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  width: 200px;
+  height: 200px;
+  display: block;
+  padding: 3px;
+}
+.avatar-uploader:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 190px;
+  height: 190px;
+  line-height: 190px;
+  text-align: center;
+}
+.avatar {
+  width: 190px;
+  height: 190px;
+  display: block;
 }
 </style>

@@ -57,7 +57,7 @@
 
       <el-table-column
         prop="username"
-        label="手机"
+        label="账号（手机）"
         align="center"
         width="180">
       </el-table-column>
@@ -73,7 +73,7 @@
         prop="email"
         label="邮箱"
         align="center"
-        width="180">
+        width="200">
       </el-table-column>
 
       <el-table-column
@@ -104,8 +104,8 @@
         width="150">
         <template slot-scope="scope">
           <el-tag
-           :type="scope.row.isDelete === true ? 'success' : 'danger'">
-            {{ scope.row.isDelete === true ? '在 任' : '离 任' }}
+           :type="scope.row.isDelete === false ? 'success' : 'danger'">
+            {{ scope.row.isDelete === false ? '在 任' : '离 任' }}
           </el-tag>
         </template>
       </el-table-column>
@@ -223,7 +223,7 @@ export default {
       tableParams: {
         search: null,
         page: 1,
-        size: 20,
+        page_size: 20,
         count: 1,
       }
     }
@@ -249,7 +249,7 @@ export default {
   methods: {
     fetchData(tableParams){
       getList(tableParams).then(res => {
-        this.tableData = res.data
+        this.tableData = res.results
         this.tableParams.count =  res.count
       }).catch(err => {
         this.$message({
@@ -283,7 +283,7 @@ export default {
     },
     handleChangeSize(pageSize) {
       console.log('- - UserList - - pageSize: ', pageSize)
-      this.tableParams.size = pageSize
+      this.tableParams.page_size = pageSize
       this.tableParams.page = 1
       this.fetchData(this.tableParams)
     },

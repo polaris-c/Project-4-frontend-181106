@@ -3,7 +3,7 @@
     :current-page="page"
     :total="count"
     :page-sizes="[20, 50, 100]"
-    :page-size="size"
+    :page-size="page_size"
     @current-change="handleCurrentChange"
     @size-change="handleSizeChange"
     layout="total, sizes, prev, pager, next, jumper">
@@ -22,7 +22,7 @@ export default {
       type: [String, Number],
       default: 1
     },
-    size: {
+    page_size: {
       type: [String, Number],
       default: 20
     }
@@ -39,7 +39,7 @@ export default {
     },
     handleSizeChange(pageSize) {
       console.log('- - Pagination - - pageSize: ', pageSize)
-      console.log('- - Pagination - - current size: ', this.size)
+      console.log('- - Pagination - - current size: ', this.page_size)
       this.$emit('change-size', pageSize)
     }
   }
