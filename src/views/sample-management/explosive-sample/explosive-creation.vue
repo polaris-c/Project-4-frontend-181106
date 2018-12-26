@@ -75,7 +75,19 @@
               :label-position="labelPosition"
               label-width="80px">
               <el-form-item label="检测设备">
-                <el-input v-model="sampleData.FTIRdata.devDetect"></el-input>
+                <!-- <el-input v-model="sampleData.FTIRdata.devDetect"></el-input> -->
+                <el-select 
+                  class="el-select-style"
+                  v-model="sampleData.FTIRdata.devDetect" 
+                  placeholder="请选择检测设备"
+                  filterable>
+                  <el-option
+                    v-for="item in devDetectList"
+                    :key="item.id"
+                    :label="item.deviceName + ' —— ' + item.deviceVersion"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="检测方法">
                 <el-input v-model="sampleData.FTIRdata.methodDetect"></el-input>
@@ -371,9 +383,14 @@ export default {
       },
       dataType: '',
       dataTypeList: ['FTIR', 'RAMAN', 'XRF', 'XRD', 'GCMS'],
+      devDetectList: [],
       uploadSample: {},
       uploadSampleDataInfo: {},
-      uploadSampleDataFile: {}
+      uploadSampleDataFile: {},
+      tableParams: {
+        page: 1,
+        page_size: 100,
+      }
     }
   },
   computed: {
@@ -392,12 +409,24 @@ export default {
   },
 
   mounted() {
+    this.fetchOption()
     this.uploadSample = new FormData()
     this.uploadSampleDataInfo = new FormData()
     this.uploadSampleDataFile = new FormData()
   },
 
   methods: {
+    fetchOption() {
+      getDevDetectsList(this.tableParams).then(res => {
+        this.devDetectList = res.results
+      }).catch(err => {
+        this.$message({
+          message: '获取检测设备列表错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
+    },
     /**  */
     handleIndex(type) {
       this.dataType = type
@@ -660,5 +689,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
+.el-select-style {
+  width: 316px;
+}
 </style>

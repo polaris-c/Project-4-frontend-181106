@@ -190,7 +190,6 @@ export default {
       getDevDetectsList(this.tableParams).then(res => {
         this.tableData = res.results
         this.tableParams.count =  res.count
-        this.loading = false
       }).catch(err => {
         this.$message({
           message: '获取列表错误' + err.message,
@@ -198,6 +197,7 @@ export default {
           duration: 6 * 1000
         })
       })
+      this.loading = false
     },
 
     handleSubmit() {

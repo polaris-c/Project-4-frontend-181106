@@ -10,6 +10,7 @@
     </el-row>
 
     <el-table
+      v-loading="loading"
       class="app-main-table"
       ref="explosiveList"
       :data="tableData"
@@ -152,13 +153,13 @@ export default {
       getExplosiveSampleList(tableParams).then(res => {
         this.tableData = res.results
         this.tableParams.count =  res.count
-        this.loading = false
       }).catch(err => {
         this.$message({
           message: '获取列表错误' + err.message,
           type: 'error'
         })
       })
+      this.loading = false
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -174,6 +175,10 @@ export default {
       this.loading = true
       this.multipleSelection.forEach(val => {
         deleteExplosiveSample(val.username).then(res =>{
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
         }).catch(err => {
           console.log('- - ExplosiveList - - handleDelete: 删除失败 ', err)
           this.$message({
