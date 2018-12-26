@@ -310,6 +310,7 @@
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
+import { getDevDetectsList, createDevDetects, deleteDevDetects} from '@/api/detection-option'
 import { createExplosiveSample, 
           createExploSampleFTIRs, createExploSampleFTIRTestFiles, 
           createExploSampleRamans, createExploSampleRamanTestFiles,

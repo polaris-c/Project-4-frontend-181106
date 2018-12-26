@@ -54,6 +54,7 @@
 
       <div>
         <el-table
+          v-loading="loading"
           class="form-table"
           ref="detectionDeviceList"
           :data="tableData"
@@ -117,11 +118,13 @@
 import { mapGetters } from 'vuex'
 import SubmitButton from '@/components/Buttons/submit-button'
 import DeleteButton from '@/components/Buttons/delete-button'
+import { getDevDetectsList, createDevDetects, deleteDevDetects} from '@/api/detection-option'
 
 export default {
   name: 'DetectionDevice',
   data() {
     return {
+      loading: false,
       detectionDeviceData: {
         deviceName: 'FTIR-Device',
         deviceVersion: '',
@@ -154,7 +157,13 @@ export default {
           note: 'XRF-DD-001',
         },
       ],
-      multipleSelection: []
+      multipleSelection: [],
+      tableParams: {
+        search: null,
+        page: 1,
+        page_size: 20,
+        count: 1,
+      }
     }
   },
   computed: {
@@ -172,12 +181,49 @@ export default {
     DeleteButton
   },
   mounted() {
-
+    this.loading = true
+    this.fetchData()
   },
   methods: {
+    fetchData() {
+      this.loading = true
+      getDevDetectsList(this.tableParams).then(res => {
+        this.tableData = res.results
+        this.tableParams.count =  res.count
+        this.loading = false
+      }).catch(err => {
+        this.$message({
+          message: '获取列表错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
+    },
+
     handleSubmit() {
       console.log('- - submit - - deviceName:', this.detectionDeviceData.deviceName)
+      createDevDetects(this.detectionDeviceData).then(res => {
+        this.$message({
+          message: `检测设备${res.deviceName}上传完毕`,
+          type: 'success',
+          duration: 6 * 1000
+        })
+        this.fetchData()
+        this.detectionDeviceData = {
+          deviceName: 'FTIR-Device',
+          deviceVersion: '',
+          detectMrfs: '',
+          note: 'Test',
+        }
+      }).catch(err => {
+        this.$message({
+          message: '上传检测设备错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
     },
+
     handleSelectionChange(val) {
       this.multipleSelection = val
       console.log('- - multipleSeletion:', this.multipleSelection)
