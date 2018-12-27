@@ -9,6 +9,7 @@
         :model="detectionData"
         :label-position="labelPosition"
         label-width="80px">
+
         <el-form-item label="检测设备">
           <el-select 
             class="el-select-style"
@@ -23,6 +24,7 @@
             </el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="检测方法">
           <el-select 
             class="el-select-style"
@@ -37,6 +39,7 @@
             </el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="上传文件">
           <el-upload
             action=""
@@ -58,6 +61,7 @@
             </el-button>
           </el-upload>
         </el-form-item>
+
       </el-form>
     </div>
   </el-card>
@@ -70,7 +74,7 @@ import {  createExploSampleFTIRs, createExploSampleFTIRTestFiles,
           createExploSampleXRDs, createExploSampleXRDTestFiles } from '@/api/sample-explosive'
 
 export default {
-  name: '',
+  name: 'CardCommon',
   props: {
     /** 样本基本信息ID */
     sampleDataID: {
@@ -107,7 +111,6 @@ export default {
     }
   },
   mounted() {
-    this.detectionData.exploSample = this.sampleDataID
     this.uploadSampleDataInfo = new FormData()
     this.uploadSampleDataFile = new FormData()
   },
@@ -145,15 +148,20 @@ export default {
     },
 
     /**  Submit  */
+    beforeSubmit() {
+      this.$watch('sampleDataID', this.handleSubmit)
+    },
     handleSubmit() {
+      this.detectionData.exploSample = this.sampleDataID
+      console.log(`---- CardCommon -- $watch ${this.dataType} exploSample:`, this.detectionData.exploSample)
       /** 去除未使用的检测类型 */
       if(!this.detectionData.devDetect || !this.detectionData.methodDetect) {
-        return console.log(`---- ExplosiveCreation -- ${this.dataType} is empty!`)
+        return console.log(`---- CardCommon -- ${this.dataType} is empty!!!`)
       }
       /** 加载uploadSampleDataInfo */
-      this.uploadSampleDataInfo.append('exploSample', detectionData.exploSample)
-      this.uploadSampleDataInfo.append('devDetect', detectionData.devDetect)
-      this.uploadSampleDataInfo.append('methodDetect', detectionData.methodDetect)
+      this.uploadSampleDataInfo.append('exploSample', this.detectionData.exploSample)
+      this.uploadSampleDataInfo.append('devDetect', this.detectionData.devDetect)
+      this.uploadSampleDataInfo.append('methodDetect', this.detectionData.methodDetect)
 
       /** 选择API发送信息 */
       switch (this.dataType) {
