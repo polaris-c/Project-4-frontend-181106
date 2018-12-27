@@ -131,7 +131,18 @@
               :label-position="labelPosition"
               label-width="80px">
               <el-form-item label="检测设备">
-                <el-input v-model="sampleData.RAMANdata.devDetect"></el-input>
+                <el-select 
+                  class="el-select-style"
+                  v-model="sampleData.RAMANdata.devDetect" 
+                  placeholder="请选择检测设备"
+                  filterable>
+                  <el-option
+                    v-for="item in devDetectList"
+                    :key="item.id"
+                    :label="item.deviceName + ' —— ' + item.deviceVersion"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="检测方法">
                 <el-input v-model="sampleData.RAMANdata.methodDetect"></el-input>
@@ -175,7 +186,18 @@
               :label-position="labelPosition"
               label-width="80px">
               <el-form-item label="检测设备">
-                <el-input v-model="sampleData.XRFdata.devDetect"></el-input>
+                <el-select 
+                  class="el-select-style"
+                  v-model="sampleData.XRFdata.devDetect" 
+                  placeholder="请选择检测设备"
+                  filterable>
+                  <el-option
+                    v-for="item in devDetectList"
+                    :key="item.id"
+                    :label="item.deviceName + ' —— ' + item.deviceVersion"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="检测方法">
                 <el-input v-model="sampleData.XRFdata.methodDetect"></el-input>
@@ -223,7 +245,18 @@
               :label-position="labelPosition"
               label-width="80px">
               <el-form-item label="检测设备">
-                <el-input v-model="sampleData.XRDdata.devDetect"></el-input>
+                <el-select 
+                  class="el-select-style"
+                  v-model="sampleData.XRDdata.devDetect" 
+                  placeholder="请选择检测设备"
+                  filterable>
+                  <el-option
+                    v-for="item in devDetectList"
+                    :key="item.id"
+                    :label="item.deviceName + ' —— ' + item.deviceVersion"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="检测方法">
                 <el-input v-model="sampleData.XRDdata.methodDetect"></el-input>
@@ -267,7 +300,18 @@
               :label-position="labelPosition"
               label-width="80px">
               <el-form-item label="检测设备">
-                <el-input v-model="sampleData.GCMSdata.devDetect"></el-input>
+                <el-select 
+                  class="el-select-style"
+                  v-model="sampleData.GCMSdata.devDetect" 
+                  placeholder="请选择检测设备"
+                  filterable>
+                  <el-option
+                    v-for="item in devDetectList"
+                    :key="item.id"
+                    :label="item.deviceName + ' —— ' + item.deviceVersion"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="检测方法">
                 <el-input v-model="sampleData.GCMSdata.methodDetect"></el-input>
@@ -381,12 +425,12 @@ export default {
       },
       formRule: {
       },
-      dataType: '',
+      dataType: '',  // 用于选取文件时确定检测类型
       dataTypeList: ['FTIR', 'RAMAN', 'XRF', 'XRD', 'GCMS'],
-      devDetectList: [],
-      uploadSample: {},
-      uploadSampleDataInfo: {},
-      uploadSampleDataFile: {},
+      devDetectList: [],  // 检测设备信息列表
+      uploadSample: {},  //上传基本信息
+      uploadSampleDataInfo: {},  // 上传检测信息
+      uploadSampleDataFile: {},  // 上传数据文件
       tableParams: {
         page: 1,
         page_size: 100,
@@ -515,7 +559,7 @@ export default {
       }
     },
 
-    /** 页面上传操作 1-> 2-> 3 */
+    /** 页面上传操作 1 -> 2 -> 3 */
     /** 1.样本基本信息 */
     handleSubmit() {
       for(let prop in this.sampleData) {
@@ -574,7 +618,6 @@ export default {
           case 'RAMANdata':
             createExploSampleRamans(this.uploadSampleDataInfo).then(res => {
               this.sampleData[dataTypeData].id = res.id
-              // console.log('---- ExplosiveCreation -- RAMANdata.id', this.sampleData[dataTypeData].id)
               this.submitDataFile(dataTypeData)  // 上传数据文件
             }).catch(err => {
               this.$message({

@@ -344,6 +344,15 @@ export default {
       formRule: {
       },
       devPartType: '',
+      dataTypeList: ['FTIR', 'RAMAN', 'XRF', 'XRD', 'GCMS'],
+      devDetectList: [],
+      uploadSample: {},
+      uploadSampleDataInfo: {},
+      uploadSampleDataFile: {},
+      tableParams: {
+        page: 1,
+        page_size: 100,
+      }
     }
   },
   components: {
