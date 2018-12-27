@@ -379,6 +379,7 @@ import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
 import { getDevDetectsList, getMethodDetectsList} from '@/api/detection-option'
+import CardCommon from '@/components/IngredientCard/card-common'
 import { createExplosiveSample, 
           createExploSampleFTIRs, createExploSampleFTIRTestFiles, 
           createExploSampleRamans, createExploSampleRamanTestFiles,
@@ -463,7 +464,8 @@ export default {
   },
   components: {
     GobackButton,
-    SubmitButton
+    SubmitButton,
+    CardCommon
   },
 
   mounted() {
