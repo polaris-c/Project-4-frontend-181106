@@ -84,13 +84,25 @@
                   <el-option
                     v-for="item in devDetectList"
                     :key="item.id"
-                    :label="item.deviceName + ' —— ' + item.deviceVersion"
+                    :label="item.deviceName + ' — ' + item.deviceVersion"
                     :value="item.id">
                   </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="检测方法">
-                <el-input v-model="sampleData.FTIRdata.methodDetect"></el-input>
+                <!-- <el-input v-model="sampleData.FTIRdata.methodDetect"></el-input> -->
+                <el-select 
+                  class="el-select-style"
+                  v-model="sampleData.FTIRdata.methodDetect" 
+                  placeholder="请选择检测方法"
+                  filterable>
+                  <el-option
+                    v-for="item in methodDetectList"
+                    :key="item.id"
+                    :label="item.method"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="上传文件">
                 <el-upload
@@ -366,10 +378,11 @@
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
-import { getDevDetectsList, createDevDetects, deleteDevDetects} from '@/api/detection-option'
+import { getDevDetectsList, getMethodDetectsList} from '@/api/detection-option'
 import { createExplosiveSample, 
           createExploSampleFTIRs, createExploSampleFTIRTestFiles, 
           createExploSampleRamans, createExploSampleRamanTestFiles,
+          createExploSampleXRFs, createExploSampleXRFTestFiles,
           createExploSampleXRDs, createExploSampleXRDTestFiles} from '@/api/sample-explosive'
 
 export default {
@@ -428,6 +441,7 @@ export default {
       dataType: '',  // 用于选取文件时确定检测类型
       dataTypeList: ['FTIR', 'RAMAN', 'XRF', 'XRD', 'GCMS'],
       devDetectList: [],  // 检测设备信息列表
+      methodDetectList: [],  // 检测方法列表
       uploadSample: {},  //上传基本信息
       uploadSampleDataInfo: {},  // 上传检测信息
       uploadSampleDataFile: {},  // 上传数据文件
@@ -466,6 +480,15 @@ export default {
       }).catch(err => {
         this.$message({
           message: '获取检测设备列表错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
+      getMethodDetectsList(this.tableParams).then(res => {
+        this.methodDetectList = res.results
+      }).catch(err => {
+        this.$message({
+          message: '获取检测方法列表错误' + err.message,
           type: 'error',
           duration: 6 * 1000
         })
@@ -562,6 +585,7 @@ export default {
     /** 页面上传操作 1 -> 2 -> 3 */
     /** 1.样本基本信息 */
     handleSubmit() {
+      /** 加载uploadSample */
       for(let prop in this.sampleData) {
         if(this.sampleData.hasOwnProperty(prop)) {
           this.uploadSample.append(prop, this.sampleData[prop])
@@ -569,7 +593,8 @@ export default {
       }
       createExplosiveSample(this.uploadSample).then(res => {
         this.sampleData.id = res.id
-        this.sampleData.FTIRdata.exploSample = res.id  // 获取样本id,用于发送检测信息
+        /** 获取样本id,用于发送检测信息 */
+        this.sampleData.FTIRdata.exploSample = res.id
         this.sampleData.RAMANdata.exploSample = res.id
         this.sampleData.XRFdata.exploSample = res.id
         this.sampleData.XRDdata.exploSample = res.id
@@ -584,7 +609,7 @@ export default {
       })
       
     },
-    /** 2.检测信息 */
+    /** 2.检测信息与数据文件 */
     submitDataInfo() {
       /** 遍历dataTypeList数组 */
       this.dataTypeList.forEach(dataType => {
@@ -601,12 +626,31 @@ export default {
             this.uploadSampleDataInfo.append(prop, this.sampleData[dataTypeData][prop])
           }
         }
-        /** 选择API发送检测信息 */
+        /** 选择API发送信息 */
         switch (dataTypeData) {
           case 'FTIRdata':
+            /** 发送检测信息 */
             createExploSampleFTIRs(this.uploadSampleDataInfo).then(res => {
               this.sampleData[dataTypeData].id = res.id  // 获取检测信息id,用于发送数据文件
-              this.submitDataFile(dataTypeData)  // 上传数据文件
+              this.sampleData[dataTypeData].fileList.forEach((file, index) => {
+                /** 加载uploadSampleDataFile */
+                this.uploadSampleDataFile = new FormData()
+                this.uploadSampleDataFile.append('exploSampleFTIR', this.sampleData[dataTypeData].id)
+                this.uploadSampleDataFile.append('FTIRs', file.raw)
+                /** 发送数据文件 */
+                createExploSampleFTIRTestFiles(this.uploadSampleDataFile).then(res => {
+                  this.$message({
+                    message: `数据文件${index}-${file.raw.name}上传完毕`,
+                    type: 'success'
+                  })
+                }).catch(err => {
+                  this.$message({
+                    message: 'FTIR数据文件错误' + err.message,
+                    type: 'error',
+                    duration: 6 * 1000
+                  })
+                })
+              })
             }).catch(err => {
               this.$message({
                 message: 'FTIR检测信息错误' + err.message,
@@ -618,7 +662,23 @@ export default {
           case 'RAMANdata':
             createExploSampleRamans(this.uploadSampleDataInfo).then(res => {
               this.sampleData[dataTypeData].id = res.id
-              this.submitDataFile(dataTypeData)  // 上传数据文件
+              this.sampleData[dataTypeData].fileList.forEach((file, index) => {
+                this.uploadSampleDataFile = new FormData()
+                this.uploadSampleDataFile.append('exploSampleRaman', this.sampleData[dataTypeData].id)
+                this.uploadSampleDataFile.append('Ramans', file.raw)
+                createExploSampleRamanTestFiles(this.uploadSampleDataFile).then(res => {
+                  this.$message({
+                    message: `数据文件${index}-${file.raw.name}上传完毕`,
+                    type: 'success'
+                  })
+                }).catch(err => {
+                  this.$message({
+                    message: 'Raman数据文件错误' + err.message,
+                    type: 'error',
+                    duration: 6 * 1000
+                  })
+                })
+              })
             }).catch(err => {
               this.$message({
                 message: 'RAMAN检测信息错误' + err.message,
@@ -628,12 +688,53 @@ export default {
             })
             break
           case 'XRFdata':
-
+            createExploSampleXRFs(this.uploadSampleDataInfo).then(res => {
+              this.sampleData[dataTypeData].id = res.id
+              this.sampleData[dataTypeData].fileList.forEach((file, index) => {
+                this.uploadSampleDataFile = new FormData()
+                this.uploadSampleDataFile.append('exploSampleXRF', this.sampleData[dataTypeData].id)
+                this.uploadSampleDataFile.append('XRFs', file.raw)
+                createExploSampleXRFTestFiles(this.uploadSampleDataFile).then(res => {
+                  this.$message({
+                    message: `数据文件${index}-${file.raw.name}上传完毕`,
+                    type: 'success'
+                  })
+                }).catch(err => {
+                  this.$message({
+                    message: 'XRF数据文件错误' + err.message,
+                    type: 'error',
+                    duration: 6 * 1000
+                  })
+                })
+              })
+            }).catch(err => {
+              this.$message({
+                message: 'XRF检测信息错误' + err.message,
+                type: 'error',
+                duration: 8 * 1000
+              })
+            })
             break
           case 'XRDdata':
-          createExploSampleXRDs(this.uploadSampleDataInfo).then(res => {
+            createExploSampleXRDs(this.uploadSampleDataInfo).then(res => {
               this.sampleData[dataTypeData].id = res.id
-              this.submitDataFile(dataTypeData)  // 上传数据文件
+              this.sampleData[dataTypeData].fileList.forEach((file, index) => {
+                this.uploadSampleDataFile = new FormData()
+                this.uploadSampleDataFile.append('exploSampleXRD', this.sampleData[dataTypeData].id)
+                this.uploadSampleDataFile.append('XRDs', file.raw)
+                createExploSampleXRDTestFiles(this.uploadSampleDataFile).then(res => {
+                  this.$message({
+                    message: `数据文件${index}-${file.raw.name}上传完毕`,
+                    type: 'success'
+                  })
+                }).catch(err => {
+                  this.$message({
+                    message: 'XRD数据文件错误' + err.message,
+                    type: 'error',
+                    duration: 6 * 1000
+                  })
+                })
+              })
             }).catch(err => {
               this.$message({
                 message: 'XRD检测信息错误' + err.message,
@@ -652,76 +753,76 @@ export default {
 
     },
     /** 3.检测数据文件 */
-    submitDataFile(dataTypeData) {
-      switch (dataTypeData) {
-        case 'FTIRdata':
-          this.sampleData[dataTypeData].fileList.forEach((file, index) => {
-            this.uploadSampleDataFile = new FormData()
-            this.uploadSampleDataFile.append('exploSampleFTIR', this.sampleData[dataTypeData].id)
-            this.uploadSampleDataFile.append('FTIRs', file.raw)
-            createExploSampleFTIRTestFiles(this.uploadSampleDataFile).then(res => {
-              this.$message({
-                message: `数据文件${index}-${file.raw.name}上传完毕`,
-                type: 'success'
-              })
-            }).catch(err => {
-              this.$message({
-                message: 'FTIR数据文件错误' + err.message,
-                type: 'error',
-                duration: 6 * 1000
-              })
-            })
-          })
-          break
-        case 'RAMANdata':
-          this.sampleData[dataTypeData].fileList.forEach((file, index) => {
-            this.uploadSampleDataFile = new FormData()
-            this.uploadSampleDataFile.append('exploSampleRaman', this.sampleData[dataTypeData].id)
-            this.uploadSampleDataFile.append('Ramans', file.raw)
-            createExploSampleRamanTestFiles(this.uploadSampleDataFile).then(res => {
-              this.$message({
-                message: `数据文件${index}-${file.raw.name}上传完毕`,
-                type: 'success'
-              })
-            }).catch(err => {
-              this.$message({
-                message: 'Raman数据文件错误' + err.message,
-                type: 'error',
-                duration: 6 * 1000
-              })
-            })
-          })
-          break
-        case 'XRFdata':
+    // submitDataFile(dataTypeData) {
+    //   switch (dataTypeData) {
+    //     case 'FTIRdata':
+    //       this.sampleData[dataTypeData].fileList.forEach((file, index) => {
+    //         this.uploadSampleDataFile = new FormData()
+    //         this.uploadSampleDataFile.append('exploSampleFTIR', this.sampleData[dataTypeData].id)
+    //         this.uploadSampleDataFile.append('FTIRs', file.raw)
+    //         createExploSampleFTIRTestFiles(this.uploadSampleDataFile).then(res => {
+    //           this.$message({
+    //             message: `数据文件${index}-${file.raw.name}上传完毕`,
+    //             type: 'success'
+    //           })
+    //         }).catch(err => {
+    //           this.$message({
+    //             message: 'FTIR数据文件错误' + err.message,
+    //             type: 'error',
+    //             duration: 6 * 1000
+    //           })
+    //         })
+    //       })
+    //       break
+    //     case 'RAMANdata':
+    //       this.sampleData[dataTypeData].fileList.forEach((file, index) => {
+    //         this.uploadSampleDataFile = new FormData()
+    //         this.uploadSampleDataFile.append('exploSampleRaman', this.sampleData[dataTypeData].id)
+    //         this.uploadSampleDataFile.append('Ramans', file.raw)
+    //         createExploSampleRamanTestFiles(this.uploadSampleDataFile).then(res => {
+    //           this.$message({
+    //             message: `数据文件${index}-${file.raw.name}上传完毕`,
+    //             type: 'success'
+    //           })
+    //         }).catch(err => {
+    //           this.$message({
+    //             message: 'Raman数据文件错误' + err.message,
+    //             type: 'error',
+    //             duration: 6 * 1000
+    //           })
+    //         })
+    //       })
+    //       break
+    //     case 'XRFdata':
 
-          break
-        case 'XRDdata':
-          this.sampleData[dataTypeData].fileList.forEach((file, index) => {
-            this.uploadSampleDataFile = new FormData()
-            this.uploadSampleDataFile.append('exploSampleXRD', this.sampleData[dataTypeData].id)
-            this.uploadSampleDataFile.append('XRDs', file.raw)
-            createExploSampleXRDTestFiles(this.uploadSampleDataFile).then(res => {
-              this.$message({
-                message: `数据文件${index}-${file.raw.name}上传完毕`,
-                type: 'success'
-              })
-            }).catch(err => {
-              this.$message({
-                message: 'XRD数据文件错误' + err.message,
-                type: 'error',
-                duration: 6 * 1000
-              })
-            })
-          })
-          break
-        case 'GCMSdata':
+    //       break
+    //     case 'XRDdata':
+    //       this.sampleData[dataTypeData].fileList.forEach((file, index) => {
+    //         this.uploadSampleDataFile = new FormData()
+    //         this.uploadSampleDataFile.append('exploSampleXRD', this.sampleData[dataTypeData].id)
+    //         this.uploadSampleDataFile.append('XRDs', file.raw)
+    //         createExploSampleXRDTestFiles(this.uploadSampleDataFile).then(res => {
+    //           this.$message({
+    //             message: `数据文件${index}-${file.raw.name}上传完毕`,
+    //             type: 'success'
+    //           })
+    //         }).catch(err => {
+    //           this.$message({
+    //             message: 'XRD数据文件错误' + err.message,
+    //             type: 'error',
+    //             duration: 6 * 1000
+    //           })
+    //         })
+    //       })
+    //       break
+    //     case 'GCMSdata':
 
-          break
-        default:
-          console.log('!!! Error NO dataTypeData !!!')
-      }
+    //       break
+    //     default:
+    //       console.log('!!! Error NO dataTypeData !!!')
+    //   }
 
-    },
+    // },
 
     goBcak() {
       this.$router.push('/sampleManagement/explosiveSample/explosiveIndexList/explosiveList')
