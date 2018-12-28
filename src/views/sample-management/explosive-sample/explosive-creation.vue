@@ -68,7 +68,8 @@
         :key="dataType">
         <card-common
           ref="basicDataType"
-          :sampleDataID = "sampleData.id"
+          functionType="exploSample"
+          :basicInfoID = "sampleData.id"
           :dataType = "dataType"
           :devDetectList = "devDetectList"
           :methodDetectList = "methodDetectList">
@@ -80,7 +81,8 @@
       <el-col :span="8">
         <card-common
           ref="XRD"
-          :sampleDataID = "sampleData.id"
+          functionType="exploSample"
+          :basicInfoID = "sampleData.id"
           dataType = "XRD"
           :devDetectList = "devDetectList"
           :methodDetectList = "methodDetectList">
@@ -89,7 +91,8 @@
       <el-col :span="8">
         <card-common
           ref="GCMS"
-          :sampleDataID = "sampleData.id"
+          functionType="exploSample"
+          :basicInfoID = "sampleData.id"
           dataType = "GCMS"
           :devDetectList = "devDetectList"
           :methodDetectList = "methodDetectList">
@@ -137,7 +140,7 @@ export default {
       },
       formRule: {
       },
-      dataTypeList: ['FTIR', 'RAMAN', 'XRF'],  // 基本检测类型  XRD,GCMS是炸药原材料特有
+      dataTypeList: ['FTIR', 'Raman', 'XRF'],  // 基本检测类型  XRD,GCMS是炸药原材料特有
       devDetectList: [],  // 检测设备信息列表
       methodDetectList: [],  // 检测方法列表
       uploadSample: {},  //上传基本信息
@@ -151,10 +154,6 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
   components: {
