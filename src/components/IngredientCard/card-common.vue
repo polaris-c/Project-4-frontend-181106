@@ -122,7 +122,8 @@ export default {
     /**  loadAPI  */
     loadAPI() {
       let APIprefixName = ''  // API函数名的前缀,决定了其是样本(sample)或物证(evi),炸药(explo)或装置(dev)
-      /** 选择功能模块的类型 炸药样本(exploSample) 炸药物证(exploEvi) 装置样本(devPartSample) 装置物证(devEvi) */
+      /** 选择功能模块的类型 
+       * 炸药样本(exploSample)  炸药物证(exploEvi)  装置样本(devPartSample)  装置物证(devEvi) */
       switch (this.functionType) {
         case 'exploSample': 
           APIprefixName = 'createExploSample'
@@ -153,7 +154,7 @@ export default {
 
     /**  Submit  */
     beforeSubmit() {
-      this.$watch('basicInfoID', this.handleSubmit)
+      this.$watch('basicInfoID', this.handleSubmit)  // 监听基本信息的ID,当基本信息创建成功后会返回其ID,则可继续上传文件等信息
     },
     handleSubmit() {
       console.log(`---- CardCommon -- $watch ${this.dataType} basicInfoID:`, this.basicInfoID)

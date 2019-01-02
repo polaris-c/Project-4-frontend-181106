@@ -119,7 +119,6 @@ export default {
       loading: false,
       multipleSelection: [],
       tableData: [],
-      tablePageIndex: 1,
       tableParams: {
         search: null,
         page: 1,
@@ -132,10 +131,6 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
   components: {
@@ -153,13 +148,14 @@ export default {
       getExplosiveSampleList(tableParams).then(res => {
         this.tableData = res.results
         this.tableParams.count =  res.count
+        this.loading = false
       }).catch(err => {
         this.$message({
           message: '获取列表错误' + err.message,
           type: 'error'
         })
+        this.loading = false
       })
-      this.loading = false
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -174,22 +170,23 @@ export default {
     handleDelete() {
       this.loading = true
       this.multipleSelection.forEach(val => {
-        deleteExplosiveSample(val.username).then(res =>{
+        deleteExplosiveSample(val.id).then(res =>{
           this.$message({
             message: '删除成功',
             type: 'success'
           })
+          this.tableParams.page = 1
+          this.fetchData(this.tableParams)
+          this.loading = false
         }).catch(err => {
           console.log('- - ExplosiveList - - handleDelete: 删除失败 ', err)
           this.$message({
             message: '删除失败' + err.message,
             type: 'error'
           })
+          this.loading = false
         })
       })
-      this.tableParams.page = 1
-      this.fetchData(this.tableParams)
-      this.loading = false
     },
     handleSearch(searchInputData) {
       console.log('- - ExplosiveList - - search: ', searchInputData)
@@ -208,16 +205,6 @@ export default {
       this.tableParams.page = 1
       this.fetchData(this.tableParams)
     },
-    // handleDelete() {
-    //   console.log('- - delete: ', this.multipleSelection)
-    // },
-    // handleSearch(searchInputData) {
-    //   console.log('- - search: ', searchInputData)
-    // },
-    // handleChangePage(pageIndex) {
-    //   console.log('- - ExplosiveList - - pageIndex: ', pageIndex)
-    //   this.tablePageIndex = pageIndex
-    // }
   }
 }
 </script>
