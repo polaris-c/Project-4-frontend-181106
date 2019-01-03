@@ -26,23 +26,68 @@
         <div class="card-collapse">
 
           <el-collapse v-model="activeNames"> 
+
+            <!-- 图片 -->
+            <el-collapse-item title="零件形态" name="appearance">
+              <div>
+                <el-upload
+                  class=""
+                  action=""
+                  list-type="picture-card"
+                  :file-list="basicInfoData.srcImgList"
+                  :limit="20"
+                  :on-exceed="handleExceed"
+                  :on-change="handleChange"
+                  :on-preview="handlePreview"
+                  :before-remove="beforeRemove"
+                  :on-remove="handleRemove"
+                  :auto-upload="false"
+                  multiple>
+                  <el-button size="mini" type="primary">点击选取图片</el-button>
+                  <div slot="tip" class="el-upload__tip">只能上传jpg/png图片</div>
+                </el-upload>
+              </div>
+            </el-collapse-item>
+
             <!-- 零件基本信息 -->
             <el-collapse-item title="基本信息" name="baseInfo">
               <div>
                 <el-form 
                   ref="devPartForm" 
-                  :model="devPartData"
+                  :model="basicInfoData"
                   :label-position="labelPosition"
                   label-width="80px">
 
                   <el-row :gutter="40">
                     <el-col :span="12">
                       <el-form-item label="零件名称">
-                        <el-input v-model="devPartData.sname"></el-input>
+                        <el-input v-model="basicInfoData.sname"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                      <el-form-item label="">
+                      <el-form-item label="零件类型">
+                        <el-select 
+                          class="el-select-style"
+                          v-model="basicInfoData.sampleType" 
+                          placeholder="请选择零件类型"
+                          filterable>
+                          <el-option
+                            label="外壳"
+                            value="1">
+                          </el-option>
+                          <el-option
+                            label="零件"
+                            value="2">
+                          </el-option>
+                          <el-option
+                            label="电路版"
+                            value="3">
+                          </el-option>
+                          <el-option
+                            label="Logo"
+                            value="4">
+                          </el-option>
+                        </el-select>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -50,12 +95,12 @@
                   <el-row :gutter="40">
                     <el-col :span="12">
                       <el-form-item label="零件产地">
-                        <el-input v-model="devPartData.Origin"></el-input>
+                        <el-input v-model="basicInfoData.Origin"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item label="零件厂家">
-                        <el-input v-model="devPartData.Factory"></el-input>
+                        <el-input v-model="basicInfoData.Factory"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -63,12 +108,12 @@
                   <el-row :gutter="40">
                     <el-col :span="12">
                       <el-form-item label="零件型号">
-                        <el-input v-model="devPartData.Model"></el-input>
+                        <el-input v-model="basicInfoData.Model"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item label="零件商标">
-                        <el-input v-model="devPartData.Logo"></el-input>
+                        <el-input v-model="basicInfoData.Logo"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -76,12 +121,12 @@
                   <el-row :gutter="40">
                     <el-col :span="12">
                       <el-form-item label="零件颜色">
-                        <el-input v-model="devPartData.Color"></el-input>
+                        <el-input v-model="basicInfoData.Color"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item label="零件材质">
-                        <el-input v-model="devPartData.Material"></el-input>
+                        <el-input v-model="basicInfoData.Material"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -89,12 +134,12 @@
                   <el-row :gutter="40">
                     <el-col :span="12">
                       <el-form-item label="零件形状">
-                        <el-input v-model="devPartData.Shape"></el-input>
+                        <el-input v-model="basicInfoData.Shape"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item label="零件厚度">
-                        <el-input v-model="devPartData.thickness"></el-input>
+                        <el-input v-model="basicInfoData.thickness"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -102,13 +147,13 @@
                   <el-row :gutter="40">
                     <el-col :span="12">
                       <el-form-item label="零件功能">
-                        <el-input v-model="devPartData.function"></el-input>
+                        <el-input v-model="basicInfoData.function"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item label="备注">
                         <el-input 
-                          v-model="devPartData.note"
+                          v-model="basicInfoData.note"
                           type="textarea"
                           placeholder="请输入...">
                         </el-input>
@@ -121,146 +166,24 @@
             </el-collapse-item>
 
             <!-- 成分 -->
-            <el-collapse-item title="成分特征" name="ingredient">
+            <el-collapse-item title="零件成分" name="ingredient">
               <el-row :gutter="15" class="el-row-style">
-                <el-col :span="8">
-                  <el-card shadow="hover">
-                    <div slot="header">
-                      <span>FTIR</span>
-                    </div>
-                    <div @mousedown="handleIndex(index, 'FTIR')">
-                      <el-form 
-                        ref="FTIR" 
-                        :model="devPartData.FTIRdata"
-                        :label-position="labelPosition"
-                        label-width="80px">
-                        <el-form-item label="检测设备">
-                          <el-input v-model="devPartData.FTIRdata.devDetect"></el-input>
-                        </el-form-item>
-                        <el-form-item label="检测方法">
-                          <el-input v-model="devPartData.FTIRdata.methodDetect"></el-input>
-                        </el-form-item>
-                        <el-form-item label="上传文件">
-                          <el-upload
-                            action=""
-                            ref="uploadFTIR"
-                            :file-list="devPartData.FTIRdata.fileList"
-                            :limit="20"
-                            :on-exceed="handleExceed"
-                            :on-change="handleChange"
-                            :on-preview="handlePreview"
-                            :before-remove="beforeRemove"
-                            :on-remove="handleRemove"
-                            :auto-upload="false"
-                            multiple> 
-                            <!-- :on-change="handleChange"  :auto-upload="false" :before-upload="beforeFileUpload"-->
-                            <el-button 
-                              slot="trigger"
-                              size="mini" 
-                              type="primary"
-                              @click="handleIndex(index, 'FTIR')">
-                              <!-- slot="trigger"  -->
-                              点击选取
-                            </el-button>
-                          </el-upload>
-                        </el-form-item>
-                      </el-form>
-                    </div>
-                  </el-card>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-card shadow="hover">
-                    <div slot="header">
-                      <span>RAMAN</span>
-                    </div>
-                    <div @mousedown="handleIndex(index, 'RAMAN')">
-                      <el-form 
-                        ref="RAMAN"
-                        :model="devPartData.RAMANdata"
-                        :label-position="labelPosition"
-                        label-width="80px">
-                        <el-form-item label="检测设备">
-                          <el-input v-model="devPartData.RAMANdata.devDetect"></el-input>
-                        </el-form-item>
-                        <el-form-item label="检测方法">
-                          <el-input v-model="devPartData.RAMANdata.methodDetect"></el-input>
-                        </el-form-item>
-                        <el-form-item label="上传文件">
-                          <el-upload
-                            action=""
-                            ref="uploadRAMAN"
-                            :file-list="devPartData.RAMANdata.fileList"
-                            :limit="20"
-                            :on-exceed="handleExceed"
-                            :on-change="handleChange"
-                            :on-preview="handlePreview"
-                            :before-remove="beforeRemove"
-                            :on-remove="handleRemove"
-                            :auto-upload="false"
-                            multiple> 
-                            <el-button 
-                              slot="trigger" 
-                              size="mini" 
-                              type="primary"
-                              @click="handleIndex(index, 'RAMAN')">
-                              点击选取
-                            </el-button>
-                          </el-upload>
-                        </el-form-item>
-                      </el-form>
-                    </div>
-                  </el-card>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-card shadow="hover">
-                    <div slot="header">
-                      <span>XRF</span>
-                    </div>
-                    <div @mousedown="handleIndex(index, 'XRF')">
-                      <el-form 
-                        ref="XRF" 
-                        :model="devPartData.XRFdata"
-                        :label-position="labelPosition"
-                        label-width="80px">
-                        <el-form-item label="检测设备">
-                          <el-input v-model="devPartData.XRFdata.devDetect"></el-input>
-                        </el-form-item>
-                        <el-form-item label="检测方法">
-                          <el-input v-model="devPartData.XRFdata.methodDetect"></el-input>
-                        </el-form-item>
-                        <el-form-item label="上传文件">
-                          <el-button size="small" type="primary">点击上传</el-button>
-                        </el-form-item>
-                      </el-form>
-                    </div>
-                  </el-card>
+                <el-col 
+                  :span="8" 
+                  v-for="dataType in dataTypeList" 
+                  :key="dataType">
+                  <card-common
+                    ref="basicDataType"
+                    function-type="devPartSample"
+                    :basic-info-id = "basicInfoData.id"
+                    :data-type = "dataType"
+                    :dev-detect-list = "devDetectList"
+                    :method-detect-list = "methodDetectList">
+                  </card-common>
                 </el-col>
               </el-row>
             </el-collapse-item>
 
-            <!-- 图片 -->
-            <el-collapse-item title="形态特征" name="appearance">
-              <div @mousedown="handleIndex(index, 'IMG')">
-                <el-upload
-                  class=""
-                  action=""
-                  list-type="picture-card"
-                  :file-list="devPartData.srcImgList"
-                  :limit="20"
-                  :on-exceed="handleExceed"
-                  :on-change="handleChange"
-                  :on-preview="handlePreview"
-                  :before-remove="beforeRemove"
-                  :on-remove="handleRemove"
-                  :auto-upload="false"
-                  multiple>
-                  <el-button size="mini" type="primary">点击选取</el-button>
-                  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
-                </el-upload>
-              </div>
-            </el-collapse-item>
           </el-collapse>
 
         </div>
@@ -270,6 +193,10 @@
 </template>
 
 <script>
+import CardCommon from '@/components/IngredientCard/card-common'
+import { getDevDetectsList, getMethodDetectsList} from '@/api/detection-option'
+import { createDevPartSample } from '@/api/sample-device'
+
 export default {
   name: 'DevicePartForm',
   props: {
@@ -280,23 +207,87 @@ export default {
     devPartData: {
       type: Object,
     },
+    devDataId: {
+      type: [Number, String]
+    }
   },
   data() {
     return {
       showCard: true,
-      activeNames: ['baseInfo'],
+      activeNames: ['appearance', 'baseInfo'],
       labelPosition: 'left',
-      devPartIndex: 0,
-      devPartType: '',
-      devRule: { },
+      basicInfoData: this.devPartData,
+      formRule: { },
+      dataTypeList: ['FTIR', 'Raman', 'XRF'],  // 基本检测类型  XRD,GCMS是炸药原材料特有
+      devDetectList: [],  // 检测设备信息列表
+      methodDetectList: [],  // 检测方法列表
+      uploadBasicInfo: {},  //上传基本信息
+      tableParams: {
+        page: 1,
+        page_size: 100,
+      }
     }
   },
+  components: {
+    CardCommon
+  },
+
+  mounted() {
+    this.fetchOption()
+    this.uploadBasicInfo = new FormData()
+  },
+
   methods: {
-    handleIndex(index, type) {
-      this.devPartIndex = index
-      this.devPartType = type
-      console.log('- - handleIndex - - :', this.devPartIndex, this.devPartType)
+    fetchOption() {
+      getDevDetectsList(this.tableParams).then(res => {
+        this.devDetectList = res.results
+      }).catch(err => {
+        this.$message({
+          message: '获取检测设备列表错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
+      getMethodDetectsList(this.tableParams).then(res => {
+        this.methodDetectList = res.results
+      }).catch(err => {
+        this.$message({
+          message: '获取检测方法列表错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
     },
+
+    /**  Submit  */
+    beforeSubmit() {
+      this.$watch('devDataId', this.handleSubmit)  // 监听基本信息的ID,当基本信息创建成功后会返回其ID,则可继续上传文件等信息
+    },
+    handleSubmit() {
+      console.log('---- DevicePartForm -- handleSubmit devDataId:', this.devDataId)
+      this.basicInfoData.devSample = this.devDataId  // 获取组件id, 用于发送零件信息
+      /** 加载uploadBasicInfo */
+      for(let prop in this.basicInfoData) {
+        if(this.basicInfoData.hasOwnProperty(prop)) {
+          this.uploadBasicInfo.append(prop, this.basicInfoData[prop])
+        }
+      }
+      /** 创建零件 */
+      createDevPartSample(this.uploadBasicInfo).then(res => {
+        this.basicInfoData.id = res.id  // 获取零件id,用于发送零件数据文件
+        this.$refs.basicDataType.forEach((component) => {
+          component.beforeSubmit()
+        })
+      }).catch(err => {
+        console.log('---- DevicePartForm -- createDevPartSample err:', err)
+        this.$message({
+          message: '基本信息错误' + err.message,
+          type: 'error',
+          duration: 10 * 1000
+        })
+      })
+    },
+
     handleDeleteDevPart(index) {
       console.log('- - DeleteDevPart - - index: ', index)
       this.$confirm('确定删除此零件吗？', '提 示', {
@@ -330,34 +321,13 @@ export default {
     handleChange(file, fileList) {
       console.log('- - Change - - file.raw:', file.raw)
       // console.log('- - Change - - fileList:', fileList)
-      switch (this.devPartType) {
-        case 'FTIR':
-          this.devPartData.FTIRdata.fileList.push(file)
-          // this.devPartData.FTIRdata.uploadFile.append('txtURL', file)
-          // console.log('- - Change - - .FTIRdata.fileList:', this.devPartData.FTIRdata.fileList)
-          break
-        case 'RAMAN':
-          this.devPartData.RAMANdata.fileList.push(file)
-          // this.devPartData.RAMANdata.uploadFile.append('txtURL', file)
-          // console.log('- - Change - - .RAMANdata.fileList:', this.devPartData.RAMANdata.fileList)
-          break
-        case 'XRF':
-          this.devPartData.XRFdata.fileList.push(file)
-          // this.devPartData.XRFdata.uploadFile.append('txtURL', file)
-          // console.log('- - Change - - .XRFdata.fileList:', this.devPartData.XRFdata.fileList)
-          break
-        case 'IMG':
-          this.devPartData.srcImgList.push(file)
-          // this.devPartData.uploadImg.append('srcImgURL', file)
-          // console.log('- - Change - - .srcImgList:', this.devPartData.srcImgList)
-          break
-        default:
-          console.log('!!! Error NO devPartType !!!')
-      }
+          this.basicInfoData.srcImgList.push(file)
+          // this.basicInfoData.uploadImg.append('srcImgURL', file)
+          // console.log('- - Change - - .srcImgList:', this.basicInfoData.srcImgList)
     },
     handlePreview(file) {
       console.log('- - Preview - - file:', file.name)
-      return this.$alert(` ${ file.name }  (${ file.size }字节)`, `${ this.devPartType }`, {
+      return this.$alert(` ${ file.name }  (${ file.size }字节)`, `图片`, {
         confirmButtonText: '确定',
         type: 'success'
       }).then(() => {
@@ -374,26 +344,8 @@ export default {
     handleRemove(file, fileList) {
       console.log('- - Remove - - file:', file.name)
       // console.log('- - Remove - - fileList:', fileList)
-      switch (this.devPartType) {
-        case 'FTIR':
-          this.devPartData.FTIRdata.fileList = fileList
-          console.log('- - Remove - - .FTIRdata.fileList:', this.devPartData.FTIRdata.fileList)
-          break
-        case 'RAMAN':
-          this.devPartData.RAMANdata.fileList = fileList
-          console.log('- - Remove - - .RAMANdata.fileList:', this.devPartData.RAMANdata.fileList)
-          break
-        case 'XRF':
-          this.devPartData.XRFdata.fileList = fileList
-          console.log('- - Remove - - .XRFdata.fileList:', this.devPartData.XRFdata.fileList)
-          break
-        case 'IMG':
-          this.devPartData.srcImgList = fileList
-          console.log('- - Remove - - .srcImgList:', this.devPartData.srcImgList)
-          break
-        default:
-          console.log('!!! Error NO devPartType !!!')
-      }
+          this.basicInfoData.srcImgList = fileList
+          console.log('- - Remove - - .srcImgList:', this.basicInfoData.srcImgList)
     }
   },
 }
@@ -402,5 +354,8 @@ export default {
 <style scoped>
 .el-fade-in-linear-leave-active {
   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.el-select-style {
+  width: 316px;
 }
 </style>

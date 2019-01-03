@@ -84,11 +84,12 @@
       :key="devPartData.key">
       <el-col :span="24">
         <device-part-form 
-          :dev-part-data="devPartData"
+          ref="devPartForm"
           :index="index"
+          :dev-part-data="devPartData"
+          :dev-data-id="devData.id"
           @delete-device-part="handleDeleteDevPart">
         </device-part-form>
-        <!-- :devPartData="devPartData" -->
       </el-col>
     </el-row>
 
@@ -119,6 +120,7 @@ import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
 import DeleteButton from '@/components/Buttons/delete-button'
 import DevicePartForm from '@/views/sample-management/device-sample/device-part-form'
+import { createDevSample } from '@/api/sample-device'
 
 export default {
   name: 'DeviceCreation',
@@ -126,8 +128,9 @@ export default {
     return {
       labelPosition: 'left',
       devData: {
+        id: null,
         sname: 'A001',
-        Type: 'A1',
+        Type: '1',
         Origin: 'AO',
         Factory: 'AF',
         Model: 'AM',
@@ -137,7 +140,9 @@ export default {
       },
       devPartDataList: [
         {
+          id: null,
           sname: 'A001',
+          sampleType: '',
           Origin: 'AO',
           Factory: 'AF',
           Model: 'AM',
@@ -148,44 +153,19 @@ export default {
           Shape: '1',
           thickness: '1',
           note: '1111',
+          devSample: null,
           key: Date.now(),
-          FTIRdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
-          RAMANdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
-          XRFdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
           srcImgList: [],
-          uploadImg: new FormData(),
         },
       ],
-      uploadFile: {},
-      devPartIndex: 0,
-      devPartType: '',
-      devRule: {
-      },
+      uploadBasicInfo: {},
+      devRule: {},
     }
   },
   computed: {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ]),
   },
   components: {
@@ -196,15 +176,16 @@ export default {
   },
 
   mounted() {
-    this.uploadFile = new FormData()
-    console.log('+ + ExplosiveCreation mounted + + uploadFTIRfile is OK')
+    this.uploadBasicInfo = new FormData()
   },
 
   methods: {
     handleAddDevPart() {
       this.devPartDataList.push(
         {
+          id: null,
           sname: 'A002',
+          sampleType: '',
           Origin: 'AO',
           Factory: 'AF',
           Model: 'AM',
@@ -215,27 +196,9 @@ export default {
           Shape: '2',
           thickness: '2',
           note: '222',
+          devSample: null,
           key: Date.now(),
-          FTIRdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
-          RAMANdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
-          XRFdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
           srcImgList: [],
-          uploadImg: new FormData(),
         }
       )
 
@@ -245,19 +208,35 @@ export default {
       this.devPartDataList.splice(index, 1)
       console.log('- - DeleteDevPart - - devPartDataList:', this.devPartDataList)
     },
-    handleIndex(index, type) {
-      this.devPartIndex = index
-      this.devPartType = type
-    },
 
-    /*  */ 
+    /**  Submit  */ 
     handleSubmit() {
       console.log('- - submit - - devData:', this.devData.sname)
       for(const devPartData of this.devPartDataList) {
         console.log('- - submit - - devPartData:', devPartData.sname)
-        // console.log('- - submit - - devPartData:', devPartData.FTIRdata.fileList)
       }
+      /** 加载uploadBasicInfo */
+      for(let prop in this.devData) {
+        if(this.devData.hasOwnProperty(prop)) {
+          this.uploadBasicInfo.append(prop, this.devData[prop])
+        }
+      }
+      /** 创建组件 */
+      createDevSample(this.uploadBasicInfo).then(res => {
+        this.devData.id = res.id  // 获取组件id,用于发送零件信息
+        this.$refs.devPartForm.forEach((component) => {
+          component.beforeSubmit()
+        })
+      }).catch(err => {
+        console.log('---- DeviceCreation -- createDevSample err:', err)
+        this.$message({
+          message: '基本信息错误' + err.message,
+          type: 'error',
+          duration: 10 * 1000
+        })
+      })
     },
+
     goBcak() {
       this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceList')
     }

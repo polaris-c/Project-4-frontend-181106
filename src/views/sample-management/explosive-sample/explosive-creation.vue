@@ -68,11 +68,11 @@
         :key="dataType">
         <card-common
           ref="basicDataType"
-          functionType="exploSample"
-          :basicInfoID = "sampleData.id"
-          :dataType = "dataType"
-          :devDetectList = "devDetectList"
-          :methodDetectList = "methodDetectList">
+          function-type="exploSample"
+          :basic-info-id = "sampleData.id"
+          :data-type = "dataType"
+          :dev-detect-list = "devDetectList"
+          :method-detect-list = "methodDetectList">
         </card-common>
       </el-col>
     </el-row>
@@ -81,21 +81,21 @@
       <el-col :span="8">
         <card-common
           ref="XRD"
-          functionType="exploSample"
-          :basicInfoID = "sampleData.id"
-          dataType = "XRD"
-          :devDetectList = "devDetectList"
-          :methodDetectList = "methodDetectList">
+          function-type="exploSample"
+          :basic-info-id = "sampleData.id"
+          data-type = "XRD"
+          :dev-detect-list = "devDetectList"
+          :method-detect-list = "methodDetectList">
         </card-common>
       </el-col>
       <el-col :span="8">
         <card-common
           ref="GCMS"
-          functionType="exploSample"
-          :basicInfoID = "sampleData.id"
-          dataType = "GCMS"
-          :devDetectList = "devDetectList"
-          :methodDetectList = "methodDetectList">
+          function-type="exploSample"
+          :basic-info-id = "sampleData.id"
+          data-type = "GCMS"
+          :dev-detect-list = "devDetectList"
+          :method-detect-list = "methodDetectList">
         </card-common>
       </el-col>
     </el-row>

@@ -55,11 +55,11 @@
         :key="dataType">
         <card-common
           ref="basicDataType"
-          functionType="exploEvi"
-          :basicInfoID = "evidenceData.id"
-          :dataType = "dataType"
-          :devDetectList = "devDetectList"
-          :methodDetectList = "methodDetectList">
+          function-type="exploEvi"
+          :basic-info-id = "evidenceData.id"
+          :data-type = "dataType"
+          :dev-detect-list = "devDetectList"
+          :method-detect-list = "methodDetectList">
         </card-common>
       </el-col>
     </el-row>
@@ -68,21 +68,21 @@
       <el-col :span="8">
         <card-common
           ref="XRD"
-          functionType="exploEvi"
-          :basicInfoID = "evidenceData.id"
-          dataType = "XRD"
-          :devDetectList = "devDetectList"
-          :methodDetectList = "methodDetectList">
+          function-type="exploEvi"
+          :basic-info-id = "evidenceData.id"
+          data-type = "XRD"
+          :dev-detect-list = "devDetectList"
+          :method-detect-list = "methodDetectList">
         </card-common>
       </el-col>
       <el-col :span="8">
         <card-common
           ref="GCMS"
-          functionType="exploEvi"
-          :basicInfoID = "evidenceData.id"
-          dataType = "GCMS"
-          :devDetectList = "devDetectList"
-          :methodDetectList = "methodDetectList">
+          function-type="exploEvi"
+          :basic-info-id = "evidenceData.id"
+          data-type = "GCMS"
+          :dev-detect-list = "devDetectList"
+          :method-detect-list = "methodDetectList">
         </card-common>
       </el-col>
     </el-row>

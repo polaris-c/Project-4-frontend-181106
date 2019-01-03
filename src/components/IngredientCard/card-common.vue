@@ -77,7 +77,7 @@ export default {
       type: String,
     },
     /** 基本信息ID */
-    basicInfoID: {
+    basicInfoId: {
       type: [Number, String]
     },
     /** 当前检测数据类型 */
@@ -105,7 +105,7 @@ export default {
       },
       formRule: {
       },
-      dataInfoID: '',  // 检测信息ID的键名
+      dataInfoId: '',  // 检测信息ID的键名
       dataFile: '',    // 数据文件的键名
       createDataInfo: {},  // 上传检测信息的API函数
       createDataFile: {},  // 上传数据文件的API函数
@@ -135,11 +135,11 @@ export default {
           break
         case 'devPartSample': 
           APIprefixName = 'createDevPartSample'
-          // import('@/api/sample-device').then(APImodule => this.setParam(APImodule, APIprefixName))
+          import('@/api/sample-device').then(APImodule => this.setParam(APImodule, APIprefixName))
           break
         case 'devEvi': 
           APIprefixName = 'createDevEvi'
-          // import('@/api/evidence-device').then(APImodule => this.setParam(APImodule, APIprefixName))
+          import('@/api/evidence-device').then(APImodule => this.setParam(APImodule, APIprefixName))
           break
         default:
           console.log('!!! Error NO functionType !!!')
@@ -148,22 +148,22 @@ export default {
     setParam(APImodule, APIprefixName) {
       this.createDataInfo = APImodule[APIprefixName + this.dataType + 's']
       this.createDataFile = APImodule[APIprefixName + this.dataType + 'TestFiles']
-      this.dataInfoID = this.functionType + this.dataType
+      this.dataInfoId = this.functionType + this.dataType
       this.dataFile = this.dataType + 's'
     },
 
     /**  Submit  */
     beforeSubmit() {
-      this.$watch('basicInfoID', this.handleSubmit)  // 监听基本信息的ID,当基本信息创建成功后会返回其ID,则可继续上传文件等信息
+      this.$watch('basicInfoId', this.handleSubmit)  // 监听基本信息的ID,当基本信息创建成功后会返回其ID,则可继续上传文件等信息
     },
     handleSubmit() {
-      console.log(`---- CardCommon -- $watch ${this.dataType} basicInfoID:`, this.basicInfoID)
+      console.log(`---- CardCommon -- $watch ${this.dataType} basicInfoId:`, this.basicInfoId)
       /** 去除未使用的检测类型 */
       if(!this.detectionData.devDetect || !this.detectionData.methodDetect) {
         return console.log(`---- CardCommon -- ${this.dataType} is empty!!!`)
       }
       /** 1-1 加载uploadDataInfo */
-      this.uploadDataInfo.append(this.functionType, this.basicInfoID)
+      this.uploadDataInfo.append(this.functionType, this.basicInfoId)
       this.uploadDataInfo.append('devDetect', this.detectionData.devDetect)
       this.uploadDataInfo.append('methodDetect', this.detectionData.methodDetect)
       /** 1-2 发送检测信息 */
@@ -172,7 +172,7 @@ export default {
         this.detectionData.fileList.forEach((file, index) => {
           /** 2-1 加载uploadDataFile */
           this.uploadDataFile = new FormData()
-          this.uploadDataFile.append(this.dataInfoID, this.detectionData.id)
+          this.uploadDataFile.append(this.dataInfoId, this.detectionData.id)
           this.uploadDataFile.append(this.dataFile, file.raw)
           /** 2-2 发送数据文件 */
           this.createDataFile(this.uploadDataFile).then(res => {
