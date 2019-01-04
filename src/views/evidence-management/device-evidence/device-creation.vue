@@ -271,8 +271,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { createDevShapeEvis } from '@/api/evidence-device'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
+import CardCommon from '@/components/IngredientCard/card-common'
+import ImgUpload from '@/components/ImgUpload'
 
 export default {
   name: 'DeviceCreation',
@@ -324,15 +327,13 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
   components: {
     GobackButton,
     SubmitButton,
+    CardCommon,
+    ImgUpload
   },
   methods: {
     handleIndex(type) {

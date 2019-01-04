@@ -246,3 +246,37 @@ export function deleteDevEviXRFTestFiles(id) {
 }
 
 /** IMG **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** */
+/** devShapeEvis  */
+export function getDevShapeEvisList(params) {
+  return request({
+    url: '/devShapeEvis/',
+    method: 'get',
+    params
+  })
+}
+export function getDevShapeEvisInfo(id) {
+  return request({
+    url: '/devShapeEvis/' + id + '/',
+    method: 'get'
+  })
+}
+export function createDevShapeEvis(data) {
+  return request({
+    url: '/devShapeEvis/',
+    method: 'post',
+    data
+  })
+}
+export function updateDevShapeEvis(id, data) {
+  return request({
+    url: '/devShapeEvis/' + id + '/',
+    method: 'patch',
+    data
+  })
+}
+export function deleteDevShapeEvis(id) {
+  return request({
+    url: '/devShapeEvis/' + id + '/',
+    method: 'delete'
+  })
+}

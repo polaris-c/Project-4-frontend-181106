@@ -29,7 +29,7 @@
 
             <!-- 图片 -->
             <el-collapse-item title="零件形态" name="appearance">
-              <div>
+              <!-- <div>
                 <el-upload
                   class=""
                   action=""
@@ -46,7 +46,12 @@
                   <el-button size="mini" type="primary">点击选取图片</el-button>
                   <div slot="tip" class="el-upload__tip">只能上传jpg/png图片</div>
                 </el-upload>
-              </div>
+              </div> -->
+              <img-upload
+                ref="imgUpload"
+                function-type="devPartSample"
+                :basic-info-id = "basicInfoData.id">
+              </img-upload>
             </el-collapse-item>
 
             <!-- 零件基本信息 -->
@@ -284,13 +289,14 @@ export default {
           component.beforeSubmit()
         })
         /** 上传形态图片 */
-        this.shapeImgList.forEach(file => {
-          // console.log('---- DevicePartForm -- shapeImg: ', file.raw.name)
-          this.uploadShapeImg = new FormData()
-          this.uploadShapeImg.append('devPartSample', res.id)
-          this.uploadShapeImg.append('originalUrl', file.raw)
-          this.submitImg()
-        })
+        this.$refs.imgUpload.beforeSubmit()
+        // this.shapeImgList.forEach(file => {
+        //   // console.log('---- DevicePartForm -- shapeImg: ', file.raw.name)
+        //   this.uploadShapeImg = new FormData()
+        //   this.uploadShapeImg.append('devPartSample', res.id)
+        //   this.uploadShapeImg.append('originalUrl', file.raw)
+        //   this.submitImg()
+        // })
       }).catch(err => {
         console.log('---- DevicePartForm -- createDevPartSample err:', err)
         this.$message({
