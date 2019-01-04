@@ -123,7 +123,7 @@ export default {
     loadAPI() {
       let APIprefixName = ''  // API函数名的前缀,决定了其是样本(sample)或物证(evi),炸药(explo)或装置(dev)
       /** 选择功能模块的类型 
-       * 炸药样本(exploSample)  炸药物证(exploEvi)  装置样本(devPartSample)  装置物证(devEvi) */
+       *  炸药样本(exploSample)  炸药物证(exploEvi)  装置样本(devPartSample)  装置物证(devEvi) */
       switch (this.functionType) {
         case 'exploSample': 
           APIprefixName = 'createExploSample'
@@ -176,8 +176,9 @@ export default {
           this.uploadDataFile.append(this.dataFile, file.raw)
           /** 2-2 发送数据文件 */
           this.createDataFile(this.uploadDataFile).then(res => {
+            console.log(`${index}-${file.raw.name} 数据文件上传成功`)
             this.$message({
-              message: `数据文件${index}-${file.raw.name}上传完毕`,
+              message: `数据文件上传成功`,
               type: 'success'
             })
           }).catch(err => {

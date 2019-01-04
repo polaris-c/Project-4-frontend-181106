@@ -67,7 +67,7 @@
         v-for="dataType in dataTypeList" 
         :key="dataType">
         <card-common
-          ref="basicDataType"
+          ref="commonDataType"
           function-type="exploSample"
           :basic-info-id = "sampleData.id"
           :data-type = "dataType"
@@ -202,7 +202,7 @@ export default {
         /** 获取样本id,用于发送检测信息 */
         this.sampleData.id = res.id
         // console.log(`---- ExplosiveCreation -- $refs`, this.$refs)
-        this.$refs.basicDataType.forEach((component) => {
+        this.$refs.commonDataType.forEach((component) => {
           component.beforeSubmit()
         }) 
         this.$refs.XRD.beforeSubmit()

@@ -281,3 +281,37 @@ export function deleteDevPartSampleXRFTestFiles(id) {
 }
 
 /** IMG **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** */
+/** devShapeSamples  */
+export function getDevShapeSamplesList(params) {
+  return request({
+    url: '/devShapeSamples/',
+    method: 'get',
+    params
+  })
+}
+export function getDevShapeSamplesInfo(id) {
+  return request({
+    url: '/devShapeSamples/' + id + '/',
+    method: 'get'
+  })
+}
+export function createDevShapeSamples(data) {
+  return request({
+    url: '/devShapeSamples/',
+    method: 'post',
+    data
+  })
+}
+export function updateDevShapeSamples(id, data) {
+  return request({
+    url: '/devShapeSamples/' + id + '/',
+    method: 'patch',
+    data
+  })
+}
+export function deleteDevShapeSamples(id) {
+  return request({
+    url: '/devShapeSamples/' + id + '/',
+    method: 'delete'
+  })
+}

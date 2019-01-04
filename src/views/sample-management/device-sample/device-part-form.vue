@@ -34,7 +34,7 @@
                   class=""
                   action=""
                   list-type="picture-card"
-                  :file-list="basicInfoData.srcImgList"
+                  :file-list="shapeImgList"
                   :limit="20"
                   :on-exceed="handleExceed"
                   :on-change="handleChange"
@@ -173,7 +173,7 @@
                   v-for="dataType in dataTypeList" 
                   :key="dataType">
                   <card-common
-                    ref="basicDataType"
+                    ref="commonDataType"
                     function-type="devPartSample"
                     :basic-info-id = "basicInfoData.id"
                     :data-type = "dataType"
@@ -193,9 +193,10 @@
 </template>
 
 <script>
-import CardCommon from '@/components/IngredientCard/card-common'
 import { getDevDetectsList, getMethodDetectsList} from '@/api/detection-option'
-import { createDevPartSample } from '@/api/sample-device'
+import { createDevPartSample, createDevShapeSamples} from '@/api/sample-device'
+import CardCommon from '@/components/IngredientCard/card-common'
+import ImgUpload from '@/components/ImgUpload'
 
 export default {
   name: 'DevicePartForm',
@@ -216,12 +217,14 @@ export default {
       showCard: true,
       activeNames: ['appearance', 'baseInfo'],
       labelPosition: 'left',
-      basicInfoData: this.devPartData,
       formRule: { },
       dataTypeList: ['FTIR', 'Raman', 'XRF'],  // 基本检测类型  XRD,GCMS是炸药原材料特有
       devDetectList: [],  // 检测设备信息列表
       methodDetectList: [],  // 检测方法列表
-      uploadBasicInfo: {},  //上传基本信息
+      basicInfoData: this.devPartData,  // 存放基本信息
+      uploadBasicInfo: {},  // 上传基本信息
+      shapeImgList: [],  // 存放图片列表
+      uploadShapeImg: {},  // 上传形态图片
       tableParams: {
         page: 1,
         page_size: 100,
@@ -229,7 +232,8 @@ export default {
     }
   },
   components: {
-    CardCommon
+    CardCommon,
+    ImgUpload
   },
 
   mounted() {
@@ -274,9 +278,18 @@ export default {
       }
       /** 创建零件 */
       createDevPartSample(this.uploadBasicInfo).then(res => {
-        this.basicInfoData.id = res.id  // 获取零件id,用于发送零件数据文件
-        this.$refs.basicDataType.forEach((component) => {
+        this.basicInfoData.id = res.id  // 获取零件id,用于发送零件检测数据文件
+        /** 上传检测信息与数据文件 */
+        this.$refs.commonDataType.forEach(component => {
           component.beforeSubmit()
+        })
+        /** 上传形态图片 */
+        this.shapeImgList.forEach(file => {
+          // console.log('---- DevicePartForm -- shapeImg: ', file.raw.name)
+          this.uploadShapeImg = new FormData()
+          this.uploadShapeImg.append('devPartSample', res.id)
+          this.uploadShapeImg.append('originalUrl', file.raw)
+          this.submitImg()
         })
       }).catch(err => {
         console.log('---- DevicePartForm -- createDevPartSample err:', err)
@@ -287,7 +300,15 @@ export default {
         })
       })
     },
+    submitImg() {
+      createDevShapeSamples(this.uploadShapeImg).then(res => {
+        // console.log('---- DevicePartForm -- createDevShapeSamples is OK!')
+      }).catch(err => {
+        console.log('---- DevicePartForm -- createDevShapeSamples err:', err)
+      })
+    },
 
+    /** 删除零件 */
     handleDeleteDevPart(index) {
       console.log('- - DeleteDevPart - - index: ', index)
       this.$confirm('确定删除此零件吗？', '提 示', {
@@ -320,10 +341,7 @@ export default {
     },
     handleChange(file, fileList) {
       console.log('- - Change - - file.raw:', file.raw)
-      // console.log('- - Change - - fileList:', fileList)
-          this.basicInfoData.srcImgList.push(file)
-          // this.basicInfoData.uploadImg.append('srcImgURL', file)
-          // console.log('- - Change - - .srcImgList:', this.basicInfoData.srcImgList)
+      this.shapeImgList.push(file)
     },
     handlePreview(file) {
       console.log('- - Preview - - file:', file.name)
@@ -343,9 +361,8 @@ export default {
     },
     handleRemove(file, fileList) {
       console.log('- - Remove - - file:', file.name)
-      // console.log('- - Remove - - fileList:', fileList)
-          this.basicInfoData.srcImgList = fileList
-          console.log('- - Remove - - .srcImgList:', this.basicInfoData.srcImgList)
+      this.shapeImgList = fileList
+      console.log('- - Remove - - .srcImgList:', this.shapeImgList)
     }
   },
 }
