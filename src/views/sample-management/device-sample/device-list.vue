@@ -10,6 +10,7 @@
     </el-row>
 
     <el-table
+      v-loading="loading"
       class="app-main-table"
       ref="deviceList"
       :data="tableData"
@@ -118,7 +119,8 @@
     </el-table>
 
     <pagination 
-      :currentPage="tablePageIndex"
+      v-bind="tableParams"
+      @change-size="handleChangeSize"
       @change-page="handleChangePage">
     </pagination>
   </div>
@@ -129,64 +131,27 @@ import { mapGetters } from 'vuex'
 import DeleteButton from '@/components/Buttons/delete-button'
 import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
+import { getDevSampleList, deleteDevSample } from '@/api/sample-device'
 
 export default {
   name: 'DeviceList',
   data() {
     return {
+      loading: false,
       multipleSelection: [],
-      tableData: [
-        {
-          id: '001',
-          sname: 'A001',
-          Type: 'A1',
-          Origin: 'AO',
-          Factory: 'AF',
-          Model: 'AM',
-          Logo: 'AL',
-          function: 'AF',
-          user: 'user001',
-          inputDate: '2018-11-19',
-          note: '1111'
-        },
-        {
-          id: '002',
-          sname: 'A002',
-          Type: 'A2',
-          Origin: 'AO',
-          Factory: 'AF',
-          Model: 'AM',
-          Logo: 'AL',
-          function: 'AF',
-          user: 'user002',
-          inputDate: '2018-11-19',
-          note: '1112'
-        },
-        {
-          id: '003',
-          sname: 'A003',
-          Type: 'A3',
-          Origin: 'AO',
-          Factory: 'AF',
-          Model: 'AM',
-          Logo: 'AL',
-          function: 'AF',
-          user: 'user003',
-          inputDate: '2018-11-19',
-          note: '1113'
-        },
-      ],
-      tablePageIndex: 1
+      tableData: [],
+      tableParams: {
+        search: null,
+        page: 1,
+        page_size: 20,
+        count: 1,
+      }
     }
   },
   computed: {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
   components: {
@@ -194,7 +159,25 @@ export default {
     SearchInput,
     Pagination
   },
+  mounted() {
+    this.loading = true
+    this.fetchData(this.tableParams)
+  },
   methods: {
+    fetchData(tableParams){
+      this.loading = true
+      getDevSampleList(tableParams).then(res => {
+        this.tableData = res.results
+        this.tableParams.count =  res.count
+        this.loading = false
+      }).catch(err => {
+        this.$message({
+          message: '获取列表错误' + err.message,
+          type: 'error'
+        })
+        this.loading = false
+      })
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val
       console.log('- - - - multipleSeletion:', this.multipleSelection)
@@ -205,15 +188,43 @@ export default {
 
     /** 页面按键功能 */
     handleDelete() {
-      console.log('- - delete: ', this.multipleSelection)
+      this.loading = true
+      this.multipleSelection.forEach(val => {
+        deleteDevSample(val.id).then(res =>{
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.tableParams.page = 1
+          this.fetchData(this.tableParams)
+          this.loading = false
+        }).catch(err => {
+          console.log('- - DeviceList - - handleDelete: 删除失败 ', err)
+          this.$message({
+            message: '删除失败' + err.message,
+            type: 'error'
+          })
+          this.loading = false
+        })
+      })
     },
     handleSearch(searchInputData) {
-      console.log('- - search: ', searchInputData)
+      console.log('- - DeviceList - - search: ', searchInputData)
+      this.tableParams.search = searchInputData
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
     },
     handleChangePage(pageIndex) {
-      console.log('- - ExplosiveList - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
-    }
+      console.log('- - DeviceList - - pageIndex: ', pageIndex)
+      this.tableParams.page = pageIndex
+      this.fetchData(this.tableParams)
+    },
+    handleChangeSize(pageSize) {
+      console.log('- - DeviceList - - pageSize: ', pageSize)
+      this.tableParams.page_size = pageSize
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
+    },
   }
 }
 </script>

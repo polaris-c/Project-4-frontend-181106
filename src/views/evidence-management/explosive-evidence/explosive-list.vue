@@ -36,7 +36,7 @@
         <template slot-scope="scope">
           <el-button 
             type="text"
-            @click="detail(scope.row)">
+            @click="handleDetail(scope.row)">
             {{ scope.row.id }}
           </el-button>
         </template>
