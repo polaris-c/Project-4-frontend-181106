@@ -29,24 +29,6 @@
 
             <!-- 图片 -->
             <el-collapse-item title="零件形态" name="appearance">
-              <!-- <div>
-                <el-upload
-                  class=""
-                  action=""
-                  list-type="picture-card"
-                  :file-list="shapeImgList"
-                  :limit="20"
-                  :on-exceed="handleExceed"
-                  :on-change="handleChange"
-                  :on-preview="handlePreview"
-                  :before-remove="beforeRemove"
-                  :on-remove="handleRemove"
-                  :auto-upload="false"
-                  multiple>
-                  <el-button size="mini" type="primary">点击选取图片</el-button>
-                  <div slot="tip" class="el-upload__tip">只能上传jpg/png图片</div>
-                </el-upload>
-              </div> -->
               <img-upload
                 ref="imgUpload"
                 function-type="devPartSample"
@@ -290,13 +272,6 @@ export default {
         })
         /** 上传形态图片 */
         this.$refs.imgUpload.beforeSubmit()
-        // this.shapeImgList.forEach(file => {
-        //   // console.log('---- DevicePartForm -- shapeImg: ', file.raw.name)
-        //   this.uploadShapeImg = new FormData()
-        //   this.uploadShapeImg.append('devPartSample', res.id)
-        //   this.uploadShapeImg.append('originalUrl', file.raw)
-        //   this.submitImg()
-        // })
       }).catch(err => {
         console.log('---- DevicePartForm -- createDevPartSample err:', err)
         this.$message({
@@ -336,40 +311,6 @@ export default {
         })
       })
     },
-
-    /*  Upload  */
-    handleExceed(files, fileList) {
-      this.$message({
-        message: `限制最多上传20个文件，本次选择了${files.length}个，共选择了${files.length + fileList.length}个文件`,
-        type: 'warning',
-        duration: 9000,
-      })
-    },
-    handleChange(file, fileList) {
-      console.log('- - Change - - file.raw:', file.raw)
-      this.shapeImgList.push(file)
-    },
-    handlePreview(file) {
-      console.log('- - Preview - - file:', file.name)
-      return this.$alert(` ${ file.name }  (${ file.size }字节)`, `图片`, {
-        confirmButtonText: '确定',
-        type: 'success'
-      }).then(() => {
-      }).catch(() => {
-      })
-    },
-    beforeRemove(file, fileList) {
-      return  this.$confirm(`确定删除 < ${ file.name } > 吗？`, '提 示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取 消',
-        type: 'warning'
-      })
-    },
-    handleRemove(file, fileList) {
-      console.log('- - Remove - - file:', file.name)
-      this.shapeImgList = fileList
-      console.log('- - Remove - - .srcImgList:', this.shapeImgList)
-    }
   },
 }
 </script>
@@ -379,6 +320,6 @@ export default {
   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 .el-select-style {
-  width: 316px;
+  width: 350px;
 }
 </style>

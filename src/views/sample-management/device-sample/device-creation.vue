@@ -224,6 +224,7 @@ export default {
       /** 创建组件 */
       createDevSample(this.uploadBasicInfo).then(res => {
         this.devData.id = res.id  // 获取组件id,用于发送零件信息
+        /** 创建零件 */
         this.$refs.devPartForm.forEach((component) => {
           component.beforeSubmit()
         })
