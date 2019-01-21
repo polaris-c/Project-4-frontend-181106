@@ -5,8 +5,7 @@
       <div slot="header">
         <span>炸药与原材料基本信息</span>
       </div>
-      <div>
-        <!-- <div>route.params: {{ routeParams }}</div> -->
+      <div v-loading="loading">
         <el-row class="el-row-style">
           <el-col :span="8">样本编号: {{ detailData.id }}</el-col>
           <el-col :span="8">样本名称：{{ detailData.sname }}</el-col>
@@ -26,28 +25,49 @@
 
     <el-card shadow="hover" class="el-row-style">
       <el-tabs 
+        v-loading="loading"
         type="border-card"
         v-model="activeTabName"
         @tab-click="handleTabClick">
 
         <el-tab-pane label="FTIR" name="FTIRtab" >
-          <test-chart ></test-chart>
+          <div v-if = "loadingChart">
+            <tab-ingredient
+              data-type="FTIR"
+              :ingredient-data="FTIRdata">
+            </tab-ingredient>
+          </div>
         </el-tab-pane>
 
-        <el-tab-pane label="RAMAN" name="RAMANtab">RAMAN
-          <test-chart ></test-chart>
+        <el-tab-pane label="Raman" name="Ramantab">
+          <div v-if = "loadingChart">
+            <tab-ingredient
+              data-type="Raman"
+              :ingredient-data="Ramandata">
+            </tab-ingredient>
+          </div>
         </el-tab-pane>
 
-        <el-tab-pane label="XRF" name="XRFtab">XRF
-          <test-chart ></test-chart>
+        <el-tab-pane label="XRF" name="XRFtab">
+          <div v-if = "loadingChart">
+            <tab-ingredient
+              data-type="XRF"
+              :ingredient-data="XRFdata">
+            </tab-ingredient>
+          </div>
         </el-tab-pane>
 
-        <el-tab-pane label="XRD" name="XRDtab">XRD
-          <test-chart ></test-chart>
+        <el-tab-pane label="XRD" name="XRDtab">
+          <div v-if = "loadingChart">
+            <tab-ingredient
+              data-type="XRD"
+              :ingredient-data="XRDdata">
+            </tab-ingredient>
+          </div>
         </el-tab-pane>
 
-        <el-tab-pane label="GCMS" name="GCMStab">GCMS
-          <test-chart ></test-chart>
+        <el-tab-pane label="GCMS" name="GCMStab">
+          <!-- <chart-curve></chart-curve> -->
         </el-tab-pane>
         
       </el-tabs>
@@ -75,24 +95,35 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { getExplosiveSampleInfo } from '@/api/sample-explosive'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
-import TestChart from '@/components/Charts/test-chart'
+import PaginationFiles from '@/components/PaginationFiles'
+import TabIngredient from '@/components/DetailTab/tab-ingredient'
 
 export default {
   name: 'ExplosiveDetail',
   data() {
     return {
       routeParams: null,
-      detailData: {
-        id: '001',
-        sname: 'A001',
-        snameAbbr: 'A1',
-        sampleOrigin: 'AP',
-        factory: 'AF',
-        user: 'user001',
-        inputDate: '2018-11-19',
-        note: '1111'
+      loading: false,
+      loadingChart: false,
+      detailData: {},
+      FTIRdata: {
+        dataInfo: {},
+        seriesData: [],
+      },
+      Ramandata: {
+        dataInfo: {},
+        seriesData: [],
+      },
+      XRFdata: {
+        dataInfo: {},
+        seriesData: [],
+      },
+      XRDdata: {
+        dataInfo: {},
+        seriesData: [],
       },
       activeTabName: "FTIRtab"
     }
@@ -101,31 +132,62 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
-  // watch: {
-  //   $route() {
-  //     this.routeParams = this.$route.params
-  //     console.log('- - - - detail route.params: ', this.$route.params.id)
-  //   }
-  // },
   components: {
     GobackButton,
     SubmitButton,
-    TestChart,
+    PaginationFiles,
+    TabIngredient,
   },
   mounted() {
     this.routeParams = this.$route.params
     console.log('- - ExplosiveDetail - - $route.params: ', this.$route.params.id)
+    this.fetchData()
   },
   methods: {
+    fetchData() {
+      this.loading = true
+      getExplosiveSampleInfo(this.$route.params.id).then(res => {
+        this.detailData = res
+        /** 先检查有没有检测信息,再赋数据值 */
+        if (this.detailData.exploSampleFTIR.length) {
+          this.FTIRdata.dataInfo = this.detailData.exploSampleFTIR[0]
+          this.FTIRdata.seriesData = this.detailData.exploSampleFTIR[0].exploSampleFTIRTestFile
+        }
+        if (this.detailData.exploSampleRaman.length) {
+          this.Ramandata.dataInfo = this.detailData.exploSampleRaman[0]
+          this.Ramandata.seriesData = this.detailData.exploSampleRaman[0].exploSampleRamanTestFile
+        }
+        if (this.detailData.exploSampleXRF.length) {
+          this.XRFdata.dataInfo = this.detailData.exploSampleXRF[0]
+          this.XRFdata.seriesData = this.detailData.exploSampleXRF[0].exploSampleXRFTestFile
+        }
+        if (this.detailData.exploSampleXRD.length) {
+          this.XRDdata.dataInfo = this.detailData.exploSampleXRD[0]
+          this.XRDdata.seriesData = this.detailData.exploSampleXRD[0].exploSampleXRDTestFile
+        }
+
+        // console.log('---- ExplosiveDetail ---- this.detailData: ', this.detailData)
+        // console.log('---- ExplosiveDetail ---- this.detailData: ', this.detailData.exploSampleFTIR[0].exploSampleFTIRTestFile)
+        this.loading = false
+        this.loadingChart = true
+      }).catch(err => {
+        this.$message({
+          message: '获取样本信息错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
+    },
     handleTabClick(tab, event) {
       console.log('- - Detail - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
       console.log('- - Detail - - handleTabClick activeTabName: ', this.activeTabName)
+    },
+    handleChangePage(pageIndex) {
+      console.log('- - Detail - - pageIndex: ', pageIndex)
+      this.tableParams.page = pageIndex
+      this.fetchData(this.tableParams)
     },
 
     /** 页面操作按键 */
