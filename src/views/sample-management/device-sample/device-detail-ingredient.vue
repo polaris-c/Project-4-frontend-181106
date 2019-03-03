@@ -1,7 +1,7 @@
 <template>
   <div class="app-main-container">
 
-    <el-row class="el-row-style">
+    <!-- <el-row class="el-row-style">
       <el-col :span="24">
         <el-card shadow="hover">
           <div slot="header">
@@ -11,7 +11,7 @@
             <el-row class="el-row-style">
               <el-col :span="8">零件编号: {{ devPartData.id }}</el-col>
               <el-col :span="8">零件名称：{{ devPartData.sname }}</el-col>
-              <!-- <el-col :span="8">零件类型：{{ devPartData.Type }}</el-col> -->
+              <el-col :span="8">零件类型：{{ devPartData.Type }}</el-col>
             </el-row>
             <el-row class="el-row-style">
               <el-col :span="8">零件产地: {{ devPartData.Origin }}</el-col>
@@ -30,27 +30,12 @@
             </el-row>
             <el-row class="el-row-style">
               <el-col :span="20">备注：{{ devPartData.note }}</el-col>
-              <!-- <el-col :span="2">
-                <el-button 
-                  type="primary"
-                  @click="ingredient"
-                  plain>
-                  成分特征
-                </el-button>
-              </el-col>
-              <el-col :span="2">
-                <el-button 
-                  type="primary"
-                  @click="appearance"
-                  plain>
-                  形态特征
-                </el-button>
-              </el-col> -->
+
             </el-row>
           </div>
         </el-card>
       </el-col>
-    </el-row>
+    </el-row> -->
 
     <el-card shadow="hover" class="el-row-style">
       <el-tabs 
