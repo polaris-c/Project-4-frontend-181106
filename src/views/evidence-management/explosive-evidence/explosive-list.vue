@@ -57,7 +57,7 @@
       </el-table-column>
 
       <el-table-column
-        prop="user"
+        prop="user_id"
         label="处理人员"
         align="center"
         width="160">

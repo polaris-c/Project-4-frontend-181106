@@ -84,6 +84,7 @@ import TabImg from '@/components/AnalysisTab/analysis-tab-img'
 import RecognitionButton from '@/components/Buttons/recognition-button'
 import CheckButton from '@/components/Buttons/check-button'
 import Pagination from '@/components/Pagination'
+import { startMatch } from '@/api/match-explosive'
 
 export default {
   name: 'AnalysisTab',
@@ -96,9 +97,17 @@ export default {
       type: String,
       default: 'Unknown',
     },
+    analysisType: {
+      type: String,
+      default: 'explosive',
+    }
   },
   data() {
     return {
+      matchData: {
+        type: 0,
+        eviFileId: 0
+      },
       tableData: [
         {
           id: '001',
@@ -169,6 +178,14 @@ export default {
   methods: {
     handleRecognition() {
       console.log('- - AnalysisTab - - handleRecognition:', this.$route.params)
+      let uploadForm = new FormData()
+      this.matchData.type = 1
+      this.matchData.eviFileId = 10
+      uploadForm.append('type', this.matchData.type)
+      uploadForm.append('eviFileId', this.matchData.eviFileId)
+      startMatch(uploadForm).then(res => {
+        console.log('- - AnalysisTab - - handleRecognition:', res)
+      })
 
     },
     handleCheck() {

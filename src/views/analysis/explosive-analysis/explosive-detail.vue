@@ -17,7 +17,10 @@
           :label="detectionTypeItem"
           :name="detectionTypeItem">
           <!-- 标签页内容 -->
-          <AnalysisTab :detectionType="detectionTypeItem"></AnalysisTab>
+          <AnalysisTab 
+            :detectionType="detectionTypeItem"
+            analysisType="explosive">
+          </AnalysisTab>
         </el-tab-pane>
         
       </el-tabs>
@@ -72,7 +75,7 @@ export default {
     AnalysisTab,
   },
   methods: {
-        fetchData() {
+    fetchData() {
       this.loading = true
       getExplosiveSampleInfo(this.$route.params.id).then(res => {
         this.detailData = res
