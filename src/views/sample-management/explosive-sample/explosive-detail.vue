@@ -184,11 +184,11 @@ export default {
       console.log('- - Detail - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
       console.log('- - Detail - - handleTabClick activeTabName: ', this.activeTabName)
     },
-    handleChangePage(pageIndex) {
-      console.log('- - Detail - - pageIndex: ', pageIndex)
-      this.tableParams.page = pageIndex
-      this.fetchData(this.tableParams)
-    },
+    // handleChangePage(pageIndex) {
+    //   console.log('- - Detail - - pageIndex: ', pageIndex)
+    //   this.tableParams.page = pageIndex
+    //   this.fetchData(this.tableParams)
+    // },
 
     /** 页面操作按键 */
     update() {

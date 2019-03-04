@@ -1,16 +1,16 @@
 <template>
   <div class="app-main-container">
-
     <el-row>
       <el-col :span="22">
         <search-input @emit-search="handleSearch"></search-input>
       </el-col>
-      <!-- <el-col :span="2">
+      <el-col :span="2">
         <delete-button @delete-confirm="handleDelete"></delete-button>
-      </el-col> -->
+      </el-col>
     </el-row>
     
     <el-table
+      v-loading="loading"
       class="app-main-table"
       ref="explosiveList"
       :data="tableData"
@@ -36,7 +36,7 @@
         <template slot-scope="scope">
           <el-button 
             type="text"
-            @click="detail(scope.row)">
+            @click="handleDetail(scope.row)">
             {{ scope.row.id }}
           </el-button>
         </template>
@@ -80,7 +80,6 @@
       :currentPage="tablePageIndex"
       @change-page="handleChangePage">
     </pagination>
-
   </div>
 </template>
 
@@ -89,49 +88,28 @@ import { mapGetters } from 'vuex'
 import DeleteButton from '@/components/Buttons/delete-button'
 import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
+import { getExplosiveEviList, deleteExplosiveEvi } from '@/api/evidence-explosive'
 
 export default {
-  name: 'AnalysisExplosiveList',
+  name: 'ExplosiveList',
   data() {
     return {
+      loading: false,
       multipleSelection: [],
-      tableData: [
-        {
-          id: '001',
-          evidenceName: 'A001',
-          caseName: 'A1-case',
-          user: 'user001',
-          inputDate: '2018-11-19',
-          note: '1111'
-        },
-        {
-          id: '002',
-          evidenceName: 'A002',
-          caseName: 'A2-case',
-          user: 'user002',
-          inputDate: '2018-11-19',
-          note: '1112'
-        },
-        {
-          id: '003',
-          evidenceName: 'A003',
-          caseName: 'A3-case',
-          user: 'user003',
-          inputDate: '2018-11-19',
-          note: '1113'
-        },
-      ],
-      tablePageIndex: 1
+      tableData: [],
+      tablePageIndex: 1,
+      tableParams: {
+        search: null,
+        page: 1,
+        page_size: 20,
+        count: 1,
+      }
     }
   },
   computed: {
     ...mapGetters([
       'name',
-      'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
+      'roles'
     ])
   },
   components: {
@@ -139,26 +117,73 @@ export default {
     SearchInput,
     Pagination
   },
+  mounted() {
+    this.loading = true
+    this.fetchData(this.tableParams)
+  },
   methods: {
+    fetchData(tableParams){
+      this.loading = true
+      getExplosiveEviList(tableParams).then(res => {
+        this.tableData = res.results
+        this.tableParams.count =  res.count
+        this.loading = false
+      }).catch(err => {
+        this.$message({
+          message: '获取列表错误' + err.message,
+          type: 'error'
+        })
+        this.loading = false
+      })
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val
-      console.log('- - ExplosiveList - - multipleSelection:', this.multipleSelection)
+      console.log('- - ExplosiveList - - multipleSeletion:', this.multipleSelection)
     },
-    detail(row) {
+    handleDetail(row) {
+      console.log('- - list-detail row:', row.id, row.sname)
       this.$router.push('/analysis/explosiveAnalysis/explosiveDetail/' + row.id)
     },
 
     /** 页面按键功能 */
     handleDelete() {
-      console.log('- - ExplosiveList - - delete: ', this.multipleSelection)
+      this.loading = true
+      this.multipleSelection.forEach(val => {
+        deleteExplosiveEvi(val.id).then(res =>{
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.tableParams.page = 1
+          this.fetchData(this.tableParams)
+          this.loading = false
+        }).catch(err => {
+          console.log('- - ExplosiveList - - handleDelete: 删除失败 ', err)
+          this.$message({
+            message: '删除失败' + err.message,
+            type: 'error'
+          })
+          this.loading = false
+        })
+      })
     },
     handleSearch(searchInputData) {
       console.log('- - ExplosiveList - - search: ', searchInputData)
+      this.tableParams.search = searchInputData
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
     },
     handleChangePage(pageIndex) {
       console.log('- - ExplosiveList - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
-    }
+      this.tableParams.page = pageIndex
+      this.fetchData(this.tableParams)
+    },
+    handleChangeSize(pageSize) {
+      console.log('- - ExplosiveList - - pageSize: ', pageSize)
+      this.tableParams.page_size = pageSize
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
+    },
   }
 }
 </script>
@@ -166,3 +191,6 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 
 </style>
+
+
+

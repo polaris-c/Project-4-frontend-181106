@@ -1,6 +1,7 @@
 <template>
   <el-row :gutter="10">
     <el-col :span="18">
+      <!-- 图表 -->
       <TabImg v-if="isImgTab" :detectionType="detectionType"></TabImg>
       <TabChart v-else :detectionType="detectionType"></TabChart>
     </el-col>
@@ -8,9 +9,11 @@
     <el-col :span="6">
       <el-row>
         <el-col :span="8">
-          <RecognitionButton @recognition-confirm="handleRecognition"></RecognitionButton>
+          <!-- 识别按键 -->
+          <RecognitionButton @recognition-confirm="handleRecognition"></RecognitionButton> 
         </el-col>
         <el-col :span="16">
+          <!-- 核准按键 -->
           <CheckButton 
             v-if="detectionType === 'Summary'"
             @check-confirm="handleCheck">
@@ -18,6 +21,7 @@
         </el-col>
       </el-row>
       
+      <!-- 结果排名列表 -->
       <el-table
         class="app-main-table"
         ref="explosiveList"
@@ -165,6 +169,7 @@ export default {
   methods: {
     handleRecognition() {
       console.log('- - AnalysisTab - - handleRecognition:', this.$route.params)
+
     },
     handleCheck() {
       console.log('- - AnalysisTab - - handleCheck:', this.currentSample.id)

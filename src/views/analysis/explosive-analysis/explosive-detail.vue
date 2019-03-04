@@ -10,12 +10,13 @@
         <!-- <el-tab-pane label="FTIR" name="FTIRtab" >
           <AnalysisTab detectionType="FTIR"></AnalysisTab>
         </el-tab-pane> -->
-
+        
         <el-tab-pane 
           v-for="detectionTypeItem in detectionTypeList"
           :key="detectionTypeItem"
           :label="detectionTypeItem"
           :name="detectionTypeItem">
+          <!-- 标签页内容 -->
           <AnalysisTab :detectionType="detectionTypeItem"></AnalysisTab>
         </el-tab-pane>
         
@@ -71,6 +72,40 @@ export default {
     AnalysisTab,
   },
   methods: {
+        fetchData() {
+      this.loading = true
+      getExplosiveSampleInfo(this.$route.params.id).then(res => {
+        this.detailData = res
+        /** 先检查有没有检测信息,再赋数据值 */
+        if (this.detailData.exploSampleFTIR.length) {
+          this.FTIRdata.dataInfo = this.detailData.exploSampleFTIR[0]
+          this.FTIRdata.seriesData = this.detailData.exploSampleFTIR[0].exploSampleFTIRTestFile
+        }
+        if (this.detailData.exploSampleRaman.length) {
+          this.Ramandata.dataInfo = this.detailData.exploSampleRaman[0]
+          this.Ramandata.seriesData = this.detailData.exploSampleRaman[0].exploSampleRamanTestFile
+        }
+        if (this.detailData.exploSampleXRF.length) {
+          this.XRFdata.dataInfo = this.detailData.exploSampleXRF[0]
+          this.XRFdata.seriesData = this.detailData.exploSampleXRF[0].exploSampleXRFTestFile
+        }
+        if (this.detailData.exploSampleXRD.length) {
+          this.XRDdata.dataInfo = this.detailData.exploSampleXRD[0]
+          this.XRDdata.seriesData = this.detailData.exploSampleXRD[0].exploSampleXRDTestFile
+        }
+
+        // console.log('---- ExplosiveDetail ---- this.detailData: ', this.detailData)
+        // console.log('---- ExplosiveDetail ---- this.detailData: ', this.detailData.exploSampleFTIR[0].exploSampleFTIRTestFile)
+        this.loading = false
+        this.loadingChart = true
+      }).catch(err => {
+        this.$message({
+          message: '获取样本信息错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
+    },
     handleTabClick(tab, event) {
       console.log('- - AnalysisExplosiveDetail - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
       console.log('- - AnalysisExplosiveDetail - - handleTabClick activeTabName: ', this.activeTabName)
