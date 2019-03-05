@@ -24,11 +24,16 @@ export default {
       default: 'explosive',
     },
     seriesData: {
-      type: Array
+      type: Array,
+      default: []
     },
     dataIndex: {
       type: [Number, String],
       default: 0
+    },
+    sampleData: {
+      type: Object,
+      default: {}
     }
   },
   data() {
@@ -65,14 +70,14 @@ export default {
         },
         xAxis: {
           title: {
-            text: 'xAxis_title'
+            text: 'x'
           },
           lineWidth: 2,
           categories: []
         },
         yAxis: {
           title: {
-            text: 'yAxis_title_Intensity'
+            text: 'y'
           },
           lineWidth: 2,
           // lineColor: '#',
@@ -105,12 +110,14 @@ export default {
       this.dataIndex = val
       console.log(`---- AnalysisTabChart watch ---- ${ this.detectionType } Index:`, this.dataIndex)
       this.drawChart()
+    },
+    sampleData() {
+      this.drawChart()
     }
   },
   mounted() {
+    console.log(`---- AnalysisTabChart ---- mounted ${ this.detectionType }`)
     this.drawChart();
-    // console.log('-- AnalysisTabChart -- :', this.ingredientData.seriesData)
-    
   },
   methods: {
     // initChart() {
@@ -129,6 +136,13 @@ export default {
       // this.$el.style.height = (this.styles.height || 600) + 'px';
       this.options.xAxis.categories = this.seriesData[this.dataIndex].handledData[0]
       this.options.series[0].data = this.seriesData[this.dataIndex].handledData[1]
+      // console.log(`---- AnalysisTabChart ---- sampleData Len:`, Object.keys(this.sampleData).length )
+      this.options.series[1].data = []
+      if(Object.keys(this.sampleData).length !== 0) {
+        console.log(`---- AnalysisTabChart ---- sampleData:`, this.sampleData )
+        this.options.series[1].data = this.sampleData.handledData[1]
+      }
+
       this.chart = new Highcharts.Chart(this.$el, this.options);
     },
   },

@@ -88,8 +88,9 @@
                     <el-select 
                       v-model="userData.role" 
                       placeholder="请选择权限">
-                      <el-option label="管理员" value="2">管理员</el-option>
-                      <el-option label="普通用户" value="3">普通用户</el-option>
+                      <el-option label="管理员" value=2>管理员</el-option>
+                      <el-option label="普通用户" value=3>普通用户</el-option>
+                      <el-option label="专家" value=4>专家</el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -203,6 +204,7 @@ export default {
     /** 页面操作 */
     handleSubmit() {
       console.log('- - UserCreation - - name:', this.userData.name)
+      console.log('- - UserCreation - - role:', this.userData.role)
       /** 载入FormData */
       for(let prop in this.userData) {
         if(this.userData.hasOwnProperty(prop)) {

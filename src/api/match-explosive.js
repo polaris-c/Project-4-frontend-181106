@@ -37,3 +37,30 @@ export function getExploMatchRamanInfo(id) {
     method: 'get'
   })
 }
+
+/** exploMatchXRD */
+export function getExploMatchXRDList(params) {
+  return request({
+    url: '/exploMatchXRDs/',
+    method: 'get',
+    params
+  })
+}
+
+/** exploMatchXRF */
+export function getExploMatchXRFList(params) {
+  return request({
+    url: '/exploMatchXRFs/',
+    method: 'get',
+    params
+  })
+}
+
+/** exploMatchGCMS */
+export function getExploMatchGCMSList(params) {
+  return request({
+    url: '/exploMatchGCMSs/',
+    method: 'get',
+    params
+  })
+}

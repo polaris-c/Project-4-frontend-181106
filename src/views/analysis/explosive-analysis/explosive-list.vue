@@ -141,7 +141,7 @@ export default {
       console.log('- - ExplosiveList - - multipleSeletion:', this.multipleSelection)
     },
     handleDetail(row) {
-      console.log('- - list-detail row:', row.id, row.sname)
+      console.log('- - list-detail row:', row.id, row.evidenceName)
       this.$router.push('/analysis/explosiveAnalysis/explosiveDetail/' + row.id)
     },
 
