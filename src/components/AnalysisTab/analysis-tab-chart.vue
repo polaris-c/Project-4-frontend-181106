@@ -17,8 +17,19 @@ export default {
   props: {
     detectionType: {
       type: String,
-      default: 'Unknown',
+      default: 'FTIR',
     },
+    eviType: {
+      type: String,
+      default: 'explosive',
+    },
+    seriesData: {
+      type: Array
+    },
+    dataIndex: {
+      type: [Number, String],
+      default: 0
+    }
   },
   data() {
     return {
@@ -57,7 +68,7 @@ export default {
             text: 'xAxis_title'
           },
           lineWidth: 2,
-          categories: ['xAxis_1_categorie', 'xAxis_2_categorie']
+          categories: []
         },
         yAxis: {
           title: {
@@ -72,13 +83,13 @@ export default {
             name: '物证FTIR谱图',
             color: 'red',
             // lineWidth: 1,
-            data: [2, 5, 10, 18, 30, 35, 20, 10, 6]
+            data: []
           },
           {
             name: '当前样本FTIR谱图',
             // color: 'blue',
             // lineWidth: 1,
-            data: [12, 15, 20, 28, 40, 45, 30, 20, 16]
+            data: []
           }
         ],
       },
@@ -89,16 +100,37 @@ export default {
       },
     }
   },
+  watch: {
+    dataIndex(val) {
+      this.dataIndex = val
+      console.log(`---- AnalysisTabChart watch ---- ${ this.detectionType } Index:`, this.dataIndex)
+      this.drawChart()
+    }
+  },
   mounted() {
-    this.initChart();
+    this.drawChart();
+    // console.log('-- AnalysisTabChart -- :', this.ingredientData.seriesData)
+    
   },
   methods: {
-    initChart() {
+    // initChart() {
+    //   // console.log(this.$el);
+    //   // this.$el.style.width = (this.styles.width || 900) + 'px';
+    //   // this.$el.style.height = (this.styles.height || 600) + 'px';
+    //   this.chart = new Highcharts.Chart(this.$el, this.options);
+    // }
+    drawChart() {
+      if (!this.seriesData.length) {
+        console.log(`---- AnalysisTabChart ---- ${ this.detectionType } is empty!!! `)
+        return
+      }
       // console.log(this.$el);
       // this.$el.style.width = (this.styles.width || 900) + 'px';
       // this.$el.style.height = (this.styles.height || 600) + 'px';
+      this.options.xAxis.categories = this.seriesData[this.dataIndex].handledData[0]
+      this.options.series[0].data = this.seriesData[this.dataIndex].handledData[1]
       this.chart = new Highcharts.Chart(this.$el, this.options);
-    }
+    },
   },
 
 }

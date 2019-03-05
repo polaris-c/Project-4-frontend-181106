@@ -14,7 +14,7 @@
         <el-row class="el-row-style">
           <el-col :span="8">样本产地：{{ detailData.sampleOrigin }}</el-col>
           <el-col :span="8">样本厂家：{{ detailData.factory }}</el-col>
-          <el-col :span="8">处理人员：{{ detailData.user }}</el-col>
+          <el-col :span="8">处理人员：{{ username }}</el-col>
         </el-row>
         <el-row class="el-row-style">
           <el-col :span="8">录入日期：{{ detailData.inputDate }}</el-col>
@@ -109,6 +109,7 @@ export default {
       loading: false,
       loadingChart: false,
       detailData: {},
+      username: '',
       FTIRdata: {
         dataInfo: {},
         seriesData: [],
@@ -167,7 +168,7 @@ export default {
           this.XRDdata.dataInfo = this.detailData.exploSampleXRD[0]
           this.XRDdata.seriesData = this.detailData.exploSampleXRD[0].exploSampleXRDTestFile
         }
-
+        this.username = this.detailData.user.username
         // console.log('---- ExplosiveDetail ---- this.detailData: ', this.detailData)
         // console.log('---- ExplosiveDetail ---- this.detailData: ', this.detailData.exploSampleFTIR[0].exploSampleFTIRTestFile)
         this.loading = false
