@@ -34,6 +34,10 @@ export default {
     sampleData: {
       type: Object,
       default: {}
+    },
+    distanceData: {
+      type: [Number, String],
+      default: 0
     }
   },
   data() {
@@ -113,6 +117,9 @@ export default {
     },
     sampleData() {
       this.drawChart()
+    },
+    distanceData() {
+      this.drawChart()
     }
   },
   mounted() {
@@ -140,7 +147,10 @@ export default {
       this.options.series[1].data = []
       if(Object.keys(this.sampleData).length !== 0) {
         console.log(`---- AnalysisTabChart ---- sampleData:`, this.sampleData )
-        this.options.series[1].data = this.sampleData.handledData[1]
+        let count = 0
+        this.options.series[1].data = this.sampleData.handledData[1].map(y => {
+          return y += Number(this.distanceData)
+        })
       }
 
       this.chart = new Highcharts.Chart(this.$el, this.options);

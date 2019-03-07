@@ -87,6 +87,17 @@
       </el-tabs>
     </el-card>
 
+    <el-card shadow="hover" class="el-row-style" v-if="role !== 3">
+      <div>专家意见：</div>
+      <hr>
+      <el-input 
+        v-model="expertOpinion"
+        :rows="6"
+        type="textarea"
+        placeholder="请输入...">
+      </el-input>
+    </el-card>
+
     <!-- 页面操作按键 -->
     <el-card shadow="hover">
       <el-row class="">
@@ -139,12 +150,13 @@ export default {
       activeTabName: "FTIRtab",
       // activeTabName: "FTIR",
       // detectionTypeList: ['FTIR', 'RAMAN', 'XRF', 'XRD', 'GCMS', 'Summary'],
+      expertOpinion: ''  // 专家核准意见
     }
   },
   computed: {
     ...mapGetters([
       'name',
-      'roles',
+      'role',
       'sidebar',
       'device',
       'token',

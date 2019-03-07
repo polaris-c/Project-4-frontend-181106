@@ -80,7 +80,7 @@
                   </el-form-item>
                 </el-col>
 
-                <el-col :span="11" :offset="2">
+                <el-col :span="11" :offset="2" v-if="role !== 3">
                   <el-transfer
                     filter-placeholder="请输入专家名称或职务"
                     v-model="expertSelected"
@@ -145,33 +145,33 @@ export default {
       expertList: [
         {
           id: 1,
-          name: 'Aaa1',
-          posts: '爆炸装置',
+          name: '赵**',
+          posts: '爆炸装置专家',
         },
         {
           id: 2,
-          name: 'Bbb1',
-          posts: '炸药',
+          name: '钱**',
+          posts: '炸药专家',
         },
         {
           id: 3,
-          name: 'Aaa2',
-          posts: '爆炸装置',
+          name: '孙**',
+          posts: '爆炸装置专家',
         },
         {
           id: 5,
-          name: 'Aaa3',
-          posts: '爆炸装置',
+          name: '李**',
+          posts: '爆炸装置专家',
         },
         {
           id: 6,
-          name: 'Bbb2',
-          posts: '炸药',
+          name: '周**',
+          posts: '炸药专家',
         },
         {
           id: 7,
-          name: 'Bbb3',
-          posts: '',
+          name: '吴**',
+          posts: '炸药专家',
         }
       ],  // 获取的所有专家信息
       expertData: [],  // 穿梭框左栏的专家列表,"专家姓名--职务"形式显示,key是专家编号
@@ -182,7 +182,7 @@ export default {
   computed: {
     ...mapGetters([
       'name',
-      'roles',
+      'role',
       'sidebar',
       'device',
       'token',

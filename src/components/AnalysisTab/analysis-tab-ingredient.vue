@@ -10,8 +10,40 @@
         :evi-type="eviType"
         :series-data="ingredientData.seriesData"
         :data-index = "dataIndex"
-        :sample-data= "currentSample">
+        :sample-data = "currentSample"
+        :distance-data = "distanceData">
       </TabChart>
+      <div v-else class="img-container">
+        <el-row>
+          <el-col>
+            <span>-- FTIR --</span>
+          </el-col>
+        </el-row>
+        
+        <el-row>
+          <el-col>
+            <span>-- Raman --</span>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col>
+            <span>-- XRF --</span>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col>
+            <span>-- XRD --</span>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col>
+            <span>-- GCMS --</span>
+          </el-col>
+        </el-row>
+      </div>
     </el-col>
 
     <el-col :span="6">
@@ -92,11 +124,26 @@
 
   <!-- tab内大分页 -->
   <el-row :gutter="10">
-    <pagination-files 
-      :count="ingredientData.seriesData.length"
-      :page="pageIndex"
-      @change-page="handleChangeFilePage">
-    </pagination-files>
+    <el-col :span="8">
+      <pagination-files 
+        :count="ingredientData.seriesData.length"
+        :page="pageIndex"
+        @change-page="handleChangeFilePage">
+      </pagination-files>
+    </el-col>
+    <el-col :span="4" :offset="6">
+      <el-input
+        v-model="inputDistanceData"
+        placeholder="样本-物证距离">
+        <el-button
+          slot="append"
+          size="mini"
+          @click="handleDistance">
+          分 离
+        </el-button>
+      </el-input>
+
+    </el-col>
   </el-row>
   </div>
 
@@ -170,6 +217,8 @@ export default {
       // tab内大分页
       dataIndex: 0,  // 数据数组下标从0开始
       pageIndex: 1,  // 页码从1开始
+      inputDistanceData: null,
+      distanceData: null,
     }
   },
   watch: {
@@ -268,10 +317,18 @@ export default {
       this.dataIndex = index - 1
       this.pageIndex = index
     },
+    //
+    handleDistance() {
+      this.distanceData = this.inputDistanceData
+    }
   },
 }
 </script>
 
 <style scoped>
-
+.img-container {
+  width: 100%;
+  height: 500px;
+  background-color: whitesmoke;
+}
 </style>

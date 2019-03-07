@@ -1,6 +1,7 @@
 <template>
   <div>
     <div>检测设备：{{ ingredientData.dataInfo.devDetect }}</div>
+    <div>检测方法：{{ ingredientData.dataInfo.methodDetect }}</div>
     <chart-column 
       v-if="dataType === 'XRF'"
       :data-type = "dataType"

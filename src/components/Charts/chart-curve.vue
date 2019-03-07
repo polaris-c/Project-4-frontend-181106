@@ -32,7 +32,7 @@ export default {
       chart: null,
       options: {
         title: {
-          text: 'title_text'
+          text: this.dataType
         },
         chart:{
           // type: 'column',
@@ -62,14 +62,14 @@ export default {
         },
         xAxis: {
           title: {
-            text: 'xAxis_title'
+            text: 'x'
           },
           lineWidth: 2,
           categories: []
         },
         yAxis: {
           title: {
-            text: 'yAxis_title_Intensity'
+            text: 'y'
           },
           lineWidth: 2,
           // lineColor: '#',
