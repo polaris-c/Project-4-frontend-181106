@@ -1,7 +1,10 @@
 <template>
   <div class="app-main-container">
     <!-- {{ $route.params }} -->
-    <el-card shadow="hover" class="el-row-style">
+    <el-card 
+      v-loading="loading"
+      shadow="hover" 
+      class="el-row-style">
       <el-tabs 
         type="border-card"
         v-model="activeTabName"  
@@ -13,7 +16,7 @@
           :label="dataItem.tabID"
           :name="dataItem.id.toString()">
           <tab-img
-            :detectionType="dataItem.srcImgURL">
+            :data-item="dataItem">
           </tab-img>
         </el-tab-pane>
 
@@ -32,29 +35,23 @@
 <script>
 import { mapGetters } from 'vuex'
 import GoBack from '@/components/Buttons/go-back'
-import TabImg from '@/components/AnalysisTab/analysis-tab-img'
+import TabImg from '@/views/sample-management/device-sample/device-tab-img'
+import { getDevPartSampleInfo } from '@/api/sample-device'
 
 export default {
   name: 'DeviceDetailAppearance',
   data() {
     return {
+      loading: false,
       activeTabName: '',
       dataList: [
         { 
           id: 0,
-          srcImgURL: 'URL000' 
+          srcImgURL: 'http://127.0.0.1:8000/media/image/devShapeSample/original/27.jpg' 
         },
         { 
           id: 1,
           srcImgURL: 'URL001' 
-        },
-        { 
-          id: 2,
-          srcImgURL: 'URL002' 
-        },
-        { 
-          id: 4,
-          srcImgURL: 'URL004' 
         },
       ],
     }
@@ -74,17 +71,26 @@ export default {
     TabImg,
   },
   mounted() {
-    console.log('- - DeviceDetailAppearance - - dataList:', this.dataList)
+     console.log('- - DeviceDetailAppearance - - $route.params:', this.$route.params)
+    // console.log('- - DeviceDetailAppearance - - dataList:', this.dataList)
     /** 图像列表添加用于tab标签页的字符串ID */
-    let tabID = 1
-    this.dataList.forEach((val) => {
-      val.tabID = tabID.toString()
-      tabID++
-      console.log('- - DeviceDetailAppearance - - dataList id tabID:', val.id, val.tabID)
-    })
-    this.activeTabName = this.dataList[0].tabID
+    this.fetchData()
   }, 
   methods: {
+    fetchData() {
+      this.loading = true
+      getDevPartSampleInfo(this.$route.params.id).then(res => {
+        this.dataList = res.devShapeSample
+        let tabID = 1
+        this.dataList.forEach((val) => {
+          val.tabID = tabID.toString()
+          tabID++
+          console.log('- - DeviceDetailAppearance - - dataList id tabID:', val.id, val.tabID)
+        })
+        this.activeTabName = this.dataList[0].tabID
+        this.loading = false
+      })
+    },
     handleTabClick(tab, event) {
       console.log('- - DeviceDetailAppearance - - tab: ', tab.index, tab._props.label, tab._props.name)
       console.log('- - DeviceDetailAppearance - - activeTabName: ', this.activeTabName)

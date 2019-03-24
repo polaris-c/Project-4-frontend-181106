@@ -7,7 +7,7 @@
           <div slot="header">
             <span>关键组件基本信息</span>
           </div>
-          <div>
+          <div v-loading="loading">
             <el-row class="el-row-style">
               <el-col :span="8">组件编号: {{ devData.id }}</el-col>
               <el-col :span="8">组件名称：{{ devData.sname }}</el-col>
@@ -38,7 +38,7 @@
           <div slot="header">
             <span>零件基本信息 [ {{ index+1 }} ]</span>
           </div>
-          <div>
+          <div v-loading="loading">
             <el-row class="el-row-style">
               <el-col :span="8">零件编号: {{ devPartData.id }}</el-col>
               <el-col :span="8">零件名称：{{ devPartData.sname }}</el-col>
@@ -68,7 +68,7 @@
                 <el-button 
                   type="primary"
                   size="medium"
-                  @click="ingredient">
+                  @click="ingredient(devPartData.id)">
                   成分特征
                 </el-button>
               </el-col>
@@ -76,7 +76,7 @@
                 <el-button 
                   type="primary"
                   size="medium"
-                  @click="appearance">
+                  @click="appearance(devPartData.id)">
                   形态特征
                 </el-button>
               </el-col>
@@ -111,94 +111,15 @@
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import DevicePartForm from '@/views/sample-management/device-sample/device-part-form'
+import { getDevSampleInfo } from '@/api/sample-device'
 
 export default {
   name: 'DeviceDetail',
   data() {
     return {
-      devData: {
-        id: '001',
-        sname: 'A001',
-        Type: 'A1',
-        Origin: 'AO',
-        Factory: 'AF',
-        Model: 'AM',
-        Logo: 'AL',
-        function: 'AF',
-        note: '1111',
-      },
-      devPartDataList: [
-        {
-          id: '01',
-          sname: 'A001',
-          Origin: 'AO',
-          Factory: 'AF',
-          Model: 'AM',
-          Logo: 'AL',
-          function: 'AF',
-          Color: 'CMST1',
-          Material: 'CMST1',
-          Shape: 'CMST1',
-          thickness: 'CMST1',
-          note: '1111',
-          key: Date.now(),
-          FTIRdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
-          RAMANdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
-          XRFdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
-          srcImgList: [],
-          uploadImg: new FormData(),
-        },
-        {
-          id: '02',
-          sname: 'A002',
-          Origin: 'AO',
-          Factory: 'AF',
-          Model: 'AM',
-          Logo: 'AL',
-          function: 'AF',
-          Color: 'CMST2',
-          Material: 'CMST2',
-          Shape: 'CMST2',
-          thickness: 'CMST2',
-          note: '2222',
-          key: Date.now()+1,
-          FTIRdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
-          RAMANdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
-          XRFdata: {
-            devDetect: '',
-            methodDetect: '',
-            fileList: [],
-            uploadFile: new FormData()
-          },
-          srcImgList: [],
-          uploadImg: new FormData(),
-        },
-      ],
+      loading: false,
+      devData: {},
+      devPartDataList: [],
     }
   },
   computed: {
@@ -217,13 +138,33 @@ export default {
   },
   mounted() {
     console.log('- - DeviceDetail - - $route.params:', this.$route.params)
+    this.fetchData()
   },
   methods: {
-    ingredient() {
+    fetchData() {
+      this.loading = true
+      getDevSampleInfo(this.$route.params.id).then(res => {
+        // console.log('- - DeviceDetail - - res:', res)
+        this.devData = res
+        if(this.devData.devPartSample.length) {
+          this.devPartDataList = this.devData.devPartSample
+        }
+        this.loading = false
+      }).catch(err => {
+        this.$message({
+          message: '获取组件信息错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
+    },
+
+    ingredient(id) {
       this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailIngredient/'+ this.$route.params.id)
     },
-    appearance() {
-      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailAppearance/'+ this.$route.params.id)
+    appearance(id) {
+      // this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailAppearance/'+ this.$route.params.id)
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailAppearance/'+ id)
     },
 
     /** 页面操作按键 */
