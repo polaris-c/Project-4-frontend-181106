@@ -79,7 +79,7 @@ export default {
       this.shapeImgList.forEach((file, index) => {
         this.uploadShapeImg = new FormData()
         this.uploadShapeImg.append(this.dataInfoId, this.basicInfoId)
-        this.uploadShapeImg.append('originalUrl', file.raw)
+        this.uploadShapeImg.append('srcImgURL', file.raw)
         this.createDataFile(this.uploadShapeImg).then(res => {
             console.log(`${index}-${file.raw.name} 图片上传成功`)
             this.$message({
