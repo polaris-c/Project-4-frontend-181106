@@ -43,6 +43,7 @@
             
           </el-button>
         </el-button-group>
+        ( {{ coordinate.x }} , {{ coordinate.y }} )
       </el-col>
 
     </el-row>
@@ -52,9 +53,10 @@
         <el-col :span="24" :offset="0">
           <!-- {{ detectionType }} -->
           <!-- <img :src="dataItem.srcImgURL"> -->
-          -
-          <canvas :id="dataItem.id"></canvas>
-          --
+          <canvas 
+            :id="dataItem.id"
+            @click="mouseClick">
+          </canvas>
         </el-col>
       </div>
     </el-row>
@@ -63,15 +65,6 @@
 </template>
 
 <script>
-// const naturalImgInfo = {
-//   width: 0,
-//   height: 0
-// }
-//     let canvas = null
-//     let ctx = null
-//     let width = null
-//     let height = null
-
 export default {
   name: 'AnalysisTabImg',
   props: {
@@ -88,41 +81,48 @@ export default {
         width: 0,
         height: 0
       },
+      coordinate: {
+        x: 0,
+        y: 0
+      },
       canvas: null,
       ctx: null,
       width: null,
       height: null,
     }
   },
-  watch: {
-    dataItem() {
-      console.log('watch: ', this.image)
-      this.loadImage()
-    }
-  },
+  // watch: {
+  //   dataItem() {
+  //     console.log('watch: ', this.image)
+  //     this.loadImage()
+  //   }
+  // },
   mounted() {
     this.loadImage()
   },
   methods: {
     loadImage() {
-      // this.loading = true
-    this.image = new Image()
-    this.image.src = this.dataItem.srcImgURL
-    this.naturalImgInfo.width = this.image.naturalWidth
-    this.naturalImgInfo.height = this.image.naturalHeight
-    console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight)
+      this.loading = true
+      this.image = new Image()
+      this.image.src = this.dataItem.srcImgURL
+      this.naturalImgInfo.width = this.image.naturalWidth
+      this.naturalImgInfo.height = this.image.naturalHeight
+      console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight)
 
-    this.canvas = document.getElementById(this.dataItem.id)
-    // const canvas = document.querySelector('canvas')
-    this.ctx = this.canvas.getContext('2d')
-    // this.ctx = canvas.getContext('2d')
-    this.width = this.canvas.width = 1000
-    this.height = this.canvas.height = 600
-    this.image.onload = () => {
-      this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
-      console.log('drawImage: ', this.image.src)
-    }
-      // this.loading = false
+      this.canvas = document.getElementById(this.dataItem.id)
+      this.ctx = this.canvas.getContext('2d')
+      this.width = this.canvas.width = 1000
+      this.height = this.canvas.height = 600
+      this.image.onload = () => {
+        this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
+      }
+      this.loading = false
+    },
+
+    mouseClick(e) {
+      this.coordinate.x = e.layerX
+      this.coordinate.y = e.layerY
+      console.log(e.layerX, e.layerY)
     }
   },
 }
