@@ -315,3 +315,12 @@ export function deleteDevShapeSamples(id) {
     method: 'delete'
   })
 }
+
+/** nomSamplePicture */
+export function nomSamplePicture(data) {
+  return request({
+    url: '/nomSamplePicture/',
+    method: 'post',
+    data
+  })
+}
