@@ -7,14 +7,14 @@
             type="primary"
             size="mini"
             icon="el-icon-arrow-right"
-            @click="handleScale">
+            @click="switchFunction(1)">
             尺度
           </el-button>
           <el-button 
             type="primary"
             size="mini"
             icon="el-icon-arrow-right"
-            @click="handleRotation">
+            @click="switchFunction(2)">
             旋转
           </el-button>
           <el-button 
@@ -29,20 +29,22 @@
           <el-button 
             type="primary"
             size="mini"
-            icon="el-icon-arrow-right">
+            icon="el-icon-arrow-right"
+            @click="switchFunction(3)">
             背景
           </el-button>
           <el-button 
             type="primary"
             size="mini"
-            icon="el-icon-arrow-right">
+            icon="el-icon-arrow-right"
+            @click="switchFunction(4)">
             前景
           </el-button>
           <el-button 
             type="success"
             size="mini"
-            icon="el-icon-circle-check-outline">
-            
+            icon="el-icon-circle-check-outline"
+            @click="handleUpload">
           </el-button>
         </el-button-group>
         ( {{ coordinate.x }} , {{ coordinate.y }} )
@@ -70,11 +72,12 @@
 </template>
 
 <script>
-import { nomSamplePicture } from '@/api/sample-device'
+import { nomSamplePicture, updateDevShapeSamples } from '@/api/sample-device'
 
 const Scale = 1
 const Rotation = 2
-const Coordinate = 3
+const Back = 3
+const Front = 4
 
 export default {
   name: 'AnalysisTabImg',
@@ -137,6 +140,26 @@ export default {
           vm.ctx.stroke()
         },
       },
+      objectBack: {
+        beginXY: [],
+        endXY: [],
+        drawFigure: function(vm) {
+          vm.ctx.strokeStyle = 'rgb(0, 0, 250)'
+          vm.ctx.strokeRect(this.beginXY[0], this.beginXY[1], 
+                            this.endXY[0] - this.beginXY[0], 
+                            this.endXY[1]- this.beginXY[1])
+        }
+      },
+      objectFront: {
+        beginXY: [],
+        endXY: [],
+        drawFigure: function(vm) {
+          vm.ctx.strokeStyle = 'rgb(250, 250, 0)'
+          vm.ctx.strokeRect(this.beginXY[0], this.beginXY[1], 
+                            this.endXY[0] - this.beginXY[0], 
+                            this.endXY[1]- this.beginXY[1])
+        }
+      }
     }
   },
   computed: {
@@ -176,12 +199,10 @@ export default {
       }
       this.loading = false
     },
-
 		loadImage() {
 			this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
 			// console.log('drawImage: ', image)
     },
-
 		setImage() {
       let vm = this
 			this.loadImage()
@@ -192,6 +213,14 @@ export default {
 			if(!(this.objectRotation.beginXY.length === 0) && 
 					!(this.objectRotation.endXY.length === 0)) {
 				this.objectRotation.drawFigure(vm)
+      }
+      if(!(this.objectBack.beginXY.length === 0) && 
+					!(this.objectBack.endXY.length === 0)) {
+				this.objectBack.drawFigure(vm)
+			}
+			if(!(this.objectFront.beginXY.length === 0) && 
+					!(this.objectFront.endXY.length === 0)) {
+				this.objectFront.drawFigure(vm)
 			}
 		},
 		clear() {
@@ -217,6 +246,12 @@ export default {
 						break
 					case Rotation:
 						this.drawRotation()
+            break
+          case Back:
+						this.drawBack()
+            break
+          case Front:
+						this.drawFront()
 						break
 					default:
 						// cursor.drawCursor()
@@ -242,14 +277,11 @@ export default {
 
     switchFunction(functionFlag) {
       this.clearVar()  // 若不清空原数据 canvasMove会触发其他操作对象的绘制
+      console.log(functionFlag)
       this.functionFlag = functionFlag
     },
 
-    handleScale() {
-      console.log('Scale')
-      this.switchFunction(Scale)
-      // this.functionFlag = Scale
-    },
+    /** 鼠标移动时绘制图像 */
 		drawScale() {
       let vm = this
 			if (this.twoPointsFlag) {
@@ -264,11 +296,6 @@ export default {
 				this.objectScale.endXY = this.destinationXY
 				this.objectScale.drawFigure(vm)
 			}
-    },
-    handleRotation() {
-      console.log('Rotation')
-      this.switchFunction(Rotation)
-      // this.functionFlag = Rotation
     },
     drawRotation() {
       let vm = this
@@ -285,6 +312,30 @@ export default {
 				this.objectRotation.drawFigure(vm)
 			}
     },
+    drawBack() {
+      let vm = this
+			if (this.twoPointsFlag) {
+				this.ctx.strokeStyle = 'rgb(20, 20, 250)'
+				this.ctx.strokeRect(this.originXY[0], this.originXY[1], 
+												this.moveCoordinate.x - this.originXY[0], this.moveCoordinate.y - this.originXY[1])
+			} else if(this.originXY.length) {
+				this.objectBack.beginXY = this.originXY
+				this.objectBack.endXY = this.destinationXY
+				this.objectBack.drawFigure(vm)
+			}
+    },
+    drawFront() {
+      let vm = this
+			if (this.twoPointsFlag) {
+				this.ctx.strokeStyle = 'rgb(250, 250, 20)'
+				this.ctx.strokeRect(this.originXY[0], this.originXY[1], 
+												this.moveCoordinate.x - this.originXY[0], this.moveCoordinate.y - this.originXY[1])
+			} else if(this.originXY.length) {
+				this.objectFront.beginXY = this.originXY
+				this.objectFront.endXY = this.destinationXY
+				this.objectFront.drawFigure(vm)
+			}
+		},
 
     // 预处理
     preHandleUpload() {
@@ -325,7 +376,31 @@ export default {
         this.loading = false
       })
     },
-    
+
+    handleUpload() {
+      console.log(`objectBack:, ${this.objectBack.beginXY}, ${this.objectBack.endXY} \n
+        objectFront:, ${this.objectFront.beginXY}, ${this.objectFront.endXY} \n
+        scale: ${this.scaleX}, ${this.ScaleY}`)
+      let [backX1, backY1, backX2, backY2, frontX1, frontY1, frontX2, frontY2] = [Number((this.objectBack.beginXY[0] * this.scaleX).toFixed()), 
+                                                                                  Number((this.objectBack.beginXY[1] * this.ScaleY).toFixed()),
+                                                                                  Number((this.objectBack.endXY[0] * this.scaleX).toFixed()),
+                                                                                  Number((this.objectBack.endXY[1] * this.ScaleY).toFixed()), 
+                                                                                  Number((this.objectFront.beginXY[0] * this.scaleX).toFixed()), 
+                                                                                  Number((this.objectFront.beginXY[1] * this.ScaleY).toFixed()),
+                                                                                  Number((this.objectFront.endXY[0] * this.scaleX).toFixed()),
+                                                                                  Number((this.objectFront.endXY[1] * this.ScaleY).toFixed())]
+      let rectCoordi = [backX1, backY1, backX2, backY2, frontX1, frontY1, frontX2, frontY2]
+      rectCoordi = rectCoordi.join(' ')
+      console.log(rectCoordi, this.dataItem.id)
+
+      let handleData = new FormData()
+      handleData.append('rectCoordi', rectCoordi)
+      this.loading = true
+      updateDevShapeSamples(this.dataItem.id, handleData).then(res => {
+        console.log(res)
+        this.loading = false
+      })
+    },
 
   },
 }
