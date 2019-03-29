@@ -11,7 +11,7 @@
         <el-tab-pane label="FTIR" name="FTIRtab" >
           <div v-if = "loadingChart">
             <analysis-tab-ingredient
-              evi-type="explosive"
+              evi-type="device"
               data-type="FTIR"
               :ingredient-data="FTIRdata">
             </analysis-tab-ingredient>
@@ -21,7 +21,7 @@
         <el-tab-pane label="Raman" name="Ramantab">
           <div v-if = "loadingChart">
             <analysis-tab-ingredient
-              evi-type="explosive"
+              evi-type="device"
               data-type="Raman"
               :ingredient-data="Ramandata">
             </analysis-tab-ingredient>
@@ -31,7 +31,7 @@
         <el-tab-pane label="XRF" name="XRFtab">
           <div v-if = "loadingChart">
             <analysis-tab-ingredient
-              evi-type="explosive"
+              evi-type="device"
               data-type="XRF"
               :ingredient-data="XRFdata">
             </analysis-tab-ingredient>
@@ -41,7 +41,7 @@
         <el-tab-pane label="Summary" name="Summarytab">
           <div v-if = "loadingChart">
             <analysis-tab-ingredient
-              evi-type="explosive"
+              evi-type="device"
               data-type="Summary"
               :ingredient-data="XRDdata">
             </analysis-tab-ingredient>

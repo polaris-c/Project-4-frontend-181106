@@ -3,7 +3,6 @@
   <el-row :gutter="10">
     <el-col :span="18">
       <!-- 图表 -->
-      <!-- <TabImg v-if="isImgTab" :detection-type="dataType"></TabImg> -->
 
       <TabChart v-if="dataType !== 'Summary'"
         :detection-type="dataType"
@@ -13,7 +12,7 @@
         :sample-data = "currentSample"
         :distance-data = "distanceData">
       </TabChart>
-      
+
       <div v-else class="img-container">
         <el-row>
           <el-col>
@@ -100,7 +99,7 @@
             <el-button 
               type="text"
               @click="handleDetail(scope.row)">
-              {{ scope.row.exploSampleName }}
+              {{ eviType == "explosive" ? scope.row.exploSampleName : scope.row.devSampleName }}
             </el-button>
           </template>
         </el-table-column>
@@ -109,7 +108,7 @@
           prop="Score"
           label="相似分"
           align="center"
-          width="">
+          width="100">
         </el-table-column>
       </el-table>
 
@@ -152,7 +151,6 @@
 
 <script>
 import TabChart from '@/components/AnalysisTab/analysis-tab-chart'
-import TabImg from '@/components/AnalysisTab/analysis-tab-img'
 import RecognitionButton from '@/components/Buttons/recognition-button'
 import CheckButton from '@/components/Buttons/check-button'
 import Pagination from '@/components/Pagination'
@@ -168,15 +166,26 @@ import { getExploSampleFTIRTestFilesInfo,
           getExploSampleXRDTestFilesInfo,
           getExploSampleXRFTestFilesInfo,
           getExploSampleGCMSTestFilesInfo } from '@/api/sample-explosive'
+import { getDevMatchFTIRList,
+          getDevMatchRamanList,
+          getDevMatchXRFList} from '@/api/match-device'
+import { getDevPartSampleFTIRTestFilesInfo,
+          getDevPartSampleRamanTestFilesInfo,
+          getDevPartSampleXRFTestFilesInfo} from '@/api/sample-device'
 
-
-const dataTypeMap = {
+const explosiveMap = {
         FTIR: [1,'exploEviFTIRTestFile', 'exploSampleFTIRTestFile', getExploMatchFTIRList, getExploSampleFTIRTestFilesInfo],
         Raman: [2, 'exploEviRamanTestFile', 'exploSampleRamanTestFile', getExploMatchRamanList, getExploSampleRamanTestFilesInfo],
         XRD: [3, 'exploEviXRDTestFile', 'exploSampleXRDTestFile', getExploMatchXRDList, getExploSampleXRDTestFilesInfo],
         XRF: [4, 'exploEviXRFTestFile', 'exploSampleXRFTestFile', getExploMatchXRFList, getExploSampleXRFTestFilesInfo],
         GCMS: [5, 'exploEviGCMSTestFile', 'exploSampleGCMSTestFile', {}, {}],
       }
+const deviceMap = {
+        FTIR: [6,'devEviFTIRTestFile', 'devPartSampleFTIRTestFile', getDevMatchFTIRList, getDevPartSampleFTIRTestFilesInfo],
+        Raman: [7, 'devEviRamanTestFile', 'devPartSampleRamanTestFile', getDevMatchRamanList, getDevPartSampleRamanTestFilesInfo],
+        XRF: [8, 'devEviXRFTestFile', 'devPartSampleXRFTestFile', getDevMatchXRFList, getDevPartSampleXRFTestFilesInfo],
+      }
+let dataTypeMap = {}
 
 export default {
   name: 'AnalysisTabIngredient',
@@ -231,13 +240,17 @@ export default {
   },
   components: {
     TabChart,
-    TabImg,
     RecognitionButton,
     CheckButton,
     Pagination,
     PaginationFiles
   },
   mounted() {
+    if(this.eviType == 'explosive') {
+      dataTypeMap = explosiveMap
+    } else {
+      dataTypeMap = deviceMap
+    }
     this.initTab()
     this.fetchList()
   },
@@ -283,7 +296,7 @@ export default {
       // console.log('- - AnalysisTabIngredient - - handleRecognition:', this.$route.params)
       let uploadForm = new FormData()
       uploadForm.append('type', this.matchData.type)
-      uploadForm.append('eviFileId', this.ingredientData.seriesData[this.dataIndex].id)
+      uploadForm.append('eviFileId', this.ingredientData.seriesData[this.dataIndex].id)  // seriesData是此种检测类型数据的数组
       startMatch(uploadForm).then(res => {
         console.log('- - AnalysisTabIngredient - - handleRecognition:', res)
         this.fetchList()
