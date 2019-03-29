@@ -19,7 +19,7 @@
             </el-row>
             <el-row class="el-row-style">
               <el-col :span="8">零件商标: {{ devPartData.Logo }}</el-col>
-              <el-col :span="8">处理人员：{{ devPartData.user }}</el-col>
+              <!-- <el-col :span="8">处理人员：{{ devPartData.user.username }}</el-col> -->
               <el-col :span="8">录入日期：{{ devPartData.inputDate }}</el-col>
             </el-row>
             <el-row class="el-row-style">
@@ -236,27 +236,14 @@ import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import MessageButton from '@/components/Buttons/message-button'
 import ReportButton from '@/components/Buttons/report-button'
+import { getDevEviInfo } from '@/api/evidence-device'
 
 export default {
   name: 'AnalysisDeviceDetail',
   data() {
     return {
-      devPartData: {
-        id: '001',
-        evidenceName: 'A001',
-        caseName: 'A1',
-        eviType: '1',
-        Factory: 'AF',
-        Model: 'AM',
-        Logo: 'AL',
-        Color: 'AF',
-        Material: 'AF',
-        Shape: 'AF',
-        thickness: 'AF',
-        user: 'user001',
-        inputDate: '2018-11-19',
-        note: '1111'
-      },
+      loading: false,
+      devPartData: {},
       // checkList: ['Color', 'Material', 'Shape', 'thickness'],
       checkList: ['Color'],
       visibleTable: false,
@@ -273,33 +260,7 @@ export default {
           user: 'user001',
           inputDate: '2018-11-19',
           note: '1111'
-        },
-        {
-          id: '002',
-          sname: 'A002',
-          Type: 'A2',
-          Origin: 'AO',
-          Factory: 'AF',
-          Model: 'AM',
-          Logo: 'AL',
-          function: 'AF',
-          user: 'user002',
-          inputDate: '2018-11-19',
-          note: '1112'
-        },
-        {
-          id: '003',
-          sname: 'A003',
-          Type: 'A3',
-          Origin: 'AO',
-          Factory: 'AF',
-          Model: 'AM',
-          Logo: 'AL',
-          function: 'AF',
-          user: 'user003',
-          inputDate: '2018-11-19',
-          note: '1113'
-        },
+        }
       ],
     }
   },
@@ -307,10 +268,6 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ]),
     checkListTranslation() {
       return this.checkList.map((value) => {
@@ -341,18 +298,33 @@ export default {
   },
   mounted() {
     console.log('- - AnalysisDeviceDetail - - $route.params.id:', this.$route.params.id)
+    this.fetchData()
   },
   methods: {
+    fetchData() {
+      this.loading = true
+      getDevEviInfo(this.$route.params.id).then(res => {
+        // console.log('- - DeviceDetail - - res:', res)
+        this.devPartData = res
+        this.loading = false
+      }).catch(err => {
+        this.$message({
+          message: '获取残片信息错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
+    },
     analysisIngredient() {
       this.$router.push('/analysis/deviceAnalysis/deviceIngredient')
     },
     analysisAppearance() {
-      this.$router.push('/analysis/deviceAnalysis/deviceAppearance')
+      this.$router.push('/analysis/deviceAnalysis/deviceAppearance/'+this.$route.params.id)
     },
+
     analysisFilter() {
       // this.$router.push('/analysis/deviceAnalysis/deviceFilter')
       this.visibleTable = true
-
     },
     handleCheckListChange(currentCheckList) {
       console.log('- - AnalysisDeviceDetail - - handleCheckListChange:', currentCheckList)

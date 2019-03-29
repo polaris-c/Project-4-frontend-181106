@@ -7,14 +7,14 @@
         @tab-click="handleTabClick">
 
         <el-tab-pane 
-          v-for="detectionTypeItem in detectionTypeList"
-          :key="detectionTypeItem"
-          :label="detectionTypeItem"
-          :name="detectionTypeItem">
-          <AnalysisTab 
+          v-for="dataItem in dataList"
+          :key="dataItem.tabID"
+          :label="dataItem.tabID"
+          :name="dataItem.id.toString()">
+          <DeviceAppearanceTab 
             :isImgTab="isImgTab"
-            :detectionType="detectionTypeItem">
-          </AnalysisTab>
+            :dataItem="dataItem">
+          </DeviceAppearanceTab>
         </el-tab-pane>
         
       </el-tabs>
@@ -31,38 +31,60 @@
 <script>
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
-import AnalysisTab from '@/components/AnalysisTab/analysis-tab'
+import DeviceAppearanceTab from '@/views/analysis/device-analysis/device-appearance-tab'
+import { getDevEviInfo } from '@/api/evidence-device'
 
 export default {
   name: 'AnalysisDeviceDetailAppearance',
   data() {
     return {
-      activeTabName: "1",
+      loading: false,
       isImgTab: true,
-      detectionTypeList: ['1', '2', '3', '4'],
+      activeTabName: "1",
+      dataList: [],
     }
   },
   computed: {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
   components: {
     GobackButton,
-    AnalysisTab,
+    DeviceAppearanceTab,
+  },
+  mounted() {
+    console.log('- - AnalysisDeviceDetailAppearance - - $route.params.id:', this.$route.params.id)
+    this.fetchData()
   },
   methods: {
+    fetchData() {
+      this.loading = true
+      getDevEviInfo(this.$route.params.id).then(res => {
+        console.log('- - AnalysisDeviceDetailAppearance - - res:', res)
+        this.dataList = res.devShapeEvi
+        let tabID = 1
+        this.dataList.forEach(val => {
+          val.tabID = tabID.toString()
+          tabID++
+          console.log('- - AnalysisDeviceDetailAppearance - - dataList id tabID:', val.id, val.tabID)
+        })
+        this.loading = false
+      }).catch(err => {
+        this.$message({
+          message: '获取残片信息错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
+    },
     // analysisAppearanceCompare() {
     //   this.$router.push('/analysis/deviceAnalysis/deviceAppearanceCompare')
     // },
     handleTabClick(tab, event) {
-      console.log('- - AnalysisDeviceDetailIngredient - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
-      console.log('- - AnalysisDeviceDetailIngredient - - handleTabClick activeTabName: ', this.activeTabName)
+      console.log('- - AnalysisDeviceDetailAppearance - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
+      console.log('- - AnalysisDeviceDetailAppearance - - handleTabClick activeTabName: ', this.activeTabName)
     },
 
     /** */

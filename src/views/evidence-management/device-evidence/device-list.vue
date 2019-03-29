@@ -198,7 +198,7 @@ export default {
       console.log('- - DeviceList - - multipleSeletion:', this.multipleSelection)
     },
     handleDetail(row) {
-      console.log('- - ExplosiveList - - row:', row.id, row.evidenceName)
+      console.log('- - DeviceList - - row:', row.id, row.evidenceName)
       this.$router.push('/evidenceManagement/deviceEvidence/deviceIndexList/deviceDetail/' + row.id)
     },
 

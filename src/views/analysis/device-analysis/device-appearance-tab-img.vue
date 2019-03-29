@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { nomSamplePicture, updateDevShapeSamples } from '@/api/sample-device'
+import { nomEviPicture, updateDevShapeEvis } from '@/api/evidence-device'
 
 const Scale = 1
 const Rotation = 2
@@ -163,20 +163,6 @@ export default {
       }
     }
   },
-  // computed: {
-  //   scaleX() {
-  //     return Number((this.naturalImgInfo.width / 1000).toFixed(2))
-  //   },
-  //   ScaleY() {
-  //     return Number((this.naturalImgInfo.height / 600).toFixed(2))
-  //   }
-  // },
-  // watch: {
-  //   dataItem() {
-  //     console.log('watch: ', this.dataItem.srcImgURL)
-  //     // this.loadImage()
-  //   }
-  // },
   mounted() {
     this.initImage()
   },
@@ -364,10 +350,10 @@ export default {
       preHandleData.append('rotateY1', rotateY1)
       preHandleData.append('rotateX2', rotateX2)
       preHandleData.append('rotateY2', rotateY2)
-      preHandleData.append('PCBImgSampleId', this.dataItem.id)
+      preHandleData.append('PCBImgEviId', this.dataItem.id)
       console.log([scaleX1, scaleY1, scaleX2, scaleY2, rotateX1, rotateY1, rotateX2, rotateY2, this.dataItem.id])
       this.loading = true
-      nomSamplePicture(preHandleData).then(res => {
+      nomEviPicture(preHandleData).then(res => {
         console.log(res)
         this.image = new Image()
         this.image.src = this.baseURL + res.norImgURL  // 返回的URL不完整
@@ -410,7 +396,7 @@ export default {
       let handleData = new FormData()
       handleData.append('rectCoordi', rectCoordi)
       this.loading = true
-      updateDevShapeSamples(this.dataItem.id, handleData).then(res => {
+      updateDevShapeEvis(this.dataItem.id, handleData).then(res => {
         console.log(res)
         this.loading = false
 

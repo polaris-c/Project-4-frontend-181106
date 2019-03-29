@@ -280,3 +280,12 @@ export function deleteDevShapeEvis(id) {
     method: 'delete'
   })
 }
+
+/** nomEviPicture */
+export function nomEviPicture(data) {
+  return request({
+    url: '/nomEviPicture/',
+    method: 'post',
+    data
+  })
+}

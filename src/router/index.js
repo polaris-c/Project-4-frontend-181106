@@ -447,7 +447,7 @@ export const constantRouterMap = [
             hidden: true
           },
           {
-            path: 'deviceAppearance',
+            path: 'deviceAppearance/:id',
             name: 'DeviceAppearance',
             component: () => import('@/views/analysis/device-analysis/device-detail-appearance'),
             meta: { title: '残片形态比对' },

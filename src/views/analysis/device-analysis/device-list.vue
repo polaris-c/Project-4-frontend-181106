@@ -36,7 +36,7 @@
         <template slot-scope="scope">
           <el-button 
             type="text"
-            @click="detail(scope.row)">
+            @click="handleDetail(scope.row)">
             {{ scope.row.id }}
           </el-button>
         </template>
@@ -47,6 +47,13 @@
         label="物证名称"
         align="center"
         width="150">
+        <template slot-scope="scope">
+          <el-button 
+            type="text"
+            @click="handleDetail(scope.row)">
+            {{ scope.row.evidenceName }}
+          </el-button>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -138,11 +145,13 @@ import { mapGetters } from 'vuex'
 import DeleteButton from '@/components/Buttons/delete-button'
 import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
+import { getDevEviList } from '@/api/evidence-device'
 
 export default {
   name: 'AnalysisDeviceList',
   data() {
     return {
+      loading: false,
       multipleSelection: [],
       tableData: [
         {
@@ -159,49 +168,21 @@ export default {
           user: 'user001',
           inputDate: '2018-11-19',
           note: '1111'
-        },
-        {
-          id: '002',
-          evidenceName: 'A002',
-          caseName: 'A2',
-          Factory: 'AF',
-          Model: 'AM',
-          Logo: 'AL',
-          Color: 'AC',
-          Material: 'AM',
-          Shape: 'AS',
-          thickness: 'AF',
-          user: 'user002',
-          inputDate: '2018-11-19',
-          note: '1112'
-        },
-        {
-          id: '003',
-          evidenceName: 'A003',
-          caseName: 'A3',
-          Factory: 'AF',
-          Model: 'AM',
-          Logo: 'AL',
-          Color: 'AC',
-          Material: 'AM',
-          Shape: 'AS',
-          thickness: 'AF',
-          user: 'user003',
-          inputDate: '2018-11-19',
-          note: '1113'
-        },
+        }
       ],
-      tablePageIndex: 1
+      tablePageIndex: 1,
+      tableParams: {
+        search: null,
+        page: 1,
+        page_size: 20,
+        count: 1,
+      }
     }
   },
   computed: {
     ...mapGetters([
       'name',
-      'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
+      'roles'
     ])
   },
   components: {
@@ -209,24 +190,39 @@ export default {
     SearchInput,
     Pagination
   },
+  mounted() {
+    this.loading = true
+    this.fetchData(this.tableParams)
+  },
   methods: {
+    fetchData(tableParams){
+      this.loading = true
+      getDevEviList(tableParams).then(res => {
+        this.tableData = res.results
+        this.tableParams.count =  res.count
+        this.loading = false
+      }).catch(err => {
+        this.$message({
+          message: '获取列表错误' + err.message,
+          type: 'error'
+        })
+        this.loading = false
+      })
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val
-      console.log('- - DeviceList - - multipleSeletion:', this.multipleSelection)
+      console.log('- - AnalysisDeviceList - - multipleSeletion:', this.multipleSelection)
     },
-    detail(row) {
+    handleDetail(row) {
       this.$router.push('/analysis/deviceAnalysis/deviceDetail/' + row.id)
     },
 
     /** 页面按键功能 */
-    handleDelete() {
-      console.log('- - delete: ', this.multipleSelection)
-    },
     handleSearch(searchInputData) {
       console.log('- - search: ', searchInputData)
     },
     handleChangePage(pageIndex) {
-      console.log('- - ExplosiveList - - pageIndex: ', pageIndex)
+      console.log('- - AnalysisDeviceList - - pageIndex: ', pageIndex)
       this.tablePageIndex = pageIndex
     }
   }
