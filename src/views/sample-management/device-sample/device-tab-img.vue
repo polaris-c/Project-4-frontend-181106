@@ -97,7 +97,8 @@ export default {
         width: 0,
         height: 0
       },
-      
+      scaleX: 0,
+      ScaleY: 0,
       // 点击时坐标
       coordinate: {
         x: 0,
@@ -162,18 +163,18 @@ export default {
       }
     }
   },
-  computed: {
-    scaleX() {
-      return Number((this.naturalImgInfo.width / 1000).toFixed(2))
-    },
-    ScaleY() {
-      return Number((this.naturalImgInfo.height / 600).toFixed(2))
-    }
-  },
+  // computed: {
+  //   scaleX() {
+  //     return Number((this.naturalImgInfo.width / 1000).toFixed(2))
+  //   },
+  //   ScaleY() {
+  //     return Number((this.naturalImgInfo.height / 600).toFixed(2))
+  //   }
+  // },
   // watch: {
   //   dataItem() {
-  //     console.log('watch: ', this.image)
-  //     this.loadImage()
+  //     console.log('watch: ', this.dataItem.srcImgURL)
+  //     // this.loadImage()
   //   }
   // },
   mounted() {
@@ -186,18 +187,22 @@ export default {
       this.image.src = this.dataItem.srcImgURL
       let end = this.dataItem.srcImgURL.search(/media/i)
       this.baseURL = this.dataItem.srcImgURL.slice(0, end-1)
-      this.naturalImgInfo.width = this.image.naturalWidth
-      this.naturalImgInfo.height = this.image.naturalHeight
-      console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight, 'baseURL: ', this.baseURL)
 
       this.canvas = document.getElementById(this.dataItem.id)
       this.ctx = this.canvas.getContext('2d')
       this.width = this.canvas.width = 1000
       this.height = this.canvas.height = 600
+
       this.image.onload = () => {
         this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
+        this.naturalImgInfo.width = this.image.naturalWidth
+        this.naturalImgInfo.height = this.image.naturalHeight
+        this.scaleX = Number((this.naturalImgInfo.width / 1000).toFixed(2))
+        this.ScaleY = Number((this.naturalImgInfo.height / 600).toFixed(2))
+        console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight, 'baseURL: ', this.baseURL,
+            'scaleX: ', this.scaleX, 'ScaleY: ', this.ScaleY)
+        this.loading = false
       }
-      this.loading = false
     },
 		loadImage() {
 			this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
@@ -339,9 +344,9 @@ export default {
 
     // 预处理
     preHandleUpload() {
-      // console.log(`objectScale:, ${this.objectScale.beginXY}, ${this.objectScale.endXY} \n
-      //       objectRotation:, ${this.objectRotation.beginXY}, ${this.objectRotation.endXY} \n
-      //       scale: ${this.scaleX}, ${this.ScaleY}`)
+      console.log(`objectScale:, ${this.objectScale.beginXY}, ${this.objectScale.endXY} \n
+            objectRotation:, ${this.objectRotation.beginXY}, ${this.objectRotation.endXY} \n
+            scale: ${this.scaleX}, ${this.ScaleY}`)
       let [scaleX1, scaleX2, rotateX1, rotateX2] = [Number((this.objectScale.beginXY[0] * this.scaleX).toFixed()), 
                                                     Number((this.objectScale.endXY[0] * this.scaleX).toFixed()), 
                                                     Number((this.objectRotation.beginXY[0] * this.scaleX).toFixed()),
@@ -366,14 +371,23 @@ export default {
         console.log(res)
         this.image = new Image()
         this.image.src = this.baseURL + res.norImgURL  // 返回的URL不完整
-        this.naturalImgInfo.width = this.image.naturalWidth
-        this.naturalImgInfo.height = this.image.naturalHeight
-        console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight)
 
         this.image.onload = () => {
           this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
+          this.naturalImgInfo.width = this.image.naturalWidth
+          this.naturalImgInfo.height = this.image.naturalHeight
+          this.scaleX = Number((this.naturalImgInfo.width / 1000).toFixed(2))
+          this.ScaleY = Number((this.naturalImgInfo.height / 600).toFixed(2))
+          console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight,
+                      'scaleX: ', this.scaleX, 'ScaleY: ', this.ScaleY)
+          this.loading = false
+
+          this.$message({
+            message: '图像归一化成功！',
+            type: 'success',
+            duration: 10 * 1000
+          })
         }
-        this.loading = false
       })
     },
 
@@ -399,6 +413,12 @@ export default {
       updateDevShapeSamples(this.dataItem.id, handleData).then(res => {
         console.log(res)
         this.loading = false
+
+        this.$message({
+          message: '图像处理成功！',
+          type: 'success',
+          duration: 10 * 1000
+        })
       })
     },
 
