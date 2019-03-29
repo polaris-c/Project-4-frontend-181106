@@ -13,6 +13,7 @@
         :sample-data = "currentSample"
         :distance-data = "distanceData">
       </TabChart>
+      
       <div v-else class="img-container">
         <el-row>
           <el-col>

@@ -316,10 +316,10 @@ export default {
       })
     },
     analysisIngredient() {
-      this.$router.push('/analysis/deviceAnalysis/deviceIngredient')
+      this.$router.push('/analysis/deviceAnalysis/deviceIngredient/' + this.$route.params.id)
     },
     analysisAppearance() {
-      this.$router.push('/analysis/deviceAnalysis/deviceAppearance/'+this.$route.params.id)
+      this.$router.push('/analysis/deviceAnalysis/deviceAppearance/' + this.$route.params.id)
     },
 
     analysisFilter() {

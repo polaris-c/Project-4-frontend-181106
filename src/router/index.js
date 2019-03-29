@@ -440,7 +440,7 @@ export const constantRouterMap = [
             hidden: true
           },
           {
-            path: 'deviceIngredient',
+            path: 'deviceIngredient/:id',
             name: 'DeviceIngredient',
             component: () => import('@/views/analysis/device-analysis/device-detail-ingredient'),
             meta: { title: '残片成分比对' },
