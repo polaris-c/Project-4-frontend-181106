@@ -53,3 +53,17 @@ export function getDevMatchXRFInfo(id) {
   })
 }
 
+/** devShapeMatchs */
+export function getDevShapeMatchsList(params) {
+  return request({
+    url: '/devShapeMatchs/',
+    method: 'get',
+    params
+  })
+}
+export function getDevShapeMatchsInfo(id) {
+  return request({
+    url: '/devShapeMatchs/' + id + '/',
+    method: 'get'
+  })
+}

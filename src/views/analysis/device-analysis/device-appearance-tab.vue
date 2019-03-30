@@ -86,7 +86,7 @@ import DeviceAppearanceTabImg from '@/views/analysis/device-analysis/device-appe
 import RecognitionButton from '@/components/Buttons/recognition-button'
 import CheckButton from '@/components/Buttons/check-button'
 import Pagination from '@/components/Pagination'
-import { startMatch } from '@/api/match-explosive'
+import { startMatch, getDevShapeMatchsList, getDevShapeMatchsInfo } from '@/api/match-device'
 
 export default {
   name: 'DeviceAppearanceTab',
@@ -121,6 +121,11 @@ export default {
           devSampleName:	"A001-1 img"
         }
       ],
+      tableParams: {
+        page: 1,
+        page_size: 20,
+        devShapeEvi_id: 1  // 物证数据文件id
+      },
       currentSample: {},
       tablePageIndex: 1
     }
@@ -134,8 +139,15 @@ export default {
   mounted() {
     // console.log('- - DeviceAppearanceTab - - detectionType:', this.detectionType)
     console.log('- - DeviceAppearanceTab - - isImgTab:', this.isImgTab)
+    this.fetchList()
   },
   methods: {
+    fetchList() {
+      this.tableParams.devShapeEvi_id = this.dataItem.id
+      getDevShapeMatchsList(this.tableParams).then(res => {
+        this.tableData = res.results
+      })
+    },
     handleRecognition() {
       // console.log('- - DeviceAppearanceTab - - handleRecognition:', this.$route.params)
       let uploadForm = new FormData()
@@ -145,7 +157,7 @@ export default {
       uploadForm.append('eviFileId', this.matchData.eviFileId)
       console.log('- - DeviceAppearanceTab - - handleRecognition:', this.matchData.type, this.matchData.eviFileId)
       startMatch(uploadForm).then(res => {
-        console.log('- - DeviceAppearanceTab - - handleRecognition:', res)
+        // console.log('- - DeviceAppearanceTab - - handleRecognition:', res)
         this.tableData = res.results
       })
 
