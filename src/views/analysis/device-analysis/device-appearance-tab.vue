@@ -3,7 +3,8 @@
     <el-col :span="18">
       <!-- 图表 -->
       <DeviceAppearanceTabImg
-        :dataItem = "dataItem">
+        :dataItem = "dataItem"
+        @receiveNorImgURL = "receiveNorImgURL">
       </DeviceAppearanceTabImg>
     </el-col>
 
@@ -24,7 +25,7 @@
       
       <!-- 结果排名列表 -->
       <el-table
-        :v-loading="loading"
+        v-loading="loading"
         class="app-main-table"
         ref="explosiveList"
         :data="tableData"
@@ -115,6 +116,7 @@ export default {
   data() {
     return {
       loading: false,
+      evidenceNorImgURL: null,  // 在子组件对物证图像处理完毕后接收归一化的图片
       matchData: {
         type: 0,
         eviFileId: 0
@@ -161,9 +163,11 @@ export default {
   },
   methods: {
     fetchList() {
+      this.loading = true
       this.tableParams.devShapeEvi_id = this.dataItem.id
       getDevShapeMatchsList(this.tableParams).then(res => {
         this.tableData = res.results
+        this.loading = false
       })
     },
     initImage() {
@@ -179,6 +183,10 @@ export default {
       this.ctxEvidence = this.canvasEvidence.getContext('2d')
       this.canvasEvidence.width = 400
       this.canvasEvidence.height = 300
+    },
+    receiveNorImgURL(norImgURL) {
+      console.log('- - DeviceAppearanceTab - - receiveNorImgURL:', norImgURL)
+      this.evidenceNorImgURL = norImgURL
     },
 
     handleRecognition() {
@@ -218,7 +226,7 @@ export default {
         this.imgSample = new Image()
         this.imgSample.src = this.currentSample.norImgURL
         this.imgEvidence = new Image()
-        this.imgEvidence.src = this.dataItem.norImgURL
+        this.imgEvidence.src = this.evidenceNorImgURL
 
         this.initImage()
 

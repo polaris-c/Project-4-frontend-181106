@@ -398,6 +398,7 @@ export default {
       this.loading = true
       updateDevShapeEvis(this.dataItem.id, handleData).then(res => {
         console.log(res)
+        this.$emit('receiveNorImgURL', res.norImgURL)
         this.loading = false
 
         this.$message({
