@@ -79,7 +79,7 @@ export const constantRouterMap = [
             meta: { title: '已接收', icon: 'message' }
           },
           {
-            path: 'messageDetail',
+            path: 'messageDetail/:id',
             name: 'MessageDetail',
             component: () => import('@/views/home/message/message-detail'),
             meta: { title: '消息详情' },

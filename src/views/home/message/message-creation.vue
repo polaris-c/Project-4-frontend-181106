@@ -122,6 +122,7 @@
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
+import { createUserMessages } from '@/api/message'
 
 export default {
   name: 'MessageCreation',
@@ -183,10 +184,6 @@ export default {
     ...mapGetters([
       'name',
       'role',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ]),
   },
   watch: {
@@ -256,6 +253,24 @@ export default {
     handleSubmit() {
       console.log('- - MessageCreation - - handleSubmit ',`exploEviId: ${this.messageData.exploEviId}`, `devEviId: ${this.messageData.devEviId}`)
       console.log('- - MessageCreation - - handleSubmit receiveUser:', this.messageData.receiveUser)
+      let message = new FormData()
+      message.append('title', this.messageData.title)
+      message.append('message', this.messageData.message)
+      createUserMessages(message).then( res => {
+        console.log('- - MessageCreation - - handleSubmit res:', res)
+        if(res.isSend) {
+          this.$message({
+            message: '消息发送成功',
+            type: 'success'
+          })
+          this.goBcak()
+        } else {
+          this.$message({
+            message: '消息发送失败',
+            type: 'error'
+          })
+        }
+      })
     },
     goBcak() {
       this.$router.go(-1)

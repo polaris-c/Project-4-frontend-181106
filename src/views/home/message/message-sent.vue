@@ -84,6 +84,7 @@
 import { mapGetters } from 'vuex'
 import DeleteButton from '@/components/Buttons/delete-button'
 import SearchInput from '@/components/SearchInput'
+import { getUserMessagesList } from '@/api/message'
 
 export default {
   name: 'MessageDetail',
@@ -156,7 +157,13 @@ export default {
           handleUser: '无',
           sendDate: '2019-03-05',
         }
-      ]
+      ],
+      tableParams: {
+        search: null,
+        page: 1,
+        page_size: 20,
+        count: 1,
+      }
     }
 
   },
@@ -164,19 +171,23 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ]),
   },
   components: {
     DeleteButton,
     SearchInput,
   },
+  mounted() {
+    this.fetchData(this.tableParams)
+  },
   methods: {
-    handleDetail() {
-      this.$router.push('/message/messageDetail')
+    fetchData(tableParams) {
+      getUserMessagesList().then( res => {
+        this.tableData = res.results
+      })
+    },
+    handleDetail(row) {
+      this.$router.push('/message/messageDetail/' + row.id)
     }
   }
 }
