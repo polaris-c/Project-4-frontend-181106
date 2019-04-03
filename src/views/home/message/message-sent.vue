@@ -11,6 +11,7 @@
     <!-- <div class="dashboard-text">name:{{ name }}</div>
     <el-button type="primary" @click="detail">Detail</el-button> -->
     <el-table
+      v-loading="loading"
       class="app-main-table"
       ref="MessageList"
       :data="tableData"
@@ -32,6 +33,9 @@
         label="接收人"
         align="center"
         width="200">
+        <template slot-scope="scope">
+          {{ scope.row.receiveUser == null ? '所有专家及管理员' : scope.row.receiveUser }}
+        </template>
       </el-table-column>
 
 
@@ -54,6 +58,9 @@
         label="是否已读"
         align="center"
         width="150">
+        <template slot-scope="scope">
+          {{ scope.row.hasRead == false ? '否' : '是'}}
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -61,6 +68,9 @@
         label="是否处理"
         align="center"
         width="150">
+        <template slot-scope="scope">
+          {{ scope.row.hasHandle == false ? '否' : '是'}}
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -68,6 +78,9 @@
         label="处理人"
         align="center"
         width="150">
+        <template slot-scope="scope">
+          {{ scope.row.handleUser == null ? '未指定' : scope.row.receiveUser }}
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -90,6 +103,7 @@ export default {
   name: 'MessageDetail',
   data() {
     return {
+      loading: true,
       tableData: [
         {
           id: 1,
@@ -101,64 +115,10 @@ export default {
           hasHandle: '是',
           handleUser: '赵** 炸药专家',
           sendDate: '2019-03-05',
-        },
-        {
-          id: 2,
-          sendUser: 'User001',
-          receiveUser: '所有专家及管理员',
-          title: 'A案件的疑似炸药原材料咨询',
-          message: '',
-          hasRead: '是',
-          hasHandle: '是',
-          handleUser: '赵** 炸药专家',
-          sendDate: '2019-03-05',
-        },
-        {
-          id: 3,
-          sendUser: 'User001',
-          receiveUser: '所有专家及管理员',
-          title: 'AXX案件的爆炸装置残片咨询',
-          message: '',
-          hasRead: '是',
-          hasHandle: '是',
-          handleUser: '徐** 爆炸装置专家',
-          sendDate: '2019-03-05',
-        },
-        {
-          id: 4,
-          sendUser: 'User001',
-          receiveUser: '所有专家及管理员',
-          title: 'XXX案件的疑似炸药原材料咨询',
-          message: '',
-          hasRead: '是',
-          hasHandle: '否',
-          handleUser: '无',
-          sendDate: '2019-03-05',
-        },
-        {
-          id: 5,
-          sendUser: 'User001',
-          receiveUser: '徐** 爆炸装置专家',
-          title: 'ZXX案件的爆炸装置残片咨询',
-          message: '',
-          hasRead: '是',
-          hasHandle: '是',
-          handleUser: '徐** 爆炸装置专家',
-          sendDate: '2019-03-05',
-        },
-        {
-          id: 6,
-          sendUser: 'User001',
-          receiveUser: '李** 炸药专家',
-          title: 'DXX案件的疑似炸药原材料咨询',
-          message: '',
-          hasRead: '否',
-          hasHandle: '否',
-          handleUser: '无',
-          sendDate: '2019-03-05',
         }
       ],
       tableParams: {
+        sendUser: null,
         search: null,
         page: 1,
         page_size: 20,
@@ -169,6 +129,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'username',
       'name',
       'roles',
     ]),
@@ -178,12 +139,15 @@ export default {
     SearchInput,
   },
   mounted() {
-    this.fetchData(this.tableParams)
+    // this.tableParams.sendUser = this.username
+    this.fetchData()
   },
   methods: {
-    fetchData(tableParams) {
-      getUserMessagesList().then( res => {
+    fetchData() {
+      this.loading = true
+      getUserMessagesList(this.tableParams).then( res => {
         this.tableData = res.results
+        this.loading = false
       })
     },
     handleDetail(row) {

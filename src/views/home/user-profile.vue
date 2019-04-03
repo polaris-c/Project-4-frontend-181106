@@ -111,8 +111,8 @@ export default {
 .avatar-container {
   margin-top: 50px;
   padding: 5px;
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 210px;
   border-radius: 6px;
   background-color: antiquewhite;
 }
@@ -120,16 +120,16 @@ export default {
 .avatar-null-icon {
   font-size: 16px;
   color: grey; // #8c939d;
-  width: 190px;
-  height: 190px;
+  width: 150px;
+  height: 200px;
   border-radius: 6px;
   line-height: 190px;
   text-align: center;
 }
 
 .avatar {
-  width: 190px;
-  height: 190px;
+  width: 150px;
+  height: 200px;
   border-radius: 6px;
   display: block;
 }

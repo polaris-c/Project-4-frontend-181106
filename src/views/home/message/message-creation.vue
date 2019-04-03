@@ -141,7 +141,6 @@ export default {
         message: '',
         exploEviId: '',
         devEviId: '',
-        sendDate: '',
       },  // 消息数据体
       expertList: [
         {
@@ -254,8 +253,14 @@ export default {
       console.log('- - MessageCreation - - handleSubmit ',`exploEviId: ${this.messageData.exploEviId}`, `devEviId: ${this.messageData.devEviId}`)
       console.log('- - MessageCreation - - handleSubmit receiveUser:', this.messageData.receiveUser)
       let message = new FormData()
-      message.append('title', this.messageData.title)
-      message.append('message', this.messageData.message)
+      for(let prop in this.messageData) {
+        if(this.messageData.hasOwnProperty(prop)) {
+          message.append(prop, this.messageData[prop])
+        }
+      }
+      // message.append('title', this.messageData.title)
+      // message.append('message', this.messageData.message)
+      // message.append('exploEviId', this.messageData.exploEviId)
       createUserMessages(message).then( res => {
         console.log('- - MessageCreation - - handleSubmit res:', res)
         if(res.isSend) {
