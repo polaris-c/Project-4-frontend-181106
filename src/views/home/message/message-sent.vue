@@ -130,6 +130,7 @@ export default {
   computed: {
     ...mapGetters([
       'username',
+      'id',
       'name',
       'roles',
     ]),
@@ -139,7 +140,7 @@ export default {
     SearchInput,
   },
   mounted() {
-    // this.tableParams.sendUser = this.username
+    this.tableParams.sendUser = this.id
     this.fetchData()
   },
   methods: {

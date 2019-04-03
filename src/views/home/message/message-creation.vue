@@ -50,7 +50,7 @@
               <hr>
 
               <el-row>
-                <el-col :span="11">
+                <el-col :span="12">
                   <el-form-item label="发件人">
                     <el-input 
                       v-model="messageData.sendUser"
@@ -59,12 +59,23 @@
                   </el-form-item>
 
                   <el-form-item label="收件人">
+                    <el-select v-model="messageData.receiveUser" placeholder="请选择收件人">
+                      <el-option
+                        v-for="item in expertData"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.id">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+
+                  <!-- <el-form-item label="收件人">
                     <el-input 
                       v-model="expertSelectedName"
                       :disabled="true"
                       placeholder="请在右侧专家列表中选择专家并确定 ->">
                     </el-input>
-                  </el-form-item>
+                  </el-form-item> -->
 
                   <el-form-item label="标题">
                     <el-input v-model="messageData.title"></el-input>
@@ -80,7 +91,7 @@
                   </el-form-item>
                 </el-col>
 
-                <el-col :span="11" :offset="2" v-if="role !== 3">
+                <!-- <el-col :span="10" :offset="2" v-if="role !== 3">
                   <el-transfer
                     filter-placeholder="请输入专家名称或职务"
                     v-model="expertSelected"
@@ -96,7 +107,8 @@
                       确 定
                     </el-button>
                   </el-transfer>
-                </el-col>
+                </el-col> -->
+
               </el-row>
             </el-form>
           </div>
@@ -123,6 +135,7 @@ import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import SubmitButton from '@/components/Buttons/submit-button'
 import { createUserMessages } from '@/api/message'
+import { getList } from '@/api/user-management'
 
 export default {
   name: 'MessageCreation',
@@ -136,7 +149,7 @@ export default {
       },  // 临时记录物证信息,包括类别,物证编号和是否能手动输入物证
       messageData: {
         sendUser: '',
-        receiveUser: [],
+        receiveUser: '',
         title: '',
         message: '',
         exploEviId: '',
@@ -210,7 +223,7 @@ export default {
   },
   mounted() {
     this.messageData.sendUser = this.name
-    this.expertData= this.generateExpertData()
+    this.generateExpertData()
     /** 从分析研判模块直接传入物证信息 */
     if (this.$route.params.evidenceType && this.$route.params.evidenceID) {
       console.log('- - MessageCreation - - $route.params:', this.$route.params.evidenceType, this.$route.params.evidenceID)
@@ -223,20 +236,22 @@ export default {
   methods: {
     /** 生成用于穿梭框左栏的专家列表(expertData),"专家姓名--职务"形式显示,key是专家编号 */
     generateExpertData() {
-      let data = []
-      this.expertList.forEach((expert, index) => {
-        data.push({
-          key: expert.id,  // 专家编号
-          label: `${expert.name} -- ${expert.posts}`,  // 专家名 -- 专家职务
-        })
-      });
-      return data
+      getList().then( res => {
+        this.expertList = res.results
+        this.expertList.forEach((expert, index) => {
+          this.expertData.push({
+            id: expert.id,  // 专家编号
+            label: `${expert.name} -- ${expert.posts}`,  // 专家名 -- 专家职务
+          })
+        });
+      })
     },
     /** 确定专家后操作 */
     handleSelectExpert() {
       console.log('- - MessageCreation - - handleSelectExpert expertSelected:', this.expertSelected)
       let tempExpertList = []  // 完整选定专家信息的数组
-      this.messageData.receiveUser = this.expertSelected  // 将选定专家的编号数组传到消息数据体中
+      this.messageData.receiveUser = this.expertSelected  // 将选定专家的编号数组传到消息
+      数据体中
       this.expertSelectedName = ''  // 每次确定专家时都将原收件人字符串清空，防止重复
       /** 从所有专家的数据中(expertList)根据被选定的专家编号(expertSelected)，抽取出选定专家的信息,包含专家的姓名,职务信息 */
       tempExpertList = this.expertList.filter((expert) => {

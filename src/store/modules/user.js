@@ -6,6 +6,7 @@ const user = {
   state: {
     token: getToken(),
     username: getUserName(),
+    id: '',
     name: '',
     avatar: '',
     roles: [],
@@ -20,6 +21,10 @@ const user = {
     SET_USERNAME: (state, username) => {
       state.username = username
       // console.log('* * * * store * * SET_NAME:', state.name)
+    },
+    SET_ID: (state, id) => {
+      state.id = id
+      // console.log('* * * * store * * SET_ID:', state.id)
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -69,6 +74,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo(state.username).then(res => {
           console.log('* * * * store * * GetInfo:', res)
+          commit('SET_ID', res.id)
           commit('SET_NAME', res.name)
           commit('SET_ROLE', res.role)
           commit('SET_AVATAR', res.picUrl)

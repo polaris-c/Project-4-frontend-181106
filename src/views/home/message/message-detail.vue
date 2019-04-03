@@ -37,7 +37,7 @@
 
                   <el-form-item label="收件人">
                     <el-input 
-                      v-model="messageData.receiveUser"
+                      v-model="messageData.receiveUser.name"
                       :disabled="true"
                       placeholder="默认所有专家与管理员">
                     </el-input>
@@ -90,7 +90,8 @@ export default {
       id: null,
       loading: false,
       messageData : {
-        sendUser: { name: 'Empty' }  // 保证在后端返回信息前messageData.sendUser.xxx不报错
+        sendUser: { name: 'Empty' },  // 保证在后端返回信息前messageData.sendUser.xxx不报错
+        receiveUser: { name: 'Empty' }
       }
     }
   },
