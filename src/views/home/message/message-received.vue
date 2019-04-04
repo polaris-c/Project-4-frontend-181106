@@ -29,13 +29,13 @@
       </el-table-column>
       
       <el-table-column
-        prop="sendUser"
+        prop="sendUser.name"
         label="发送人"
         align="center"
         width="200">
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope"> -->
           <!-- {{ scope.row.sendUser == null ? '所有专家及管理员' : scope.row.sendUser }} -->
-        </template>
+        <!-- </template> -->
       </el-table-column>
 
 
