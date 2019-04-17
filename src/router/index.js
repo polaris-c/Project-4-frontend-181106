@@ -116,7 +116,7 @@ export const constantRouterMap = [
             meta: { title: '人员列表', icon: 'list' }
           },
           {
-            path: 'userDetail/:id',
+            path: 'userDetail/:username',
             name: 'UserDetail',
             component: () => import('@/views/user-management/user-detail'),
             meta: { title: '人员详情', icon: '' },

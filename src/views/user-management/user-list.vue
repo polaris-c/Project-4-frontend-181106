@@ -211,7 +211,7 @@ export default {
       console.log('- - UserList - - multipleSeletion:', this.multipleSelection)
     },
     handleDetail(row) {
-      this.$router.push('/userManagement/userIndexList/userDetail/' + row.id)
+      this.$router.push('/userManagement/userIndexList/userDetail/' + row.username)
     },
 
     /** 页面按键功能 */
