@@ -160,7 +160,7 @@ export default {
     },
 
     ingredient(id) {
-      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailIngredient/'+ this.$route.params.id)
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailIngredient/'+ id)
     },
     appearance(id) {
       // this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetailAppearance/'+ this.$route.params.id)
