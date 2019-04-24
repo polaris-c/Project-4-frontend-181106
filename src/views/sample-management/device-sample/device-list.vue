@@ -46,7 +46,7 @@
         prop="sname"
         label="组件样本名称"
         align="center"
-        width="150">
+        width="200">
         <template slot-scope="scope">
           <el-button 
             type="text"

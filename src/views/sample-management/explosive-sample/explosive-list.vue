@@ -88,7 +88,8 @@
         label="录入日期"
         align="center"
         width=""
-        fixed="right">
+        fixed="right"
+        show-overflow-tooltip>
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
           <span>{{ scope.row.inputDate }}</span>

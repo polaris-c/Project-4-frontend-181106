@@ -47,6 +47,13 @@
         label="物证名称"
         align="center"
         width="200">
+        <template slot-scope="scope">
+          <el-button 
+            type="text"
+            @click="handleDetail(scope.row)">
+            {{ scope.row.evidenceName }}
+          </el-button>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -67,7 +74,8 @@
         label="录入日期"
         align="center"
         width=""
-        fixed="right">
+        fixed="right"
+        show-overflow-tooltip>
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
           <span>{{ scope.row.inputDate }}</span>

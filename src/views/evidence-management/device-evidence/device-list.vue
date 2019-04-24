@@ -46,7 +46,14 @@
         prop="evidenceName"
         label="物证名称"
         align="center"
-        width="150">
+        width="200">
+        <template slot-scope="scope">
+          <el-button 
+            type="text"
+            @click="handleDetail(scope.row)">
+            {{ scope.row.evidenceName }}
+          </el-button>
+        </template>
       </el-table-column>
 
       <el-table-column
