@@ -7,21 +7,40 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { getExploSynMatchList } from '@/api/match-explosive'
 
 export default {
   name: 'ExplosiveDetail',
+  data() {
+    return {
+      tableParams: {
+        search: null,
+        page: 1,
+        page_size: 20,
+        count: 1,
+      }
+    }
+  },
   computed: {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
+  mounted() {
+    this.fetchData(this.tableParams)
+  },
   methods: {
-    
+    fetchData(tableParams){
+      getExploSynMatchList(tableParams).then(res => {
+
+      }).catch(err => {
+        this.$message({
+          message: '获取列表错误' + err.message,
+          type: 'error'
+        })
+      })
+    },
   }
 }
 </script>

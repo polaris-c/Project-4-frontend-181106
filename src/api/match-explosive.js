@@ -46,6 +46,12 @@ export function getExploMatchXRDList(params) {
     params
   })
 }
+export function getExploMatchXRDInfo(id) {
+  return request({
+    url: '/exploMatchXRDs/' + id + '/',
+    method: 'get'
+  })
+}
 
 /** exploMatchXRF */
 export function getExploMatchXRFList(params) {
@@ -53,6 +59,12 @@ export function getExploMatchXRFList(params) {
     url: '/exploMatchXRFs/',
     method: 'get',
     params
+  })
+}
+export function getExploMatchXRFInfo(id) {
+  return request({
+    url: '/exploMatchXRFs/' + id + '/',
+    method: 'get'
   })
 }
 
@@ -64,3 +76,26 @@ export function getExploMatchGCMSList(params) {
     params
   })
 }
+export function getExploMatchGCMSInfo(id) {
+  return request({
+    url: '/exploMatchGCMSs/' + id + '/',
+    method: 'get'
+  })
+}
+
+/** exploSynMatch */
+export function getExploSynMatchList(params) {
+  return request({
+    url: '/exploSynMatchs/',
+    method: 'get',
+    params
+  })
+}
+
+export function getExploSynMatchInfo(id) {
+  return request({
+    url: '/exploSynMatchs/' + id + '/',
+    method: 'get'
+  })
+}
+
