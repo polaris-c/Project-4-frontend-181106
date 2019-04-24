@@ -191,14 +191,14 @@ export default {
       this.canvas = document.getElementById(this.dataItem.id)
       this.ctx = this.canvas.getContext('2d')
       this.width = this.canvas.width = 1000
-      this.height = this.canvas.height = 600
+      this.height = this.canvas.height = 800
 
       this.image.onload = () => {
         this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
         this.naturalImgInfo.width = this.image.naturalWidth
         this.naturalImgInfo.height = this.image.naturalHeight
-        this.scaleX = Number((this.naturalImgInfo.width / 1000).toFixed(2))
-        this.ScaleY = Number((this.naturalImgInfo.height / 600).toFixed(2))
+        this.scaleX = Number((this.naturalImgInfo.width / this.canvas.width).toFixed(2))
+        this.ScaleY = Number((this.naturalImgInfo.height / this.canvas.height).toFixed(2))
         console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight, 'baseURL: ', this.baseURL,
             'scaleX: ', this.scaleX, 'ScaleY: ', this.ScaleY)
         this.loading = false
@@ -376,8 +376,8 @@ export default {
           this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
           this.naturalImgInfo.width = this.image.naturalWidth
           this.naturalImgInfo.height = this.image.naturalHeight
-          this.scaleX = Number((this.naturalImgInfo.width / 1000).toFixed(2))
-          this.ScaleY = Number((this.naturalImgInfo.height / 600).toFixed(2))
+          this.scaleX = Number((this.naturalImgInfo.width / this.canvas.width).toFixed(2))
+          this.ScaleY = Number((this.naturalImgInfo.height / this.canvas.height).toFixed(2))
           console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight,
                       'scaleX: ', this.scaleX, 'ScaleY: ', this.ScaleY)
           this.loading = false
@@ -432,7 +432,7 @@ export default {
 }
 .img-container {
   width: 100%;
-  height: 600px;
+  height: 800px;
   /* background-color: whitesmoke; */
 }
 </style>

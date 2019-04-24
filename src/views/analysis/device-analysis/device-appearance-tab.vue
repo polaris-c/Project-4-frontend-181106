@@ -157,9 +157,9 @@ export default {
     Pagination,
   },
   mounted() {
-    // console.log('- - DeviceAppearanceTab - - detectionType:', this.detectionType)
     console.log('- - DeviceAppearanceTab - - isImgTab:', this.isImgTab)
     this.fetchList()
+    this.evidenceNorImgURL = this.dataItem.norImgURL
   },
   methods: {
     fetchList() {
@@ -171,8 +171,6 @@ export default {
       })
     },
     initImage() {
-      // this.image = new Image()
-      // this.image.src = this.dataItem.norImgURL
       this.canvasSample = document.getElementById(this.dataItem.id + '_sample')
       this.ctxSample = this.canvasSample.getContext('2d')
       this.canvasSample.width = 800
@@ -184,6 +182,7 @@ export default {
       this.canvasEvidence.width = 400
       this.canvasEvidence.height = 300
     },
+    // 在新图像预处理后接收预处理的图像
     receiveNorImgURL(norImgURL) {
       console.log('- - DeviceAppearanceTab - - receiveNorImgURL:', norImgURL)
       this.evidenceNorImgURL = norImgURL
@@ -225,6 +224,15 @@ export default {
 
         this.imgSample = new Image()
         this.imgSample.src = this.currentSample.norImgURL
+        try {
+          if(!this.evidenceNorImgURL) {
+            throw (new Error("Evidence norImgURL is empty! Use srcImgURL."))
+          }
+        }
+        catch(e) {
+          console.log(e)
+          this.evidenceNorImgURL = this.dataItem.srcImgURL
+        }
         this.imgEvidence = new Image()
         this.imgEvidence.src = this.evidenceNorImgURL
 
