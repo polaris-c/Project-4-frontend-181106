@@ -1,28 +1,6 @@
 <template>
   <div class="app-main-container">
 
-    <!-- <el-card shadow="hover" class="el-row-style">
-      <el-tabs 
-        type="border-card"
-        v-model="activeTabName"
-        @tab-click="handleTabClick">
-
-        <el-tab-pane label="FTIR" name="FTIRtab" >
-          <AnalysisTab detectionType="FTIR"></AnalysisTab>
-        </el-tab-pane>
-        
-        <el-tab-pane 
-          v-for="detectionTypeItem in detectionTypeList"
-          :key="detectionTypeItem"
-          :label="detectionTypeItem"
-          :name="detectionTypeItem">
-          <AnalysisTab 
-            :detectionType="detectionTypeItem"
-            analysisType="explosive">
-          </AnalysisTab>
-        </el-tab-pane>
-      </el-tabs>
-    </el-card> -->
     <el-card shadow="hover" class="el-row-style">
       <el-tabs 
         v-loading="loading"
@@ -76,11 +54,11 @@
 
         <el-tab-pane label="Summary" name="Summarytab">
           <div v-if = "loadingChart">
-            <analysis-tab-ingredient
+            <analysis-tab-summary
               evi-type="explosive"
               data-type="Summary"
               :ingredient-data="XRDdata">
-            </analysis-tab-ingredient>
+            </analysis-tab-summary>
           </div>
         </el-tab-pane>
         
@@ -122,6 +100,7 @@ import GobackButton from '@/components/Buttons/goback-button'
 import ReportButton from '@/components/Buttons/report-button'
 import MessageButton from '@/components/Buttons/message-button'
 import AnalysisTabIngredient from '@/components/AnalysisTab/analysis-tab-ingredient'
+import AnalysisTabSummary from '@/components/AnalysisTab/analysis-tab-summary'
 
 export default {
   name: 'AnalysisExplosiveDetail',
@@ -157,10 +136,6 @@ export default {
     ...mapGetters([
       'name',
       'role',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
   components: {
@@ -168,6 +143,7 @@ export default {
     ReportButton,
     MessageButton,
     AnalysisTabIngredient,
+    AnalysisTabSummary
   },
   mounted() {
     this.routeParams = this.$route.params
