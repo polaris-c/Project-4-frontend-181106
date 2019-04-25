@@ -87,10 +87,6 @@ export default {
         dataInfo: {},
         seriesData: [],
       },
-      XRDdata: {
-        dataInfo: {},
-        seriesData: [],
-      },
       activeTabName: "FTIRtab"
     }
   },

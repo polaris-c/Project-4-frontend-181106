@@ -362,20 +362,20 @@ export const constantRouterMap = [
                 meta: { title: '物证详情', icon: '' },
                 hidden: true
               },
-              {
-                path: 'deviceDetailIngredient/:id',
-                name: 'DeviceDetailIngredient',
-                component: () => import('@/views/evidence-management/device-evidence/device-detail-ingredient'),
-                meta: { title: '残片成分', icon: '' },
-                hidden: true
-              },
-              {
-                path: 'deviceDetailAppearance/:id',
-                name: 'DeviceDetailAppearance',
-                component: () => import('@/views/evidence-management/device-evidence/device-Detail-Appearance'),
-                meta: { title: '残片形态', icon: '' },
-                hidden: true
-              }
+              // {
+              //   path: 'deviceDetailIngredient/:id',
+              //   name: 'DeviceDetailIngredient',
+              //   component: () => import('@/views/evidence-management/device-evidence/device-detail-ingredient'),
+              //   meta: { title: '残片成分', icon: '' },
+              //   hidden: true
+              // },
+              // {
+              //   path: 'deviceDetailAppearance/:id',
+              //   name: 'DeviceDetailAppearance',
+              //   component: () => import('@/views/evidence-management/device-evidence/device-Detail-Appearance'),
+              //   meta: { title: '残片形态', icon: '' },
+              //   hidden: true
+              // }
             ]
           }
         ]

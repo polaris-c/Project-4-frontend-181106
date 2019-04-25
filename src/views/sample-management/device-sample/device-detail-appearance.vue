@@ -87,7 +87,7 @@ export default {
           tabID++
           console.log('- - DeviceDetailAppearance - - dataList id tabID:', val.id, val.tabID)
         })
-        this.activeTabName = this.dataList[0].tabID
+        this.activeTabName = this.dataList[0].id.toString()
         this.loading = false
       })
     },
