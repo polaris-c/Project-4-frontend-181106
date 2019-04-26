@@ -13,37 +13,6 @@
         :distance-data = "distanceData">
       </TabChart>
 
-      <div v-else class="img-container">
-        <el-row>
-          <el-col>
-            <span>-- FTIR --</span>
-          </el-col>
-        </el-row>
-        
-        <el-row>
-          <el-col>
-            <span>-- Raman --</span>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col>
-            <span>-- XRF --</span>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col>
-            <span>-- XRD --</span>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col>
-            <span>-- GCMS --</span>
-          </el-col>
-        </el-row>
-      </div>
     </el-col>
 
     <el-col :span="6">

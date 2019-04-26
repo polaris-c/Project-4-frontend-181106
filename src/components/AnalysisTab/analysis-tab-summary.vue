@@ -3,16 +3,6 @@
   <el-row :gutter="10">
     <el-col :span="18">
       <!-- 图表 -->
-
-      <!-- <TabChart v-if="dataType !== 'Summary'"
-        :detection-type="dataType"
-        :evi-type="eviType"
-        :series-data="ingredientData.seriesData"
-        :data-index = "dataIndex"
-        :sample-data = "currentSample"
-        :distance-data = "distanceData">
-      </TabChart> -->
-
       <div class="img-container">
         <el-row>
           <el-col>
@@ -67,7 +57,8 @@
         fit
         stripe
         border
-        highlight-current-row>
+        highlight-current-row
+        @current-change="handleCurrentChange">
 
         <el-table-column
           label="样本名称"
@@ -88,6 +79,12 @@
           label="相似分"
           align="center"
           width="100">
+          <template slot-scope="scope">
+          <el-tag :type="(scope.row.isCheck == 2 || scope.row.isExpertCheck == 2) ? 'success' : 'info'">
+            {{scope.row.Score}}
+          </el-tag>
+          </template>
+
         </el-table-column>
       </el-table>
 
@@ -101,15 +98,8 @@
   </el-row>
 
   <!-- tab内大分页 -->
-  <el-row :gutter="10">
-    <el-col :span="8">
-      <pagination-files 
-        :count="ingredientData.seriesData.length"
-        :page="pageIndex"
-        @change-page="handleChangeFilePage">
-      </pagination-files>
-    </el-col>
-    <el-col :span="4" :offset="6">
+  <el-row>
+    <el-col :span="4" :offset="0">
       <el-input
         v-model="inputDistanceData"
         placeholder="样本-物证距离">
@@ -128,19 +118,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import TabChart from '@/components/AnalysisTab/analysis-tab-chart'
 import RecognitionButton from '@/components/Buttons/recognition-button'
 import CheckButton from '@/components/Buttons/check-button'
 import Pagination from '@/components/Pagination'
 import PaginationFiles from '@/components/PaginationFiles'
-import { startMatch, 
-          getExploMatchFTIRList,
-          getExploMatchRamanList,
-          getExploMatchXRDList,
-          getExploMatchXRFList,
-          getExploMatchGCMSList,
+import { startMatch,
           getExploSynMatchList,
-          getExploSynMatchInfo } from '@/api/match-explosive'
+          getExploSynMatchInfo,
+          updateExploSynMatch } from '@/api/match-explosive'
 import { getExploSampleFTIRTestFilesInfo,
           getExploSampleRamanTestFilesInfo,
           getExploSampleXRDTestFilesInfo,
@@ -153,27 +140,13 @@ import { getDevPartSampleFTIRTestFilesInfo,
           getDevPartSampleRamanTestFilesInfo,
           getDevPartSampleXRFTestFilesInfo} from '@/api/sample-device'
 
-const explosiveMap = {
-        FTIR: [1,'exploEviFTIRTestFile', 'exploSampleFTIRTestFile', getExploMatchFTIRList, getExploSampleFTIRTestFilesInfo],
-        Raman: [2, 'exploEviRamanTestFile', 'exploSampleRamanTestFile', getExploMatchRamanList, getExploSampleRamanTestFilesInfo],
-        XRD: [3, 'exploEviXRDTestFile', 'exploSampleXRDTestFile', getExploMatchXRDList, getExploSampleXRDTestFilesInfo],
-        XRF: [4, 'exploEviXRFTestFile', 'exploSampleXRFTestFile', getExploMatchXRFList, getExploSampleXRFTestFilesInfo],
-        GCMS: [5, 'exploEviGCMSTestFile', 'exploSampleGCMSTestFile', {}, {}],
-      }
-const deviceMap = {
-        FTIR: [6,'devEviFTIRTestFile', 'devPartSampleFTIRTestFile', getDevMatchFTIRList, getDevPartSampleFTIRTestFilesInfo],
-        Raman: [7, 'devEviRamanTestFile', 'devPartSampleRamanTestFile', getDevMatchRamanList, getDevPartSampleRamanTestFilesInfo],
-        XRF: [8, 'devEviXRFTestFile', 'devPartSampleXRFTestFile', getDevMatchXRFList, getDevPartSampleXRFTestFilesInfo],
-      }
+const explosiveMap = {}
+const deviceMap = {}
 let dataTypeMap = {}
 
 export default {
   name: 'AnalysisTabSummary',
   props: {
-    isImgTab: {
-      type: Boolean,
-      default: false,
-    },
     dataType: {
       type: String,
       default: 'FTIR',
@@ -182,21 +155,18 @@ export default {
       type: String,
       default: 'explosive',
     },
-    ingredientData: {
-      type: Object
+    expertOpinion: {
+      type: String,
+      default: ' ',
     }
   },
   data() {
     return {
-      matchData: {
-        type: 0,  // 根据数据类型触发算法类别
-        eviFileIdName: '',  // 物证id字段名称
-        sampleFileIdName: '',  // 样本id字段名称
-        getMatchList: {},  // 获取物证match匹配表API
-        getSampleFilesInfo: {}  // 获取样本数据文件API
-      },
       tableData: [],
-      currentSample: {},
+      currentSample: {
+        id: null,
+        sname: null
+      },
       // table内小分页
       tablePageIndex: 1,
       tableParams: {
@@ -205,6 +175,9 @@ export default {
         // exploEviFTIRTestFile_id: 1  // 物证数据文件id
         exploEvi_id: null
       },
+      checkData: {
+        Check: true,
+      },
       // tab内大分页
       dataIndex: 0,  // 数据数组下标从0开始
       pageIndex: 1,  // 页码从1开始
@@ -212,11 +185,18 @@ export default {
       distanceData: null,
     }
   },
+  computed: {
+    ...mapGetters([
+      'name',
+      'role',
+    ])
+  },
   watch: {
-    dataIndex(val) {
-      this.currentSample = {}  // 改变物证数据文件时 清除之前绘制的样本
-      this.initTab()
-      this.fetchList()
+    expertOpinion(val, oldVal) {
+      if(!val && !oldVal) return
+      if(this.role == 3) return
+      this.checkData.expertOpinion = val
+      console.log('- - AnalysisTabSummary - - watch:', this.checkData.expertOpinion)
     }
   },
   components: {
@@ -233,34 +213,9 @@ export default {
       dataTypeMap = deviceMap
     }
     this.tableParams.exploEvi_id = this.$route.params.id
-    this.initTab()
     this.fetchList()
   },
   methods: {
-    /** 改变物证数据文件时 重新绘图(传给子组件) 重新获取匹配列表(本组件) */
-    initTab() {
-      if(this.dataType !== 'Summary') {
-        /** 配置 */
-        this.matchData.type = dataTypeMap[this.dataType][0]
-        this.matchData.eviFileIdName = dataTypeMap[this.dataType][1]
-        this.matchData.sampleFileIdName = dataTypeMap[this.dataType][2]
-        this.matchData.getMatchList = dataTypeMap[this.dataType][3]
-        this.matchData.getSampleFilesInfo = dataTypeMap[this.dataType][4]
-
-        if(this.ingredientData.seriesData[this.dataIndex] === undefined) {
-          return
-        }
-
-        let eviFileIdName_id = this.matchData.eviFileIdName + '_id'
-        let IdDescriptor = Object.create(null)
-        Object.defineProperty(this.tableParams, eviFileIdName_id, {
-            value : this.ingredientData.seriesData[this.dataIndex].id,
-            writable : true,
-            enumerable : true,
-            configurable : true
-          })
-      }
-    },
     /** 获取匹配列表 */
     fetchList() {
       getExploSynMatchList(this.tableParams).then(res => {
@@ -268,53 +223,51 @@ export default {
         // console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
       })
     },
-    handleRecognition() {
-      if(this.ingredientData.seriesData[this.dataIndex] === undefined) {
-        return
+    /** 核准 */
+    handleCheck() {
+      console.log('- - AnalysisTabSummary - - handleCheck:', this.currentSample.exploSample.sname)
+      if(this.checkData.hasOwnProperty('expertOpinion') && !this.checkData.expertOpinion) {
+        this.checkData.expertOpinion = "已核准（默认说明）"
       }
-      // console.log('- - AnalysisTabSummary - - handleRecognition:', this.$route.params)
-      let uploadForm = new FormData()
-      uploadForm.append('type', this.matchData.type)
-      uploadForm.append('eviFileId', this.ingredientData.seriesData[this.dataIndex].id)  // seriesData是此种检测类型数据的数组
-      startMatch(uploadForm).then(res => {
-        console.log('- - AnalysisTabSummary - - handleRecognition:', res)
-        this.fetchList()
+      console.log('- - AnalysisTabSummary - - handleCheck:', this.checkData.expertOpinion)
+      updateExploSynMatch(this.currentSample.id, this.checkData).then(res => {
+        console.log('- - AnalysisTabSummary - - handleCheck:', res)
+        return res
+      }).catch(err => {
+        this.$message({
+          message: '核准错误 ' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
       })
     },
-    handleCheck() {
-      console.log('- - AnalysisTabSummary - - handleCheck:', this.currentSample.id)
-    },
-    /** 获取样本数据 */
+    /** 选定样本 */
     handleDetail(row) {
-      if (this.isImgTab) {
-        this.$router.push('/analysis/deviceAnalysis/deviceAppearanceCompare')
-      }
-      else {
-        console.log('- - AnalysisTabSummary - - handleDetail:', row.Score)
-        this.matchData.getSampleFilesInfo(row[this.matchData.sampleFileIdName]).then(res => {
-          console.log('- - AnalysisTabSummary - - handleDetail getExploSample:', res)
-          this.currentSample = res
-        })
-      }
+      console.log('- - AnalysisTabSummary - - handleDetail:', row.Score)
+      // this.handleCurrentChange(row)
     },
-    // handleCurrentChange() {
-    // },
+    handleCurrentChange(row) {
+      this.currentSample = row
+      console.log('- - AnalysisTabSummary - - handleCurrentChange:', this.currentSample.id)
+      this.$emit('change-sample', row.expertOpinion)
+    },
+
     handleChangePage(pageIndex) {
       console.log('- - AnalysisTabSummary - - pageIndex: ', pageIndex)
       this.tablePageIndex = pageIndex
     },
 
     // tab内大分页
-    handleChangeFilePage(index) {
-      console.log('- - AnalysisTabSummary - - index: ', index)
-      this.dataIndex = index - 1
-      this.pageIndex = index
-    },
+    // handleChangeFilePage(index) {
+    //   console.log('- - AnalysisTabSummary - - index: ', index)
+    //   this.dataIndex = index - 1
+    //   this.pageIndex = index
+    // },
     //
     handleDistance() {
       this.distanceData = this.inputDistanceData
     }
-  },
+  }
 }
 </script>
 

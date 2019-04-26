@@ -57,7 +57,8 @@
             <analysis-tab-summary
               evi-type="explosive"
               data-type="Summary"
-              :ingredient-data="XRDdata">
+              :expert-opinion = "expertOpinion"
+              @change-sample = "handleSampleChange">
             </analysis-tab-summary>
           </div>
         </el-tab-pane>
@@ -65,14 +66,15 @@
       </el-tabs>
     </el-card>
 
-    <el-card shadow="hover" class="el-row-style" v-if="role !== 3">
+    <el-card shadow="hover" class="el-row-style" v-if="activeTabName === 'Summarytab'">
       <div>专家意见：</div>
       <hr>
       <el-input 
         v-model="expertOpinion"
         :rows="6"
         type="textarea"
-        placeholder="请输入...">
+        placeholder="请输入..."
+        :disabled="role === 3">
       </el-input>
     </el-card>
 
@@ -129,7 +131,7 @@ export default {
       activeTabName: "FTIRtab",
       // activeTabName: "FTIR",
       // detectionTypeList: ['FTIR', 'RAMAN', 'XRF', 'XRD', 'GCMS', 'Summary'],
-      expertOpinion: ''  // 专家核准意见
+      expertOpinion: ' '  // 专家核准意见
     }
   },
   computed: {
@@ -185,6 +187,9 @@ export default {
     handleTabClick(tab, event) {
       console.log('- - AnalysisExplosiveDetail - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
       console.log('- - AnalysisExplosiveDetail - - handleTabClick activeTabName: ', this.activeTabName)
+    },
+    handleSampleChange(expertOpinion) {
+      this.expertOpinion = expertOpinion
     },
 
     /** */

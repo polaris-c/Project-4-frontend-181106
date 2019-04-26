@@ -99,3 +99,14 @@ export function getExploSynMatchInfo(id) {
   })
 }
 
+const check = {
+  Check: true
+}
+export function updateExploSynMatch(id, data) {
+  return request({
+    url: '/exploSynMatchs/' + id + '/',
+    method: 'put',
+    data
+  })
+}
+
