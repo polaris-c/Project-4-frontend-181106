@@ -71,7 +71,7 @@
       <hr>
       <el-input 
         v-model="expertOpinion"
-        :rows="6"
+        :rows="3"
         type="textarea"
         placeholder="请输入..."
         :disabled="role === 3">
@@ -103,6 +103,7 @@ import ReportButton from '@/components/Buttons/report-button'
 import MessageButton from '@/components/Buttons/message-button'
 import AnalysisTabIngredient from '@/components/AnalysisTab/analysis-tab-ingredient'
 import AnalysisTabSummary from '@/components/AnalysisTab/analysis-tab-summary'
+import { createExploReport } from '@/api/match-explosive'
 
 export default {
   name: 'AnalysisExplosiveDetail',
@@ -131,7 +132,10 @@ export default {
       activeTabName: "FTIRtab",
       // activeTabName: "FTIR",
       // detectionTypeList: ['FTIR', 'RAMAN', 'XRF', 'XRD', 'GCMS', 'Summary'],
-      expertOpinion: ' '  // 专家核准意见
+      expertOpinion: ' ',  // 专家核准意见
+      reportData: {
+        exploId: null
+      }
     }
   },
   computed: {
@@ -149,6 +153,7 @@ export default {
   },
   mounted() {
     this.routeParams = this.$route.params
+    this.reportData.exploId = this.$route.params.id
     console.log('- - AnalysisExplosiveDetail - - $route.params: ', this.$route.params.id)
     this.fetchData()
   },
@@ -192,9 +197,15 @@ export default {
       this.expertOpinion = expertOpinion
     },
 
-    /** */
+    /** 生成报告 */
     handleReport() {
+      let uploadForm = new FormData()
+      uploadForm.append('exploId', this.$route.params.id)
+      createExploReport(uploadForm).then(res => {
+
+      })
     },
+    /** 专家咨询 */
     handleMessage() {
       // this.$router.push('/message/messageCreation')
       this.$router.push({ 

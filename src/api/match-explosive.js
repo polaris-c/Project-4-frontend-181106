@@ -99,9 +99,6 @@ export function getExploSynMatchInfo(id) {
   })
 }
 
-const check = {
-  Check: true
-}
 export function updateExploSynMatch(id, data) {
   return request({
     url: '/exploSynMatchs/' + id + '/',
@@ -110,3 +107,26 @@ export function updateExploSynMatch(id, data) {
   })
 }
 
+/** createExploReport 生成报告 */
+export function createExploReport(data) {
+  return request({
+    url: '/createExploReport/',
+    method: 'post',
+    data
+  })
+}
+
+/** exploReportMatchs  */
+export function getExploReportMatchsList(params) {
+  return request({
+    url: '/exploReportMatchs/',
+    method: 'get',
+    params
+  })
+}
+export function getExploReportMatchsInfo(id) {
+  return request({
+    url: '/exploReportMatchs/' + id + '/',
+    method: 'get'
+  })
+}

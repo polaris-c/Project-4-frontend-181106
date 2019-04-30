@@ -9,7 +9,7 @@
         <el-row class="el-row-style">
           <el-col :span="8">物证编号: {{ detailData.id }}</el-col>
           <el-col :span="8">物证名称：{{ detailData.evidenceName }}</el-col>
-          <el-col :span="8">物证缩写：{{ detailData.caseName }}</el-col>
+          <el-col :span="8">案件名称：{{ detailData.caseName }}</el-col>
         </el-row>
         <el-row class="el-row-style">
           <el-col :span="8">处理人员：{{ detailData.user.name }}</el-col>
