@@ -57,8 +57,8 @@
         fit
         stripe
         border
-        highlight-current-row
-        @current-change="handleCurrentChange">
+        highlight-current-row>
+        <!--  @current-change="handleCurrentChange"> -->
 
         <el-table-column
           label="样本名称"
@@ -220,7 +220,7 @@ export default {
     fetchList() {
       getExploSynMatchList(this.tableParams).then(res => {
         this.tableData = res.results
-        // console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
+        console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
       })
     },
     /** 核准 */
@@ -232,7 +232,12 @@ export default {
       console.log('- - AnalysisTabSummary - - handleCheck:', this.checkData.expertOpinion)
       updateExploSynMatch(this.currentSample.id, this.checkData).then(res => {
         console.log('- - AnalysisTabSummary - - handleCheck:', res)
-        return res
+        this.fetchList()
+        this.$message({
+          message: '核准完成 ',
+          type: 'success',
+          duration: 6 * 1000
+        })
       }).catch(err => {
         this.$message({
           message: '核准错误 ' + err.message,
@@ -243,8 +248,9 @@ export default {
     },
     /** 选定样本 */
     handleDetail(row) {
+      this.currentSample = row
       console.log('- - AnalysisTabSummary - - handleDetail:', row.Score)
-      // this.handleCurrentChange(row)
+      this.handleCurrentChange(row)
     },
     handleCurrentChange(row) {
       this.currentSample = row

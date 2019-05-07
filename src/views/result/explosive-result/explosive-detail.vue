@@ -1,6 +1,7 @@
 <template>
   <div class="app-main-container">
 
+    <!-- 物证 -->
     <el-card shadow="hover" class="el-row-style">
       <div slot="header">
         <span>炸药与原材料基本信息</span>
@@ -19,6 +20,7 @@
       </div>
     </el-card>
 
+    <!-- 样本 -->
     <el-card shadow="hover" class="el-row-style">
       <div slot="header">
         <span>匹配样本信息</span>
@@ -33,11 +35,68 @@
             {{ item.exploSample.sname }} ———— {{ item.Score }}
           </el-button>
         </div>
+        <hr>
+        <div v-if="currentSampleInfo.sname">
+          <el-row class="el-row-style">
+            <el-col :span="8">样本编号: {{ currentSampleInfo.id }}</el-col>
+            <el-col :span="8">样本名称：{{ currentSampleInfo.sname }}</el-col>
+            <el-col :span="8">样本缩写：{{ currentSampleInfo.snameAbbr }}</el-col>
+          </el-row>
+          <el-row class="el-row-style">
+            <el-col :span="8">样本产地：{{ currentSampleInfo.sampleOrigin }}</el-col>
+            <el-col :span="8">样本厂家：{{ currentSampleInfo.factory }}</el-col>
+            <el-col :span="8">录入日期：{{ currentSampleInfo.inputDate }}</el-col>
+          </el-row>
+          <el-row class="el-row-style">
+            <el-col :span="8">备注：{{ currentSampleInfo.note }}</el-col>
+          </el-row>
+        </div>
       </div>
     </el-card>
 
-    <el-card shadow="hover" class="el-row-style">
+    <!-- FTIR -->
+    <el-card 
+      shadow="hover" 
+      class="el-row-style"
+      v-if="FTIRdata.id">
+      匹配得分：{{ FTIRdata.Score }}
+      <TabChart
+        detection-type="FTIR"
+        evi-type="explosive"
+        :series-data = "FTIRdata.exploEviFTIRTestFile"
+        :sample-data = "FTIRdata.exploSampleFTIRTestFile"
+        distance-data = 2>
+      </TabChart>
+    </el-card>
 
+    <!-- Raman -->
+    <el-card 
+      shadow="hover" 
+      class="el-row-style"
+      v-if="Ramandata.id">
+      匹配得分：{{ Ramandata.Score }}
+      <TabChart
+        detection-type="Raman"
+        evi-type="explosive"
+        :series-data = "Ramandata.exploEviRamanTestFile"
+        :sample-data = "Ramandata.exploSampleRamanTestFile"
+        distance-data = 0.2>
+      </TabChart>
+    </el-card>
+
+    <!-- XRD -->
+    <el-card 
+      shadow="hover" 
+      class="el-row-style"
+      v-if="XRDdata.id">
+      匹配得分：{{ XRDdata.Score }}
+      <TabChart
+        detection-type="XRD"
+        evi-type="explosive"
+        :series-data = "XRDdata.exploEviXRDTestFile"
+        :sample-data = "XRDdata.exploSampleXRDTestFile"
+        distance-data = 30>
+      </TabChart>
     </el-card>
 
     <!-- 页面操作按键 -->
@@ -55,6 +114,7 @@
 import { mapGetters } from 'vuex'
 import { getExploReportMatchsInfo } from '@/api/match-explosive'
 import GobackButton from '@/components/Buttons/goback-button'
+import TabChart from '@/views/result/explosive-result/result-tab-chart'
 
 export default {
   name: 'ExplosiveDetail',
@@ -63,9 +123,32 @@ export default {
       loading: false,
       loadingChart: false,
       detailData: {
-        user: { }
+        user: {}
       },
+      currentSampleInfo: {},
       exploSynMatchList: [],
+      eviData: {},
+      currentSampleData: {},
+      FTIRdata: {
+        Score: null,
+        exploEviFTIRTestFile: {},
+        exploSampleFTIRTestFile: {},
+      },
+      Ramandata: {
+        Score: null,
+        exploEviRamanTestFile: {},
+        exploSampleRamanTestFile: {},
+      },
+      XRFdata: {
+        Score: null,
+        exploEviXRFTestFile: {},
+        exploSampleXRFTestFile: {},
+      },
+      XRDdata: {
+        Score: null,
+        exploEviXRDTestFile: {},
+        exploSampleXRDTestFile: {},
+      },
       tableParams: {
         search: null,
         page: 1,
@@ -82,12 +165,13 @@ export default {
   },
   components: {
     GobackButton,
+    TabChart
   },
   mounted() {
     this.fetchData()
   },
   methods: {
-    fetchData(){
+    fetchData() {
       this.loading = true
       getExploReportMatchsInfo(this.$route.params.id).then(res => {
         this.detailData = res.exploEvi
@@ -96,7 +180,6 @@ export default {
         } else {
           this.exploSynMatchList = [res.exploSynMatchList]
         }
-        
         this.loading = false
       }).catch(err => {
         this.$message({
@@ -105,8 +188,44 @@ export default {
         })
       })
     },
+    initData() {
+      this.FTIRdata = {
+        Score: null,
+        exploEviFTIRTestFile: {},
+        exploSampleFTIRTestFile: {},
+      }
+      this.Ramandata = {
+        Score: null,
+        exploEviRamanTestFile: {},
+        exploSampleRamanTestFile: {},
+      }
+      this.XRFdata = {
+        Score: null,
+        exploEviXRFTestFile: {},
+        exploSampleXRFTestFile: {},
+      }
+      this.XRDdata = {
+        Score: null,
+        exploEviXRDTestFile: {},
+        exploSampleXRDTestFile: {},
+      }
+    },
     handleDetail(index) {
-      console.log(this.exploSynMatchList[index].id)
+      this.initData()
+      // console.log(this.exploSynMatchList[index].id, this.exploSynMatchList)
+      this.currentSampleInfo = this.exploSynMatchList[index].exploSample
+      if(this.exploSynMatchList[index].exploEviFTIR) {
+        this.FTIRdata = this.exploSynMatchList[index].exploEviFTIR
+      }
+      if(this.exploSynMatchList[index].exploEviRaman) {
+        this.Ramandata = this.exploSynMatchList[index].exploEviRaman
+      }
+      if(this.exploSynMatchList[index].exploEviXRD) {
+        this.XRDdata = this.exploSynMatchList[index].exploEviXRD
+      }
+      this.exploSynMatchList.find(match => {
+        return match.id == this.exploSynMatchList[index].id
+      })
     },
     /** 页面操作按键 */
     goBcak() {
@@ -117,13 +236,5 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
+
 </style>

@@ -202,7 +202,11 @@ export default {
       let uploadForm = new FormData()
       uploadForm.append('exploId', this.$route.params.id)
       createExploReport(uploadForm).then(res => {
-
+        this.$message({
+          message: '报告已生成 ',
+          type: 'success',
+          duration: 6 * 1000
+        })
       })
     },
     /** 专家咨询 */
