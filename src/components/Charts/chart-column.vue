@@ -3,6 +3,7 @@
     <div>
       <div v-if="optionsGM.isExist" id="general-metals-container" style="min-width:600px; height:600px"></div>
       <div v-else>———— {{ dataType }} General Metals 没有数据 ————</div>
+      <!-- {{ optionsGM.handledData }} -->
     </div>
     <div>
       <div v-if="optionsPP.isExist" id="plastics-pvc-container" style="min-width:600px; height:600px"></div>
@@ -11,6 +12,18 @@
     <div>
       <div v-if="optionsTG.isExist" id="testall-geo-container" style="min-width:600px; height:600px"></div>
       <div v-else>———— {{ dataType }} TestAll Geo 没有数据 ————</div>
+    </div>
+    <div>
+      <div v-if="optionsS.isExist" id="soil-container" style="min-width:600px; height:600px"></div>
+      <div v-else>———— {{ dataType }} Soil 没有数据 ————</div>
+    </div>
+    <div>
+      <div v-if="optionsM.isExist" id="mining-container" style="min-width:600px; height:600px"></div>
+      <div v-else>———— {{ dataType }} Mining 没有数据 ————</div>
+    </div>
+    <div>
+      <div v-if="optionsM1.isExist" id="mining1-container" style="min-width:600px; height:600px"></div>
+      <div v-else>———— {{ dataType }} Mining1 没有数据 ————</div>
     </div>
   </div>
 </template>
@@ -70,18 +83,18 @@ export default {
         },
         subtitle: {
           text: document.ontouchstart === undefined ?
-          '鼠标拖动可以进行缩放' : '手势操作进行缩放'
+          '' : ''
         },
         xAxis: {
           title: {
-            text: 'xAxis_title'
+            text: ''
           },
           lineWidth: 2,
           categories: []
         },
         yAxis: {
           title: {
-            text: 'yAxis_title_Intensity'
+            text: ''
           },
           lineWidth: 2,
           // lineColor: '#',
@@ -95,6 +108,7 @@ export default {
             data: []
           },
         ],
+        handledData: {}
       },
       optionsPP: {
         isExist: false,
@@ -120,18 +134,18 @@ export default {
         },
         subtitle: {
           text: document.ontouchstart === undefined ?
-          '鼠标拖动可以进行缩放' : '手势操作进行缩放'
+          '' : ''
         },
         xAxis: {
           title: {
-            text: 'xAxis_title'
+            text: ''
           },
           lineWidth: 2,
           categories: []
         },
         yAxis: {
           title: {
-            text: 'yAxis_title_Intensity'
+            text: ''
           },
           lineWidth: 2,
           id: 'yAxis_id_temperature-axis'
@@ -144,6 +158,7 @@ export default {
             data: []
           },
         ],
+        handledData: {}
       },
       optionsTG: {
         isExist: false,
@@ -169,18 +184,18 @@ export default {
         },
         subtitle: {
           text: document.ontouchstart === undefined ?
-          '鼠标拖动可以进行缩放' : '手势操作进行缩放'
+          '' : ''
         },
         xAxis: {
           title: {
-            text: 'xAxis_title'
+            text: ''
           },
           lineWidth: 2,
           categories: []
         },
         yAxis: {
           title: {
-            text: 'yAxis_title_Intensity'
+            text: ''
           },
           lineWidth: 2,
           id: 'yAxis_id_temperature-axis'
@@ -193,9 +208,164 @@ export default {
             data: []
           },
         ],
+        handledData: {}
+      },
+      optionsS: {
+        isExist: false,
+        title: {
+          text: 'Soil'
+        },
+        chart:{
+          type: 'column',
+          zoomType: 'x',
+          panning: true,
+          panKey: 'shift',
+          plotBackgroundColor: 'whitesmoke',   // 绘图区背景
+          style: {
+            fontSize: '16px',
+            fontWeight: 'bold',
+            color: 'black',
+          },
+          events: {
+            click() {
+              console.log('options-chart-Click')
+            },
+          },
+        },
+        subtitle: {
+          text: document.ontouchstart === undefined ?
+          '' : ''
+        },
+        xAxis: {
+          title: {
+            text: ''
+          },
+          lineWidth: 2,
+          categories: []
+        },
+        yAxis: {
+          title: {
+            text: ''
+          },
+          lineWidth: 2,
+          id: 'yAxis_id_temperature-axis'
+        },
+        series: [
+          {
+            name: this.dataType,
+            color: 'red',
+            // lineWidth: 1,
+            data: []
+          },
+        ],
+        handledData: {}
+      },
+      optionsM: {
+        isExist: false,
+        title: {
+          text: 'Mining'
+        },
+        chart:{
+          type: 'column',
+          zoomType: 'x',
+          panning: true,
+          panKey: 'shift',
+          plotBackgroundColor: 'whitesmoke',   // 绘图区背景
+          style: {
+            fontSize: '16px',
+            fontWeight: 'bold',
+            color: 'black',
+          },
+          events: {
+            click() {
+              console.log('options-chart-Click')
+            },
+          },
+        },
+        subtitle: {
+          text: document.ontouchstart === undefined ?
+          '' : ''
+        },
+        xAxis: {
+          title: {
+            text: ''
+          },
+          lineWidth: 2,
+          categories: []
+        },
+        yAxis: {
+          title: {
+            text: ''
+          },
+          lineWidth: 2,
+          id: 'yAxis_id_temperature-axis'
+        },
+        series: [
+          {
+            name: this.dataType,
+            color: 'red',
+            // lineWidth: 1,
+            data: []
+          },
+        ],
+        handledData: {}
+      },
+      optionsM1: {
+        isExist: false,
+        title: {
+          text: 'Mining1'
+        },
+        chart:{
+          type: 'column',
+          zoomType: 'x',
+          panning: true,
+          panKey: 'shift',
+          plotBackgroundColor: 'whitesmoke',   // 绘图区背景
+          style: {
+            fontSize: '16px',
+            fontWeight: 'bold',
+            color: 'black',
+          },
+          events: {
+            click() {
+              console.log('options-chart-Click')
+            },
+          },
+        },
+        subtitle: {
+          text: document.ontouchstart === undefined ?
+          '' : ''
+        },
+        xAxis: {
+          title: {
+            text: ''
+          },
+          lineWidth: 2,
+          categories: []
+        },
+        yAxis: {
+          title: {
+            text: ''
+          },
+          lineWidth: 2,
+          id: 'yAxis_id_temperature-axis'
+        },
+        series: [
+          {
+            name: this.dataType,
+            color: 'red',
+            // lineWidth: 1,
+            data: []
+          },
+        ],
+        handledData: {}
       },
       handledData: {},
-      extractHandledData: [[], []]
+      extractHandledData: [[], []],
+      allElementData: [
+        ["Mg","Al","Si","P","S","Cl","K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Rb","Sr","Y","Zr","Nb","Mo","Ru","Pd","Ag","Cd","Sn","Sb","Te","Cs","Ba","Hf","W","Au","Hg","Pb","Bi","Th","U"], 
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      ]
     }
   },
   watch: {
@@ -214,36 +384,59 @@ export default {
       this.optionsGM.isExist = false
       this.optionsPP.isExist = false
       this.optionsTG.isExist = false
+      this.optionsS.isExist = false
+      this.optionsM.isExist = false
+      this.optionsM1.isExist = false
+
       if (!this.seriesData.length) {
         console.log(`---- ChartColumn ---- ${ this.dataType } is empty!!! `)
         return
       }
       this.handledData = this.seriesData[this.dataIndex].handledData
-      if (Object.keys(this.handledData['General Metals']).length) {
-        this.extractData(this.handledData['General Metals'])
-        this.optionsGM.xAxis.categories = this.extractHandledData[0]
-        this.optionsGM.series[0].data = this.extractHandledData[1].map(Number)
-        this.optionsGM.isExist = true
+      if (this.handledData['General Metals'] !== undefined && JSON.stringify(this.handledData['General Metals']) !== "{}") {
+        this.extractData(this.handledData['General Metals'], this.optionsGM)
+        // this.optionsGM.xAxis.categories = this.allElementData[0]
+        // this.optionsGM.series[0].data = this.allElementData[1].map(Number)
+        // this.optionsGM.isExist = true
       }
-      if (Object.keys(this.handledData['Plastics PVC']).length) {
-        this.extractData(this.handledData['Plastics PVC'])
-        this.optionsPP.xAxis.categories = this.extractHandledData[0]
-        this.optionsPP.series[0].data = this.extractHandledData[1].map(Number)
-        this.optionsPP.isExist = true
+      if (this.handledData['Plastics PVC'] !== undefined && JSON.stringify(this.handledData['Plastics PVC']) !== "{}") {
+        this.extractData(this.handledData['Plastics PVC'], this.optionsPP)
+        // this.optionsPP.xAxis.categories = this.allElementData[0]
+        // this.optionsPP.series[0].data = this.allElementData[1].map(Number)
+        // this.optionsPP.isExist = true
       }
-      if (Object.keys(this.handledData['TestAll Geo']).length) {
-        this.extractData(this.handledData['TestAll Geo'])
-        this.optionsTG.xAxis.categories = this.extractHandledData[0]
-        this.optionsTG.series[0].data = this.extractHandledData[1].map(Number)
-        this.optionsTG.isExist = true
+      if (this.handledData['TestAll Geo'] !== undefined && JSON.stringify(this.handledData['TestAll Geo']) !== "{}") {
+        this.extractData(this.handledData['TestAll Geo'], this.optionsTG)
+        // this.optionsTG.xAxis.categories = this.allElementData[0]
+        // this.optionsTG.series[0].data = this.allElementData[1].map(Number)
+        // this.optionsTG.isExist = true
+      } 
+      if (this.handledData['Soil'] !== undefined && JSON.stringify(this.handledData['Soil']) !== "{}") {
+        this.extractData(this.handledData['Soil'], this.optionsS)
+        // this.optionsS.xAxis.categories = this.allElementData[0]
+        // this.optionsS.series[0].data = this.allElementData[1].map(Number)
+        // this.optionsS.isExist = true
+      }
+      if (this.handledData['Mining'] !== undefined && JSON.stringify(this.handledData['Mining']) !== "{}") {
+        this.extractData(this.handledData['Mining'], this.optionsM)
+        // this.optionsM.xAxis.categories = this.allElementData[0]
+        // this.optionsM.series[0].data = this.allElementData[1].map(Number)
+        // this.optionsM.isExist = true
+      }
+      if (this.handledData['Mining1'] !== undefined && JSON.stringify(this.handledData['Mining1']) !== "{}") {
+        this.extractData(this.handledData['Mining1'], this.optionsM1)
+        // this.optionsM1.xAxis.categories = this.allElementData[0]
+        // this.optionsM1.series[0].data = this.allElementData[1].map(Number)
+        // this.optionsM1.isExist = true
       }
       this.$nextTick(() => {
         let domGM = document.getElementById('general-metals-container') 
         let domPP = document.getElementById('plastics-pvc-container')
         let domTG = document.getElementById('testall-geo-container')
-        // console.log(`---- ChartColumn ---- dom :`, domGM, domPP, domTG)
-        // console.log(`---- ChartColumn ---- domGM :`, this.optionsGM.xAxis.categories)
-        // console.log(`---- ChartColumn ---- domGM :`, this.optionsGM.series[0].data)
+        let domS = document.getElementById('soil-container')
+        let domM = document.getElementById('mining-container')
+        let domM1 = document.getElementById('mining1-container')
+
         if(domGM && this.optionsGM.isExist) {
           this.chart = new Highcharts.Chart(domGM, this.optionsGM);
         }
@@ -253,15 +446,43 @@ export default {
         if(domTG && this.optionsTG.isExist) {
           new Highcharts.Chart(domTG, this.optionsTG);
         }
+        if(domS && this.optionsS.isExist) {
+          new Highcharts.Chart(domS, this.optionsS);
+        }
+        if(domM && this.optionsM.isExist) {
+          new Highcharts.Chart(domM, this.optionsM);
+        }
+        if(domM1 && this.optionsM1.isExist) {
+          new Highcharts.Chart(domM1, this.optionsM1);
+        }
       })
     },
-    extractData(dataObj) {
+    extractData(dataObj, optionObj) {
+      optionObj.handledData = dataObj
       this.extractHandledData = [[], []]
       this.extractHandledData[0] = Object.keys(dataObj)  // 获取键值,即元素名称
       // console.log(`---- ChartColumn ---- extractData :`, this.extractHandledData[0])
       this.extractHandledData[0].forEach(key => {  // 获取对应元素含量数值 
         this.extractHandledData[1].push(dataObj[key])
       })
+      // 获取绘图元素数据
+      this.allElementData = [
+        ["Mg","Al","Si","P","S","Cl","K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Rb","Sr","Y","Zr","Nb","Mo","Ru","Pd","Ag","Cd","Sn","Sb","Te","Cs","Ba","Hf","W","Au","Hg","Pb","Bi","Th","U","Bal"], 
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      ]
+      for(let e in dataObj) {
+        let eIndex = this.allElementData[0].indexOf(e)
+        if(eIndex >= 0) {
+          let eVal = Number(dataObj[e])
+          if(eVal > 1) {
+            eVal = Math.log2(eVal)
+          }
+          this.allElementData[1][eIndex] = eVal
+        }
+      }
+      optionObj.xAxis.categories = this.allElementData[0]
+      optionObj.series[0].data = this.allElementData[1].map(Number)
+      optionObj.isExist = true
     }
   },
 
