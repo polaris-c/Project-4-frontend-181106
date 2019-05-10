@@ -84,6 +84,19 @@
       </TabChart>
     </el-card>
 
+    <!-- XRF -->
+    <el-card 
+      shadow="hover" 
+      class="el-row-style"
+      v-if="XRFdata.id">
+      匹配得分：{{ XRFdata.averScore }}
+      <TabColumn
+        evi-type="explosive"
+        :series-data = "XRFdata.exploEviXRFTestFile"
+        :sample-data = "XRFdata.exploSampleXRFTestFile">
+      </TabColumn>
+    </el-card>
+
     <!-- XRD -->
     <el-card 
       shadow="hover" 
@@ -115,6 +128,7 @@ import { mapGetters } from 'vuex'
 import { getExploReportMatchsInfo } from '@/api/match-explosive'
 import GobackButton from '@/components/Buttons/goback-button'
 import TabChart from '@/views/result/explosive-result/result-tab-chart'
+import TabColumn from '@/views/result/explosive-result/result-tab-column'
 
 export default {
   name: 'ExplosiveDetail',
@@ -165,7 +179,8 @@ export default {
   },
   components: {
     GobackButton,
-    TabChart
+    TabChart,
+    TabColumn
   },
   mounted() {
     this.fetchData()
@@ -219,6 +234,9 @@ export default {
       }
       if(this.exploSynMatchList[index].exploEviRaman) {
         this.Ramandata = this.exploSynMatchList[index].exploEviRaman
+      }
+      if(this.exploSynMatchList[index].exploEviXRF) {
+        this.XRFdata = this.exploSynMatchList[index].exploEviXRF
       }
       if(this.exploSynMatchList[index].exploEviXRD) {
         this.XRDdata = this.exploSynMatchList[index].exploEviXRD

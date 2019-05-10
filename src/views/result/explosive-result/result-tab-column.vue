@@ -50,11 +50,8 @@ export default {
       default: 'explosive',
     },
     seriesData: {
-      type: Array
-    },
-    dataIndex: {
-      type: [Number, String],
-      default: 0
+      type: Object,
+      default: {}
     },
     sampleData: {
       type: Object,
@@ -409,17 +406,11 @@ export default {
     }
   },
   watch: {
-    dataIndex(val) {
-      this.dataIndex = val
-      console.log(`---- AnalysisTabColumn watch ---- ${ this.dataType } Index:`, this.dataIndex)
-      this.drawChart()
-    },
     sampleData() {
       this.drawChart()
     },
   },
   mounted() {
-    console.log(`---- AnalysisTabColumn ---- ${ this.dataType } Index: `, this.dataIndex)
     this.drawChart()
   },
   methods: {
@@ -431,11 +422,11 @@ export default {
       this.optionsM.isExist = false
       this.optionsM1.isExist = false
 
-      if (!this.seriesData.length) {
+      if (JSON.stringify(this.seriesData) === "{}") {
         console.log(`---- AnalysisTabColumn ---- ${ this.dataType } is empty!!! `)
         return
       }
-      this.handledData = this.seriesData[this.dataIndex].handledData
+      this.handledData = this.seriesData.handledData
       if (this.handledData['General Metals'] !== undefined && JSON.stringify(this.handledData['General Metals']) !== "{}") {
         if(JSON.stringify(this.sampleData) !== "{}" && this.sampleData.handledData['General Metals'] !== undefined) {
           this.extractData(this.handledData['General Metals'], this.sampleData.handledData['General Metals'], this.optionsGM)
