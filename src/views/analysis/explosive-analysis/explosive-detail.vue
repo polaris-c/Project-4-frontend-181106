@@ -130,8 +130,6 @@ export default {
         seriesData: [],
       },
       activeTabName: "FTIRtab",
-      // activeTabName: "FTIR",
-      // detectionTypeList: ['FTIR', 'RAMAN', 'XRF', 'XRD', 'GCMS', 'Summary'],
       expertOpinion: ' ',  // 专家核准意见
       reportData: {
         exploId: null

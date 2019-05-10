@@ -4,7 +4,7 @@
     <el-col :span="18">
       <!-- 图表 -->
 
-      <TabChart v-if="dataType !== 'Summary'"
+      <TabChart v-if="dataType !== 'Summary' && dataType !== 'XRF'"
         :detection-type="dataType"
         :evi-type="eviType"
         :series-data="ingredientData.seriesData"
@@ -12,6 +12,13 @@
         :sample-data = "currentSample"
         :distance-data = "distanceData">
       </TabChart>
+
+      <TabColumn v-if="dataType === 'XRF'"
+        :evi-type="eviType"
+        :series-data="ingredientData.seriesData"
+        :data-index = "dataIndex"
+        :sample-data = "currentSample">
+      </TabColumn>
 
     </el-col>
 
@@ -78,6 +85,9 @@
           label="相似分"
           align="center"
           width="100">
+          <template slot-scope="scope">
+            {{ dataType == "XRF" ? scope.row.averScore : scope.row.Score }}
+          </template>
         </el-table-column>
       </el-table>
 
@@ -120,6 +130,7 @@
 
 <script>
 import TabChart from '@/components/AnalysisTab/analysis-tab-chart'
+import TabColumn from '@/components/AnalysisTab/analysis-tab-column'
 import RecognitionButton from '@/components/Buttons/recognition-button'
 import CheckButton from '@/components/Buttons/check-button'
 import Pagination from '@/components/Pagination'
@@ -209,10 +220,11 @@ export default {
   },
   components: {
     TabChart,
+    TabColumn,
     RecognitionButton,
     CheckButton,
     Pagination,
-    PaginationFiles
+    PaginationFiles,
   },
   mounted() {
     if(this.eviType == 'explosive') {
