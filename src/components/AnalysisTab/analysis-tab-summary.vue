@@ -4,35 +4,65 @@
     <el-col :span="18">
       <!-- 图表 -->
       <div class="img-container">
-        <el-row>
+        <el-row v-if="FTIRdata.id">
           <el-col>
-            <span>-- FTIR --</span>
-          </el-col>
-        </el-row>
-        
-        <el-row>
-          <el-col>
-            <span>-- Raman --</span>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col>
-            <span>-- XRF --</span>
+            匹配得分：{{ FTIRdata.Score }}
+            <TabChart
+              detection-type="FTIR"
+              evi-type="explosive"
+              :series-data = "FTIRdata.exploEviFTIRTestFile"
+              :sample-data = "FTIRdata.exploSampleFTIRTestFile"
+              distance-data = 2>
+            </TabChart>
+            <hr>
           </el-col>
         </el-row>
 
-        <el-row>
+        <el-row v-if="Ramandata.id">
           <el-col>
-            <span>-- XRD --</span>
+            匹配得分：{{ Ramandata.Score }}
+            <TabChart
+              detection-type="Raman"
+              evi-type="explosive"
+              :series-data = "Ramandata.exploEviRamanTestFile"
+              :sample-data = "Ramandata.exploSampleRamanTestFile"
+              distance-data = 0.2>
+            </TabChart>
+            <hr>
           </el-col>
         </el-row>
 
-        <el-row>
+        <el-row v-if="XRFdata.id">
+          <el-col>
+            匹配得分：{{ XRFdata.averScore }}
+            <TabColumn
+              evi-type="explosive"
+              :series-data = "XRFdata.exploEviXRFTestFile"
+              :sample-data = "XRFdata.exploSampleXRFTestFile">
+            </TabColumn>
+            <hr>
+          </el-col>
+        </el-row>
+
+        <el-row v-if="XRDdata.id">
+          <el-col>
+            匹配得分：{{ XRDdata.Score }}
+            <TabChart
+              detection-type="XRD"
+              evi-type="explosive"
+              :series-data = "XRDdata.exploEviXRDTestFile"
+              :sample-data = "XRDdata.exploSampleXRDTestFile"
+              distance-data = 30>
+            </TabChart>
+            <hr>
+          </el-col>
+        </el-row>
+
+        <!-- <el-row>
           <el-col>
             <span>-- GCMS --</span>
           </el-col>
-        </el-row>
+        </el-row> -->
       </div>
     </el-col>
 
@@ -119,11 +149,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import TabChart from '@/components/AnalysisTab/analysis-tab-chart'
 import RecognitionButton from '@/components/Buttons/recognition-button'
 import CheckButton from '@/components/Buttons/check-button'
 import Pagination from '@/components/Pagination'
 import PaginationFiles from '@/components/PaginationFiles'
+import TabChart from '@/components/ResultTab/result-tab-chart'
+import TabColumn from '@/components/ResultTab/result-tab-column'
 import { startMatch,
           getExploSynMatchList,
           getExploSynMatchInfo,
@@ -167,6 +198,26 @@ export default {
         id: null,
         sname: null
       },
+      FTIRdata: {
+        Score: null,
+        exploEviFTIRTestFile: {},
+        exploSampleFTIRTestFile: {},
+      },
+      Ramandata: {
+        Score: null,
+        exploEviRamanTestFile: {},
+        exploSampleRamanTestFile: {},
+      },
+      XRFdata: {
+        Score: null,
+        exploEviXRFTestFile: {},
+        exploSampleXRFTestFile: {},
+      },
+      XRDdata: {
+        Score: null,
+        exploEviXRDTestFile: {},
+        exploSampleXRDTestFile: {},
+      },
       // table内小分页
       tablePageIndex: 1,
       tableParams: {
@@ -196,11 +247,12 @@ export default {
       if(!val && !oldVal) return
       if(this.role == 3) return
       this.checkData.expertOpinion = val
-      console.log('- - AnalysisTabSummary - - watch:', this.checkData.expertOpinion)
+      console.log('- - AnalysisTabSummary - - watch expertOpinion:', this.checkData.expertOpinion)
     }
   },
   components: {
     TabChart,
+    TabColumn,
     RecognitionButton,
     CheckButton,
     Pagination,
@@ -222,6 +274,28 @@ export default {
         this.tableData = res.results
         console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
       })
+    },
+    initData() {
+      this.FTIRdata = {
+        Score: null,
+        exploEviFTIRTestFile: {},
+        exploSampleFTIRTestFile: {},
+      }
+      this.Ramandata = {
+        Score: null,
+        exploEviRamanTestFile: {},
+        exploSampleRamanTestFile: {},
+      }
+      this.XRFdata = {
+        Score: null,
+        exploEviXRFTestFile: {},
+        exploSampleXRFTestFile: {},
+      }
+      this.XRDdata = {
+        Score: null,
+        exploEviXRDTestFile: {},
+        exploSampleXRDTestFile: {},
+      }
     },
     /** 核准 */
     handleCheck() {
@@ -249,8 +323,22 @@ export default {
     /** 选定样本 */
     handleDetail(row) {
       this.currentSample = row
-      console.log('- - AnalysisTabSummary - - handleDetail:', row.Score)
+      console.log('- - AnalysisTabSummary - - handleDetail:', row)
       this.handleCurrentChange(row)
+      // getExploSynMatchInfo().then()
+      this.initData()
+      if(this.currentSample.exploEviFTIR) {
+        this.FTIRdata = this.currentSample.exploEviFTIR
+      }
+      if(this.currentSample.exploEviRaman) {
+        this.Ramandata = this.currentSample.exploEviRaman
+      }
+      if(this.currentSample.exploEviXRF) {
+        this.XRFdata = this.currentSample.exploEviXRF
+      }
+      if(this.currentSample.exploEviXRD) {
+        this.XRDdata = this.currentSample.exploEviXRD
+      }
     },
     handleCurrentChange(row) {
       this.currentSample = row
