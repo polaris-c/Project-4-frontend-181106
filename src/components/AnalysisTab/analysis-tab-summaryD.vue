@@ -9,9 +9,9 @@
             匹配得分：{{ FTIRdata.Score }}
             <TabChart
               detection-type="FTIR"
-              evi-type="explosive"
-              :series-data = "FTIRdata.exploEviFTIRTestFile"
-              :sample-data = "FTIRdata.exploSampleFTIRTestFile"
+              evi-type="device"
+              :series-data = "FTIRdata.devEviFTIRTestFile"
+              :sample-data = "FTIRdata.devSampleFTIRTestFile"
               distance-data = 2>
             </TabChart>
             <hr>
@@ -23,9 +23,9 @@
             匹配得分：{{ Ramandata.Score }}
             <TabChart
               detection-type="Raman"
-              evi-type="explosive"
-              :series-data = "Ramandata.exploEviRamanTestFile"
-              :sample-data = "Ramandata.exploSampleRamanTestFile"
+              evi-type="device"
+              :series-data = "Ramandata.devEviRamanTestFile"
+              :sample-data = "Ramandata.devSampleRamanTestFile"
               distance-data = 0.2>
             </TabChart>
             <hr>
@@ -36,33 +36,14 @@
           <el-col>
             匹配得分：{{ XRFdata.averScore }}
             <TabColumn
-              evi-type="explosive"
-              :series-data = "XRFdata.exploEviXRFTestFile"
-              :sample-data = "XRFdata.exploSampleXRFTestFile">
+              evi-type="device"
+              :series-data = "XRFdata.devEviXRFTestFile"
+              :sample-data = "XRFdata.devSampleXRFTestFile">
             </TabColumn>
             <hr>
           </el-col>
         </el-row>
 
-        <el-row v-if="XRDdata.id">
-          <el-col>
-            匹配得分：{{ XRDdata.Score }}
-            <TabChart
-              detection-type="XRD"
-              evi-type="explosive"
-              :series-data = "XRDdata.exploEviXRDTestFile"
-              :sample-data = "XRDdata.exploSampleXRDTestFile"
-              distance-data = 30>
-            </TabChart>
-            <hr>
-          </el-col>
-        </el-row>
-
-        <!-- <el-row>
-          <el-col>
-            <span>-- GCMS --</span>
-          </el-col>
-        </el-row> -->
       </div>
     </el-col>
 
@@ -80,7 +61,7 @@
       <!-- 结果排名列表 -->
       <el-table
         class="app-main-table"
-        ref="explosiveList"
+        ref="deviceList"
         :data="tableData"
         style="width: 100%"
         tooltip-effect="dark"
@@ -155,14 +136,7 @@ import Pagination from '@/components/Pagination'
 import PaginationFiles from '@/components/PaginationFiles'
 import TabChart from '@/components/ResultTab/result-tab-chart'
 import TabColumn from '@/components/ResultTab/result-tab-column'
-import { getExploSynMatchList,
-          getExploSynMatchInfo,
-          updateExploSynMatch } from '@/api/match-explosive'
-import { getExploSampleFTIRTestFilesInfo,
-          getExploSampleRamanTestFilesInfo,
-          getExploSampleXRDTestFilesInfo,
-          getExploSampleXRFTestFilesInfo,
-          getExploSampleGCMSTestFilesInfo } from '@/api/sample-explosive'
+          
 import { getDevCompMatchsList,
           updateDevCompMatchs} from '@/api/match-device'
 import { getDevPartSampleFTIRTestFilesInfo,
@@ -198,31 +172,31 @@ export default {
       },
       FTIRdata: {
         Score: null,
-        exploEviFTIRTestFile: {},
-        exploSampleFTIRTestFile: {},
+        devEviFTIRTestFile: {},
+        devSampleFTIRTestFile: {},
       },
       Ramandata: {
         Score: null,
-        exploEviRamanTestFile: {},
-        exploSampleRamanTestFile: {},
+        devEviRamanTestFile: {},
+        devSampleRamanTestFile: {},
       },
       XRFdata: {
         Score: null,
-        exploEviXRFTestFile: {},
-        exploSampleXRFTestFile: {},
+        devEviXRFTestFile: {},
+        devSampleXRFTestFile: {},
       },
       XRDdata: {
         Score: null,
-        exploEviXRDTestFile: {},
-        exploSampleXRDTestFile: {},
+        devEviXRDTestFile: {},
+        devSampleXRDTestFile: {},
       },
       // table内小分页
       tablePageIndex: 1,
       tableParams: {
         page: 1,
         page_size: 20,
-        // exploEviFTIRTestFile_id: 1  // 物证数据文件id
-        exploEvi_id: null
+        // devEviFTIRTestFile_id: 1  // 物证数据文件id
+        devEvi_id: null
       },
       checkData: {
         Check: true,
@@ -262,13 +236,13 @@ export default {
     } else {
       dataTypeMap = deviceMap
     }
-    this.tableParams.exploEvi_id = this.$route.params.id
+    this.tableParams.devEvi_id = this.$route.params.id
     this.fetchList()
   },
   methods: {
     /** 获取匹配列表 */
     fetchList() {
-      getExploSynMatchList(this.tableParams).then(res => {
+      getDevCompMatchsList(this.tableParams).then(res => {
         this.tableData = res.results
         console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
       })
@@ -276,33 +250,33 @@ export default {
     initData() {
       this.FTIRdata = {
         Score: null,
-        exploEviFTIRTestFile: {},
-        exploSampleFTIRTestFile: {},
+        devEviFTIRTestFile: {},
+        devSampleFTIRTestFile: {},
       }
       this.Ramandata = {
         Score: null,
-        exploEviRamanTestFile: {},
-        exploSampleRamanTestFile: {},
+        devEviRamanTestFile: {},
+        devSampleRamanTestFile: {},
       }
       this.XRFdata = {
         Score: null,
-        exploEviXRFTestFile: {},
-        exploSampleXRFTestFile: {},
+        devEviXRFTestFile: {},
+        devSampleXRFTestFile: {},
       }
       this.XRDdata = {
         Score: null,
-        exploEviXRDTestFile: {},
-        exploSampleXRDTestFile: {},
+        devEviXRDTestFile: {},
+        devSampleXRDTestFile: {},
       }
     },
     /** 核准 */
     handleCheck() {
-      console.log('- - AnalysisTabSummary - - handleCheck:', this.currentSample.exploSample.sname)
+      console.log('- - AnalysisTabSummary - - handleCheck:', this.currentSample.devSample.sname)
       if(this.checkData.hasOwnProperty('expertOpinion') && !this.checkData.expertOpinion) {
         this.checkData.expertOpinion = "已核准（默认说明）"
       }
       console.log('- - AnalysisTabSummary - - handleCheck:', this.checkData.expertOpinion)
-      updateExploSynMatch(this.currentSample.id, this.checkData).then(res => {
+      updateDevCompMatchs(this.currentSample.id, this.checkData).then(res => {
         console.log('- - AnalysisTabSummary - - handleCheck:', res)
         this.fetchList()
         this.$message({
@@ -323,19 +297,18 @@ export default {
       this.currentSample = row
       console.log('- - AnalysisTabSummary - - handleDetail:', row)
       this.handleCurrentChange(row)
-      // getExploSynMatchInfo().then()
       this.initData()
-      if(this.currentSample.exploEviFTIR) {
-        this.FTIRdata = this.currentSample.exploEviFTIR
+      if(this.currentSample.devEviFTIR) {
+        this.FTIRdata = this.currentSample.devEviFTIR
       }
-      if(this.currentSample.exploEviRaman) {
-        this.Ramandata = this.currentSample.exploEviRaman
+      if(this.currentSample.devEviRaman) {
+        this.Ramandata = this.currentSample.devEviRaman
       }
-      if(this.currentSample.exploEviXRF) {
-        this.XRFdata = this.currentSample.exploEviXRF
+      if(this.currentSample.devEviXRF) {
+        this.XRFdata = this.currentSample.devEviXRF
       }
-      if(this.currentSample.exploEviXRD) {
-        this.XRDdata = this.currentSample.exploEviXRD
+      if(this.currentSample.devEviXRD) {
+        this.XRDdata = this.currentSample.devEviXRD
       }
     },
     handleCurrentChange(row) {

@@ -16,7 +16,14 @@
             :dataItem="dataItem">
           </DeviceAppearanceTab>
         </el-tab-pane>
-        
+
+        <el-tab-pane
+          label="Summary"
+          name="Summary">
+          <DeviceAppearanceSummary>
+            
+          </DeviceAppearanceSummary>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
 
@@ -32,6 +39,7 @@
 import { mapGetters } from 'vuex'
 import GobackButton from '@/components/Buttons/goback-button'
 import DeviceAppearanceTab from '@/views/analysis/device-analysis/device-appearance-tab'
+import DeviceAppearanceSummary from '@/views/analysis/device-analysis/device-appearance-summary'
 import { getDevEviInfo } from '@/api/evidence-device'
 
 export default {
@@ -53,6 +61,7 @@ export default {
   components: {
     GobackButton,
     DeviceAppearanceTab,
+    DeviceAppearanceSummary
   },
   mounted() {
     console.log('- - AnalysisDeviceDetailAppearance - - $route.params.id:', this.$route.params.id)

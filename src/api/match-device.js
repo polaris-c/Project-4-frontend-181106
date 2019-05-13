@@ -53,6 +53,30 @@ export function getDevMatchXRFInfo(id) {
   })
 }
 
+/** devCompMatchs */
+export function getDevCompMatchsList(params) {
+  return request({
+    url: '/devCompMatchs/',
+    method: 'get',
+    params
+  })
+}
+
+export function getDevCompMatchsInfo(id) {
+  return request({
+    url: '/devCompMatchs/' + id + '/',
+    method: 'get'
+  })
+}
+
+export function updateDevCompMatchs(id, data) {
+  return request({
+    url: '/devCompMatchs/' + id + '/',
+    method: 'put',
+    data
+  })
+}
+
 /** devShapeMatchs */
 export function getDevShapeMatchsList(params) {
   return request({
@@ -64,6 +88,21 @@ export function getDevShapeMatchsList(params) {
 export function getDevShapeMatchsInfo(id) {
   return request({
     url: '/devShapeMatchs/' + id + '/',
+    method: 'get'
+  })
+}
+
+/** devShapeMultiMatchs */
+export function getDevShapeMultiMatchsList(params) {
+  return request({
+    url: '/devShapeMultiMatchs/',
+    method: 'get',
+    params
+  })
+}
+export function getDevShapeMultiMatchsInfo(id) {
+  return request({
+    url: '/devShapeMultiMatchs/' + id + '/',
     method: 'get'
   })
 }

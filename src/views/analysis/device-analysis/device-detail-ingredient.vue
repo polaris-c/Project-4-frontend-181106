@@ -40,11 +40,10 @@
 
         <el-tab-pane label="Summary" name="Summarytab">
           <div v-if = "loadingChart">
-            <analysis-tab-ingredient
+            <analysis-tab-summary
               evi-type="device"
-              data-type="Summary"
-              :ingredient-data="XRDdata">
-            </analysis-tab-ingredient>
+              data-type="Summary">
+            </analysis-tab-summary>
           </div>
         </el-tab-pane>
         
@@ -86,6 +85,7 @@ import GobackButton from '@/components/Buttons/goback-button'
 import ReportButton from '@/components/Buttons/report-button'
 import MessageButton from '@/components/Buttons/message-button'
 import AnalysisTabIngredient from '@/components/AnalysisTab/analysis-tab-ingredient'
+import AnalysisTabSummary from '@/components/AnalysisTab/analysis-tab-summaryD'
 
 export default {
   name: 'AnalysisDeviceDetailIngredient',
@@ -126,6 +126,7 @@ export default {
     ReportButton,
     MessageButton,
     AnalysisTabIngredient,
+    AnalysisTabSummary
   },
   mounted() {
     this.routeParams = this.$route.params
