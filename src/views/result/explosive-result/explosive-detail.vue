@@ -51,6 +51,11 @@
             <el-col :span="8">备注：{{ currentSampleInfo.note }}</el-col>
           </el-row>
         </div>
+        <div v-if="currentExpertOpinion">
+          <hr>
+          {{ currentExpertOpinion }}
+        </div>
+        
       </div>
     </el-card>
 
@@ -140,6 +145,7 @@ export default {
         user: {}
       },
       currentSampleInfo: {},
+      currentExpertOpinion: '',
       exploSynMatchList: [],
       eviData: {},
       currentSampleData: {},
@@ -229,6 +235,7 @@ export default {
       this.initData()
       // console.log(this.exploSynMatchList[index].id, this.exploSynMatchList)
       this.currentSampleInfo = this.exploSynMatchList[index].exploSample
+      this.currentExpertOpinion = this.exploSynMatchList[index].expertOpinion
       if(this.exploSynMatchList[index].exploEviFTIR) {
         this.FTIRdata = this.exploSynMatchList[index].exploEviFTIR
       }

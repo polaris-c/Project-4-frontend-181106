@@ -39,8 +39,9 @@
 
       <div>
         <el-table
+          v-loading="loading"
           class="form-table"
-          ref="detectionDeviceList"
+          ref="detectionMethodList"
           :data="tableData"
           style="width: 100%"
           tooltip-effect="light"
@@ -88,44 +89,36 @@
 import { mapGetters } from 'vuex'
 import SubmitButton from '@/components/Buttons/submit-button'
 import DeleteButton from '@/components/Buttons/delete-button'
+import { getMethodDetectsList, createMethodDetects, deleteMethodDetects} from '@/api/detection-option'
 
 export default {
   name: 'DetectionMethod',
   data() {
     return {
+      loading: false,
       detectionMethodData: {
-        method: 'FTIR-method',
+        method: 'X-method',
         note: '',
       },
       tableData: [
         {
           method: 'FTIR-method',
           note: 'FTIR-DD-001',
-        },
-        {
-          method: 'RAMAN-method',
-          note: 'RAMAN-DD-001, qwertyiooidl fldspowlld fldfcmvdfrgore djogrefndsfsd; sfdfgdgr dfgdfgdcbh;lppkppmy[[fs[redlkgg',
-        },
-        {
-          method: 'XRD-method',
-          note: 'XRD-DD-001',
-        },
-        {
-          method: 'XRF-method',
-          note: 'XRF-DD-001',
-        },
+        }
       ],
-      multipleSelection: []
+      multipleSelection: [],
+      tableParams: {
+        search: null,
+        page: 1,
+        page_size: 20,
+        count: 1,
+      }
     }
   },
   computed: {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
   components: {
@@ -133,11 +126,45 @@ export default {
     DeleteButton
   },
   mounted() {
-
+    this.loading = true
+    this.fetchData()
   },
   methods: {
+    fetchData() {
+      this.loading = true
+      getMethodDetectsList(this.tableParams).then(res => {
+        this.tableData = res.results
+        this.tableParams.count =  res.count
+      }).catch(err => {
+        this.$message({
+          message: '获取列表错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
+      this.loading = false
+    },
+
     handleSubmit() {
-      console.log('- - submit - - deviceName:', this.detectionMethodData.method)
+      console.log('- - submit - - methodName:', this.detectionMethodData.method)
+      createMethodDetects(this.detectionMethodData).then(res => {
+        this.$message({
+          message: `检测方法${res.method}上传完毕`,
+          type: 'success',
+          duration: 6 * 1000
+        })
+        this.fetchData()
+        this.detectionMethodData = {
+          method: 'X-method',
+          note: '',
+        }
+      }).catch(err => {
+        this.$message({
+          message: '上传检测设备错误' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
     },
     handleSelectionChange(val) {
       this.multipleSelection = val

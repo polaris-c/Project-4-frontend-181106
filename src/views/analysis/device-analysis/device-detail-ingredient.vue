@@ -42,7 +42,9 @@
           <div v-if = "loadingChart">
             <analysis-tab-summary
               evi-type="device"
-              data-type="Summary">
+              data-type="Summary"
+              :expert-comp-opinion="expertCompOpinion"
+              @change-sample = "handleSampleChange">
             </analysis-tab-summary>
           </div>
         </el-tab-pane>
@@ -54,7 +56,7 @@
       <div>专家意见：</div>
       <hr>
       <el-input 
-        v-model="expertOpinion"
+        v-model="expertCompOpinion"
         :rows="6"
         type="textarea"
         placeholder="请输入...">
@@ -112,7 +114,7 @@ export default {
         seriesData: [],
       },
       activeTabName: "FTIRtab",
-      expertOpinion: ''  // 专家核准意见
+      expertCompOpinion: ''  // 专家核准意见
     }
   },
   computed: {
@@ -164,6 +166,10 @@ export default {
     handleTabClick(tab, event) {
       console.log('- - AnalysisDeviceDetailIngredient - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
       console.log('- - AnalysisDeviceDetailIngredient - - handleTabClick activeTabName: ', this.activeTabName)
+    },
+
+    handleSampleChange(expertCompOpinion) {
+      this.expertCompOpinion = expertCompOpinion
     },
 
     /** */

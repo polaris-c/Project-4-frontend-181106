@@ -138,24 +138,6 @@ export default {
           detectMrfs: 'FM1',
           note: 'FTIR-DD-001',
         },
-        {
-          deviceName: 'RAMAN-Device',
-          deviceVersion: 'RAMAN-A002',
-          detectMrfs: 'FM2',
-          note: 'RAMAN-DD-001, qwertyiooidl fldspowlld fldfcmvdfrgore djogrefndsfsd; sfdfgdgr dfgdfgdcbh;lppkppmy[[fs[redlkgg',
-        },
-        {
-          deviceName: 'XRD-Device',
-          deviceVersion: 'XRD-A003',
-          detectMrfs: 'FM2',
-          note: 'XRD-DD-001',
-        },
-        {
-          deviceName: 'XRF-Device',
-          deviceVersion: 'XRF-A003',
-          detectMrfs: 'FM2',
-          note: 'XRF-DD-001',
-        },
       ],
       multipleSelection: [],
       tableParams: {
@@ -170,10 +152,6 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
   components: {

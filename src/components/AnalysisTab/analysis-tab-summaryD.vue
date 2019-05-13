@@ -11,7 +11,7 @@
               detection-type="FTIR"
               evi-type="device"
               :series-data = "FTIRdata.devEviFTIRTestFile"
-              :sample-data = "FTIRdata.devSampleFTIRTestFile"
+              :sample-data = "FTIRdata.devPartSampleFTIRTestFile"
               distance-data = 2>
             </TabChart>
             <hr>
@@ -25,7 +25,7 @@
               detection-type="Raman"
               evi-type="device"
               :series-data = "Ramandata.devEviRamanTestFile"
-              :sample-data = "Ramandata.devSampleRamanTestFile"
+              :sample-data = "Ramandata.devPartSampleRamanTestFile"
               distance-data = 0.2>
             </TabChart>
             <hr>
@@ -38,7 +38,7 @@
             <TabColumn
               evi-type="device"
               :series-data = "XRFdata.devEviXRFTestFile"
-              :sample-data = "XRFdata.devSampleXRFTestFile">
+              :sample-data = "XRFdata.devPartSampleXRFTestFile">
             </TabColumn>
             <hr>
           </el-col>
@@ -80,7 +80,7 @@
             <el-button 
               type="text"
               @click="handleDetail(scope.row)">
-              {{ eviType == "explosive" ? scope.row.exploSample.sname : scope.row.devSampleName }}
+              {{ eviType == "explosive" ? scope.row.exploSample.sname : scope.row.devSample.sname }}
             </el-button>
           </template>
         </el-table-column>
@@ -158,7 +158,7 @@ export default {
       type: String,
       default: 'explosive',
     },
-    expertOpinion: {
+    expertCompOpinion: {
       type: String,
       default: ' ',
     }
@@ -215,11 +215,11 @@ export default {
     ])
   },
   watch: {
-    expertOpinion(val, oldVal) {
+    expertCompOpinion(val, oldVal) {
       if(!val && !oldVal) return
       if(this.role == 3) return
-      this.checkData.expertOpinion = val
-      console.log('- - AnalysisTabSummary - - watch expertOpinion:', this.checkData.expertOpinion)
+      this.checkData.expertCompOpinion = val
+      console.log('- - AnalysisTabSummary - - watch expertCompOpinion:', this.checkData.expertCompOpinion)
     }
   },
   components: {
@@ -272,10 +272,10 @@ export default {
     /** 核准 */
     handleCheck() {
       console.log('- - AnalysisTabSummary - - handleCheck:', this.currentSample.devSample.sname)
-      if(this.checkData.hasOwnProperty('expertOpinion') && !this.checkData.expertOpinion) {
-        this.checkData.expertOpinion = "已核准（默认说明）"
+      if(this.checkData.hasOwnProperty('expertCompOpinion') && !this.checkData.expertCompOpinion) {
+        this.checkData.expertCompOpinion = "已核准（默认说明）"
       }
-      console.log('- - AnalysisTabSummary - - handleCheck:', this.checkData.expertOpinion)
+      console.log('- - AnalysisTabSummary - - handleCheck:', this.checkData.expertCompOpinion)
       updateDevCompMatchs(this.currentSample.id, this.checkData).then(res => {
         console.log('- - AnalysisTabSummary - - handleCheck:', res)
         this.fetchList()
@@ -314,7 +314,7 @@ export default {
     handleCurrentChange(row) {
       this.currentSample = row
       console.log('- - AnalysisTabSummary - - handleCurrentChange:', this.currentSample.id)
-      this.$emit('change-sample', row.expertOpinion)
+      this.$emit('change-sample', row.expertCompOpinion)
     },
 
     handleChangePage(pageIndex) {
