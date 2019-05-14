@@ -129,7 +129,7 @@
           <div>
             <img-upload
               ref="imgUpload"
-              function-type="devEvi"
+              :function-type="devEvi"
               :basic-info-id = "basicInfoData.id">
             </img-upload>
           </div>
@@ -201,6 +201,7 @@ export default {
       dataTypeList: ['FTIR', 'Raman', 'XRF'],  // 基本检测类型  XRD,GCMS是炸药原材料特有
       devDetectList: [],  // 检测设备信息列表
       methodDetectList: [],  // 检测方法列表
+      devEvi: '',
       uploadBasicInfo: {},  // 上传基本信息
       tableParams: {
         page: 1,
@@ -251,6 +252,12 @@ export default {
     /*  */ 
     handleSubmit() {
       console.log('- - submit - - basicInfoData:', this.basicInfoData.evidenceName)
+      /** 判断是否电路版 */
+      if(Number(this.basicInfoData.eviType) === 3) {
+        this.devEvi = 'devShapeEvis'
+      } else {
+        this.devEvi = 'oPartImgEvis'
+      }
       /** 加载uploadBasicInfo */
       for(let prop in this.basicInfoData) {
         if(this.basicInfoData.hasOwnProperty(prop)) {

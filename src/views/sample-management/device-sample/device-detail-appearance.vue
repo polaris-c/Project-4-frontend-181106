@@ -15,9 +15,14 @@
           :key="dataItem.tabID"
           :label="dataItem.tabID"
           :name="dataItem.id.toString()">
-          <tab-img
+          <tab-img 
+            v-if="sampleType == 3"
             :data-item="dataItem">
           </tab-img>
+          <tab-imgO
+            v-else
+            :data-item="dataItem">
+          </tab-imgO>
         </el-tab-pane>
 
       </el-tabs>
@@ -36,6 +41,7 @@
 import { mapGetters } from 'vuex'
 import GoBack from '@/components/Buttons/go-back'
 import TabImg from '@/views/sample-management/device-sample/device-tab-img'
+import TabImgO from '@/views/sample-management/device-sample/device-tab-imgO'
 import { getDevPartSampleInfo } from '@/api/sample-device'
 
 export default {
@@ -44,6 +50,7 @@ export default {
     return {
       loading: false,
       activeTabName: '',
+      sampleType: 2,
       dataList: [
         { 
           id: 0,
@@ -60,15 +67,12 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ]),
   },
   components: {
     GoBack,
     TabImg,
+    TabImgO
   },
   mounted() {
      console.log('- - DeviceDetailAppearance - - $route.params:', this.$route.params)
@@ -80,7 +84,13 @@ export default {
     fetchData() {
       this.loading = true
       getDevPartSampleInfo(this.$route.params.id).then(res => {
-        this.dataList = res.devShapeSample
+        this.sampleType = Number(res.sampleType) // 样本类型决定图像组件
+        if(res.devShapeSample.length) {
+          this.dataList = res.devShapeSample
+        }
+        if(res.oPartImgSample.length) {
+          this.dataList = res.oPartImgSample
+        }
         let tabID = 1
         this.dataList.forEach((val) => {
           val.tabID = tabID.toString()

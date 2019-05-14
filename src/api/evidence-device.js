@@ -281,6 +281,41 @@ export function deleteDevShapeEvis(id) {
   })
 }
 
+/** oPartImgEvis */
+export function getOPartImgEvisList(params) {
+  return request({
+    url: '/oPartImgEvis/',
+    method: 'get',
+    params
+  })
+}
+export function getOPartImgEvisInfo(id) {
+  return request({
+    url: '/oPartImgEvis/' + id + '/',
+    method: 'get'
+  })
+}
+export function createOPartImgEvis(data) {
+  return request({
+    url: '/oPartImgEvis/',
+    method: 'post',
+    data
+  })
+}
+export function updateOPartImgEvis(id, data) {
+  return request({
+    url: '/oPartImgEvis/' + id + '/',
+    method: 'patch',
+    data
+  })
+}
+export function deleteOPartImgEvis(id) {
+  return request({
+    url: '/oPartImgEvis/' + id + '/',
+    method: 'delete'
+  })
+}
+
 /** nomEviPicture */
 export function nomEviPicture(data) {
   return request({

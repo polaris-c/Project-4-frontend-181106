@@ -14,13 +14,6 @@
           <!-- 识别按键 -->
           <RecognitionButton @recognition-confirm="handleRecognition"></RecognitionButton> 
         </el-col>
-        <el-col :span="16">
-          <!-- 核准按键 -->
-          <!-- <CheckButton 
-            v-if="detectionType === 'Summary'"
-            @check-confirm="handleCheck">
-          </CheckButton> -->
-        </el-col>
       </el-row>
       
       <!-- 结果排名列表 -->

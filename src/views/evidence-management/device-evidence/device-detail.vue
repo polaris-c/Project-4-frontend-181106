@@ -37,7 +37,7 @@
       </el-col>
     </el-row>
 
-    <el-card shadow="hover" class="el-row-style">
+    <el-card shadow="hover" class="el-row-style" v-if="shapeList.length > 0">
       <el-tabs 
         v-loading="loading"
         type="border-card"
@@ -179,14 +179,21 @@ export default {
           this.XRFdata.dataInfo = this.detailData.devEviXRF[0]
           this.XRFdata.seriesData = this.detailData.devEviXRF[0].devEviXRFTestFile
         }
-        this.shapeList = this.detailData.devShapeEvi
-        let tabID = 1
-        this.shapeList.forEach((val) => {
-          val.tabID = tabID.toString()
-          tabID++
-          console.log('- - DeviceDetailAppearance - - shapeList id tabID:', val.id, val.tabID)
-        })
-        this.activeImgTabName = this.shapeList[0].id.toString()
+        if(this.detailData.devShapeEvi) {
+          this.shapeList = this.detailData.devShapeEvi
+        }
+        if(this.detailData.oPartImgEvi) {
+          this.shapeList = this.detailData.oPartImgEvi
+        }
+        if(this.shapeList.length > 0) {
+          let tabID = 1
+          this.shapeList.forEach((val) => {
+            val.tabID = tabID.toString()
+            tabID++
+            console.log('- - DeviceDetailAppearance - - shapeList id tabID:', val.id, val.tabID)
+          })
+          this.activeImgTabName = this.shapeList[0].id.toString()
+        }
 
         this.loading = false
         this.loadingChart = true

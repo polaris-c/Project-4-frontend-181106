@@ -31,7 +31,7 @@
             <el-collapse-item title="零件形态" name="appearance">
               <img-upload
                 ref="imgUpload"
-                function-type="devPartSample"
+                :function-type="devPartSample"
                 :basic-info-id = "basicInfoData.id">
               </img-upload>
             </el-collapse-item>
@@ -181,7 +181,7 @@
 
 <script>
 import { getDevDetectsList, getMethodDetectsList} from '@/api/detection-option'
-import { createDevPartSample, createDevShapeSamples} from '@/api/sample-device'
+import { createDevPartSample, createDevShapeSamples, createOPartImgSamples} from '@/api/sample-device'
 import CardCommon from '@/components/IngredientCard/card-common'
 import ImgUpload from '@/components/ImgUpload'
 
@@ -209,6 +209,7 @@ export default {
       devDetectList: [],  // 检测设备信息列表
       methodDetectList: [],  // 检测方法列表
       basicInfoData: this.devPartData,  // 存放基本信息
+      devPartSample: '',
       uploadBasicInfo: {},  // 上传基本信息
       shapeImgList: [],  // 存放图片列表
       uploadShapeImg: {},  // 上传形态图片
@@ -257,6 +258,12 @@ export default {
     handleSubmit() {
       console.log('---- DevicePartForm -- handleSubmit devDataId:', this.devDataId)
       this.basicInfoData.devSample = this.devDataId  // 获取组件id, 用于发送零件信息
+      /** 判断是否电路版 */
+      if(Number(this.basicInfoData.sampleType) === 3) {
+        this.devPartSample = 'devShapeSamples'
+      } else {
+        this.devPartSample = 'oPartImgSamples'
+      }
       /** 加载uploadBasicInfo */
       for(let prop in this.basicInfoData) {
         if(this.basicInfoData.hasOwnProperty(prop)) {
@@ -281,13 +288,14 @@ export default {
         })
       })
     },
+    /*
     submitImg() {
       createDevShapeSamples(this.uploadShapeImg).then(res => {
         // console.log('---- DevicePartForm -- createDevShapeSamples is OK!')
       }).catch(err => {
         console.log('---- DevicePartForm -- createDevShapeSamples err:', err)
       })
-    },
+    },*/
 
     /** 删除零件 */
     handleDeleteDevPart(index) {

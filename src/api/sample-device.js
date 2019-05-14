@@ -316,6 +316,41 @@ export function deleteDevShapeSamples(id) {
   })
 }
 
+/** oPartImgSamples */
+export function getOPartImgSamplesList(params) {
+  return request({
+    url: '/oPartImgSamples/',
+    method: 'get',
+    params
+  })
+}
+export function getOPartImgSamplesInfo(id) {
+  return request({
+    url: '/oPartImgSamples/' + id + '/',
+    method: 'get'
+  })
+}
+export function createOPartImgSamples(data) {
+  return request({
+    url: '/oPartImgSamples/',
+    method: 'post',
+    data
+  })
+}
+export function updateOPartImgSamples(id, data) {
+  return request({
+    url: '/oPartImgSamples/' + id + '/',
+    method: 'patch',
+    data
+  })
+}
+export function deleteOPartImgSamples(id) {
+  return request({
+    url: '/oPartImgSamples/' + id + '/',
+    method: 'delete'
+  })
+}
+
 /** nomSamplePicture */
 export function nomSamplePicture(data) {
   return request({

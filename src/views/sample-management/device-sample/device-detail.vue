@@ -42,7 +42,7 @@
             <el-row class="el-row-style">
               <el-col :span="8">零件编号: {{ devPartData.id }}</el-col>
               <el-col :span="8">零件名称：{{ devPartData.sname }}</el-col>
-              <!-- <el-col :span="8">零件类型：{{ devPartData.Type }}</el-col> -->
+              <el-col :span="8">零件类型：{{ devPartData.sampleType }}</el-col>
             </el-row>
             <el-row class="el-row-style">
               <el-col :span="8">零件产地: {{ devPartData.Origin }}</el-col>
@@ -126,10 +126,6 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'sidebar',
-      'device',
-      'token',
-      'avatar',
     ])
   },
   components: {

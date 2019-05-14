@@ -77,6 +77,7 @@ export function updateDevCompMatchs(id, data) {
   })
 }
 
+/** 电路版 */
 /** devShapeMatchs */
 export function getDevShapeMatchsList(params) {
   return request({
@@ -91,7 +92,6 @@ export function getDevShapeMatchsInfo(id) {
     method: 'get'
   })
 }
-
 /** devShapeMultiMatchs */
 export function getDevShapeMultiMatchsList(params) {
   return request({
@@ -104,5 +104,49 @@ export function getDevShapeMultiMatchsInfo(id) {
   return request({
     url: '/devShapeMultiMatchs/' + id + '/',
     method: 'get'
+  })
+}
+export function updateDevShapeMultiMatchs(id, data) {
+  return request({
+    url: '/devShapeMultiMatchs/' + id + '/',
+    method: 'put',
+    data
+  })
+}
+
+/** 其他零件 */
+/** oPartImgMatchs */
+export function getOPartImgMatchsList(params) {
+  return request({
+    url: '/oPartImgMatchs/',
+    method: 'get',
+    params
+  })
+}
+export function getOPartImgMatchsInfo(id) {
+  return request({
+    url: '/oPartImgMatchs/' + id + '/',
+    method: 'get'
+  })
+}
+/** oPartImgMultiMatch */
+export function getOPartImgMultiMatchList(params) {
+  return request({
+    url: '/oPartImgMultiMatch/',
+    method: 'get',
+    params
+  })
+}
+export function getOPartImgMultiMatchInfo(id) {
+  return request({
+    url: '/oPartImgMultiMatch/' + id + '/',
+    method: 'get'
+  })
+}
+export function updateOPartImgMultiMatch(id, data) {
+  return request({
+    url: '/oPartImgMultiMatch/' + id + '/',
+    method: 'put',
+    data
   })
 }

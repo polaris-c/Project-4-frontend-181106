@@ -38,6 +38,12 @@ export default {
       uploadShapeImg: {}  // 上传形态图片
     }
   },
+  watch:{
+    functionType: function(newVal, oldVal) {
+      this.loadAPI()
+      console.log(`---- ImgUpload -- watch functionType: `, newVal)
+    }
+  },
 
   mounted(){
     this.loadAPI()
@@ -46,24 +52,37 @@ export default {
   methods: {
     loadAPI() {
       let APIname = ''  // API函数名的前缀,决定了其是样本(sample)或物证(evi),炸药(explo)或装置(dev)
+      let IDname = ''
       /** 选择功能模块的类型 
        *  装置样本(devPartSample)  装置物证(devEvi) */
       switch (this.functionType) {
-        case 'devPartSample': 
+        case 'devShapeSamples': 
           APIname = 'createDevShapeSamples'
-          import('@/api/sample-device').then(APImodule => this.setParam(APImodule, APIname))
+          IDname = 'devPartSample'
+          import('@/api/sample-device').then(APImodule => this.setParam(APImodule, APIname, IDname))
           break
-        case 'devEvi': 
+        case 'oPartImgSamples': 
+          APIname = 'createOPartImgSamples'
+          IDname = 'devPartSample'
+          import('@/api/sample-device').then(APImodule => this.setParam(APImodule, APIname, IDname))
+          break
+        case 'devShapeEvis': 
           APIname = 'createDevShapeEvis'
-          import('@/api/evidence-device').then(APImodule => this.setParam(APImodule, APIname))
+          IDname = 'devEvi'
+          import('@/api/evidence-device').then(APImodule => this.setParam(APImodule, APIname, IDname))
+          break
+        case 'oPartImgEvis': 
+          APIname = 'createOPartImgEvis'
+          IDname = 'devEvi'
+          import('@/api/evidence-device').then(APImodule => this.setParam(APImodule, APIname, IDname))
           break
         default:
           console.log('!!! Error NO functionType !!!')
       }
     },
-    setParam(APImodule, APIname) {
+    setParam(APImodule, APIname, IDname) {
       this.createDataFile = APImodule[APIname]
-      this.dataInfoId = this.functionType
+      this.dataInfoId = IDname
     },
 
     /**  Submit  */
