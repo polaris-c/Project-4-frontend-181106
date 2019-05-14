@@ -12,8 +12,8 @@
           :label="dataItem.tabID"
           :name="dataItem.id.toString()">
           <DeviceAppearanceTab 
-            :isImgTab="isImgTab"
-            :dataItem="dataItem">
+            :dataItem="dataItem"
+            :eviType="eviType">
           </DeviceAppearanceTab>
         </el-tab-pane>
 
@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       loading: false,
-      isImgTab: true,
+      eviType: 2,
       activeTabName: "1",
       dataList: [],
     }
@@ -72,13 +72,22 @@ export default {
       this.loading = true
       getDevEviInfo(this.$route.params.id).then(res => {
         console.log('- - AnalysisDeviceDetailAppearance - - res:', res)
-        this.dataList = res.devShapeEvi
-        let tabID = 1
-        this.dataList.forEach(val => {
-          val.tabID = tabID.toString()
-          tabID++
-          console.log('- - AnalysisDeviceDetailAppearance - - dataList id tabID:', val.id, val.tabID)
-        })
+        this.eviType = res.eviType
+        if(res.devShapeEvi) {
+          this.dataList = res.devShapeEvi
+        }
+        if(res.oPartImgEvi) {
+          this.dataList = res.oPartImgEvi
+        }
+        if(this.dataList.length > 0) {
+          let tabID = 1
+          this.dataList.forEach(val => {
+            val.tabID = tabID.toString()
+            tabID++
+            console.log('- - AnalysisDeviceDetailAppearance - - dataList id tabID:', val.id, val.tabID)
+          })
+          this.activeTabName = this.dataList[0].id.toString()
+        }
         this.loading = false
       }).catch(err => {
         this.$message({

@@ -2,7 +2,7 @@
   <div>
     <el-row class="img-operation-container">
       <el-col :span="24">
-        <el-button-group>
+        <!-- <el-button-group>
           <el-button 
             type="primary"
             size="mini"
@@ -23,7 +23,7 @@
             icon="el-icon-upload2"
             @click="preHandleUpload">
           </el-button>
-        </el-button-group>
+        </el-button-group> -->
 
         <el-button-group>
           <el-button 
@@ -33,13 +33,13 @@
             @click="switchFunction(3)">
             背景
           </el-button>
-          <el-button 
+          <!-- <el-button 
             type="primary"
             size="mini"
             icon="el-icon-arrow-right"
             @click="switchFunction(4)">
             前景
-          </el-button>
+          </el-button> -->
           <el-button 
             type="success"
             size="mini"
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { nomEviPicture, updateDevShapeEvis } from '@/api/evidence-device'
+import { nomEviPicture, updateOPartImgEvis } from '@/api/evidence-device'
 
 const Scale = 1
 const Rotation = 2
@@ -338,6 +338,7 @@ export default {
 		},
 
     // 预处理
+    /*
     preHandleUpload() {
       console.log(`objectScale:, ${this.objectScale.beginXY}, ${this.objectScale.endXY} \n
             objectRotation:, ${this.objectRotation.beginXY}, ${this.objectRotation.endXY} \n
@@ -384,30 +385,26 @@ export default {
           })
         }
       })
-    },
+    },*/
 
     handleUpload() {
       console.log(`objectBack:, ${this.objectBack.beginXY}, ${this.objectBack.endXY} \n
         objectFront:, ${this.objectFront.beginXY}, ${this.objectFront.endXY} \n
         scale: ${this.scaleX}, ${this.ScaleY}`)
-      let [backX1, backY1, backX2, backY2, frontX1, frontY1, frontX2, frontY2] = [Number((this.objectBack.beginXY[0] * this.scaleX).toFixed()), 
-                                                                                  Number((this.objectBack.beginXY[1] * this.ScaleY).toFixed()),
-                                                                                  Number((this.objectBack.endXY[0] * this.scaleX).toFixed()),
-                                                                                  Number((this.objectBack.endXY[1] * this.ScaleY).toFixed()), 
-                                                                                  Number((this.objectFront.beginXY[0] * this.scaleX).toFixed()), 
-                                                                                  Number((this.objectFront.beginXY[1] * this.ScaleY).toFixed()),
-                                                                                  Number((this.objectFront.endXY[0] * this.scaleX).toFixed()),
-                                                                                  Number((this.objectFront.endXY[1] * this.ScaleY).toFixed())]
-      let rectCoordi = [backX1, backY1, backX2, backY2, frontX1, frontY1, frontX2, frontY2]
+      let [backX1, backY1, backX2, backY2] = [Number((this.objectBack.beginXY[0] * this.scaleX).toFixed()), 
+                                              Number((this.objectBack.beginXY[1] * this.ScaleY).toFixed()),
+                                              Number((this.objectBack.endXY[0] * this.scaleX).toFixed()),
+                                              Number((this.objectBack.endXY[1] * this.ScaleY).toFixed())]
+      let rectCoordi = [backX1, backY1, backX2, backY2]
       rectCoordi = rectCoordi.join(' ')
       console.log(rectCoordi, this.dataItem.id)
 
       let handleData = new FormData()
       handleData.append('rectCoordi', rectCoordi)
       this.loading = true
-      updateDevShapeEvis(this.dataItem.id, handleData).then(res => {
-        console.log(res)
-        this.$emit('receiveNorImgURL', res.norImgURL)
+      updateOPartImgEvis(this.dataItem.id, handleData).then(res => {
+        // console.log(res)
+        // this.$emit('receiveNorImgURL', res.norImgURL)
         this.loading = false
 
         this.$message({

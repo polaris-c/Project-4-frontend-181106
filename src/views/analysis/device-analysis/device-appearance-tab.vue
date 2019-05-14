@@ -3,9 +3,14 @@
     <el-col :span="18">
       <!-- 图表 -->
       <DeviceAppearanceTabImg
+        v-if="eviType == 3"
         :dataItem = "dataItem"
         @receiveNorImgURL = "receiveNorImgURL">
       </DeviceAppearanceTabImg>
+      <DeviceAppearanceTabImgO
+        v-else
+        :dataItem = "dataItem">
+      </DeviceAppearanceTabImgO>
     </el-col>
 
     <el-col :span="6">
@@ -84,18 +89,19 @@
 
 <script>
 import DeviceAppearanceTabImg from '@/views/analysis/device-analysis/device-appearance-tab-img'
+import DeviceAppearanceTabImgO from '@/views/analysis/device-analysis/device-appearance-tab-imgO'
 import RecognitionButton from '@/components/Buttons/recognition-button'
 import CheckButton from '@/components/Buttons/check-button'
 import Pagination from '@/components/Pagination'
-import { startMatch, getDevShapeMatchsList, getDevShapeMatchsInfo } from '@/api/match-device'
+import { startMatch, getDevShapeMatchsList, getOPartImgMatchsList } from '@/api/match-device'
 import { getDevShapeSamplesInfo } from '@/api/sample-device'
 
 export default {
   name: 'DeviceAppearanceTab',
   props: {
-    isImgTab: {
-      type: Boolean,
-      default: false,
+    eviType: {
+      type: [Number, String],
+      default: 2,
     },
     dataItem: {
       type: Object,
@@ -110,6 +116,7 @@ export default {
     return {
       loading: false,
       evidenceNorImgURL: null,  // 在子组件对物证图像处理完毕后接收归一化的图片
+      getMatchList: null,
       matchData: {
         type: 0,
         eviFileId: 0
@@ -128,7 +135,7 @@ export default {
       tableParams: {
         page: 1,
         page_size: 20,
-        devShapeEvi_id: 1  // 物证数据文件id
+        // devShapeEvi_id: 1  // 物证数据文件id
       },
       dialogVisible: false,
       canvasSample: null,
@@ -145,20 +152,29 @@ export default {
   },
   components: {
     DeviceAppearanceTabImg,
+    DeviceAppearanceTabImgO,
     RecognitionButton,
     CheckButton,
     Pagination,
   },
   mounted() {
-    console.log('- - DeviceAppearanceTab - - isImgTab:', this.isImgTab)
+    console.log('- - DeviceAppearanceTab - - eviType:', this.eviType)
+    if(Number(this.eviType) === 3) {
+      this.matchData.type = 9  // PCB电路版
+      this.getMatchList = getDevShapeMatchsList
+      this.tableParams.devShapeEvi_id = this.dataItem.id
+    } else {
+      this.matchData.type = 10
+      this.getMatchList = getOPartImgMatchsList
+      this.tableParams.oPartImgEvi_id = this.dataItem.id
+    }
     this.fetchList()
     this.evidenceNorImgURL = this.dataItem.norImgURL
   },
   methods: {
     fetchList() {
       this.loading = true
-      this.tableParams.devShapeEvi_id = this.dataItem.id
-      getDevShapeMatchsList(this.tableParams).then(res => {
+      this.getMatchList(this.tableParams).then(res => {
         this.tableData = res.results
         this.loading = false
       })
@@ -168,7 +184,6 @@ export default {
       this.ctxSample = this.canvasSample.getContext('2d')
       this.canvasSample.width = 800
       this.canvasSample.height = 600
-      // console.log('- - DeviceAppearanceTab - - canvasSample:', this.canvasSample)
 
       this.canvasEvidence = document.getElementById(this.dataItem.id + '_evidence')
       this.ctxEvidence = this.canvasEvidence.getContext('2d')
@@ -185,7 +200,6 @@ export default {
       // console.log('- - DeviceAppearanceTab - - handleRecognition:', this.$route.params)
       this.loading = true
       let uploadForm = new FormData()
-      this.matchData.type = 9  // PCB电路版
       this.matchData.eviFileId = this.dataItem.id
       uploadForm.append('type', this.matchData.type)
       uploadForm.append('eviFileId', this.matchData.eviFileId)
@@ -204,13 +218,10 @@ export default {
     handleDetail(row) {
         // this.$router.push('/analysis/deviceAnalysis/deviceAppearanceCompare')
       this.dialogVisible = true
-      // console.log('- - DeviceAppearanceTab - - handleDetail:', JSON.parse(row.matchSampleCoordi), row.matchEviCoordi, row.matchRadius)
       let matchSampleCoordi	= JSON.parse(row.matchSampleCoordi).map(val => Number(val))
       let matchEviCoordi = JSON.parse(row.matchEviCoordi).map(val => Number(val))
       let matchRadius = Number(JSON.parse(row.matchRadius))
-      // console.log(row.matchRadius, JSON.parse(row.matchRadius), typeof JSON.parse(row.matchRadius))
 
-      // console.log('- - DeviceAppearanceTab - - handleDetail:', row.devShapeSample, row.devSampleName)
       getDevShapeSamplesInfo(row.devShapeSample).then(res => {
         this.currentSample = res  // res.norImgURL
         this.currentSample.devSampleName = row.devSampleName

@@ -6,6 +6,7 @@
       shadow="hover" 
       class="el-row-style">
       <el-tabs 
+        v-if="dataList.length > 0"
         type="border-card"
         v-model="activeTabName"  
         @tab-click="handleTabClick">
@@ -91,13 +92,15 @@ export default {
         if(res.oPartImgSample.length) {
           this.dataList = res.oPartImgSample
         }
-        let tabID = 1
-        this.dataList.forEach((val) => {
-          val.tabID = tabID.toString()
-          tabID++
-          console.log('- - DeviceDetailAppearance - - dataList id tabID:', val.id, val.tabID)
-        })
-        this.activeTabName = this.dataList[0].id.toString()
+        if(this.dataList.length > 0) {
+          let tabID = 1
+          this.dataList.forEach((val) => {
+            val.tabID = tabID.toString()
+            tabID++
+            console.log('- - DeviceDetailAppearance - - dataList id tabID:', val.id, val.tabID)
+          })
+          this.activeTabName = this.dataList[0].id.toString()
+        }
         this.loading = false
       })
     },

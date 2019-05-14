@@ -179,7 +179,7 @@ export default {
           this.XRFdata.dataInfo = this.detailData.devEviXRF[0]
           this.XRFdata.seriesData = this.detailData.devEviXRF[0].devEviXRFTestFile
         }
-        if(this.detailData.devShapeEvi) {
+        if(this.detailData.devShapeEvi.length) {
           this.shapeList = this.detailData.devShapeEvi
         }
         if(this.detailData.oPartImgEvi) {
@@ -194,7 +194,6 @@ export default {
           })
           this.activeImgTabName = this.shapeList[0].id.toString()
         }
-
         this.loading = false
         this.loadingChart = true
       }).catch(err => {
