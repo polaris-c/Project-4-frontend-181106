@@ -1,14 +1,10 @@
 <template>
   <el-row :gutter="10">
-    <el-col :span="18">
+    <el-col :span="8">
       <!-- 图表 -->
-      <!-- <DeviceAppearanceTabImg
-        :dataItem = "dataItem"
-        @receiveNorImgURL = "receiveNorImgURL">
-      </DeviceAppearanceTabImg> -->
     </el-col>
 
-    <el-col :span="6">
+    <el-col :span="12">
       <el-row>
         <!-- 核准按键 -->
         <CheckButton 
@@ -18,6 +14,7 @@
       
       <!-- 结果排名列表 -->
       <el-table
+        v-if="tableData.length > 0"
         v-loading="loading"
         class="app-main-table"
         ref="explosiveList"
@@ -31,21 +28,41 @@
         highlight-current-row>
 
         <el-table-column
-          label="样本名称"
+          prop="id"
+          label="匹配编号"
           align="center"
-          width=""
+          width="100"
           fixed="left">
+        </el-table-column>
+
+        <el-table-column
+          label="组件名称"
+          align="center"
+          width="">
           <template slot-scope="scope">
             <el-button 
               type="text"
               @click="handleDetail(scope.row)">
-              {{ scope.row.devSampleName }}
+              {{ scope.row.devSample.sname }}
             </el-button>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="matchDegree"
+          label="零件名称"
+          align="center"
+          width="">
+          <template slot-scope="scope">
+            <el-button 
+              type="text"
+              @click="handleDetail(scope.row)">
+              {{ scope.row.devPartSample.sname }}
+            </el-button>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          prop="Score"
           label="相似分"
           align="center"
           width="100">
@@ -64,13 +81,12 @@
       :title="currentSample.devSampleName"
       :visible.sync="dialogVisible"
       width="90%">
-      <!-- <span>{{ currentSample.norImgURL }}</span> -->
       <el-row>
         <el-col :span="16">
-          <!-- <canvas :id="dataItem.id + '_sample'"></canvas> -->
+          <canvas :id="'S_' + $route.params.id + '_sample'"></canvas>
         </el-col>
         <el-col :span="8">
-          <!-- <canvas :id="dataItem.id + '_evidence'"></canvas> -->
+          <canvas :id="'S_' + $route.params.id + '_evidence'"></canvas>
         </el-col>
       </el-row>
       
@@ -87,10 +103,12 @@ import DeviceAppearanceTabImg from '@/views/analysis/device-analysis/device-appe
 import RecognitionButton from '@/components/Buttons/recognition-button'
 import CheckButton from '@/components/Buttons/check-button'
 import Pagination from '@/components/Pagination'
-import { startMatch, 
+import { startMatch,
           getDevShapeMultiMatchsList,
           getOPartImgMultiMatchsList,
-          getDevShapeMultiMatchsInfo } from '@/api/match-device'
+          getDevShapeMultiMatchsInfo,
+          updateDevShapeMultiMatchs,
+          updateOPartImgMultiMatchs } from '@/api/match-device'
 import { getDevShapeSamplesInfo } from '@/api/sample-device'
 
 export default {
@@ -113,18 +131,12 @@ export default {
         type: 0,
         eviFileId: 0
       },
-      tableData: [
-        {
-          id:	1,
-          devShapeSample:	1,
-          devShapeEvi:	1,
-          matchDegree:	79,
-          matchSampleCoordi:	["1299", "235"],
-          matchEviCoordi:	"50",
-          devSampleName:	"A001-1 img"
-        }
-      ],
+      tableData: [{
+        devPartSample: {},
+        devSample: {}
+      }],
       getMatchList: null,
+      checkMatch: null,
       tableParams: {
         page: 1,
         page_size: 20,
@@ -152,8 +164,10 @@ export default {
   mounted() {
     if(Number(this.eviType) === 3) {
       this.getMatchList = getDevShapeMultiMatchsList
+      this.checkMatch = updateDevShapeMultiMatchs
     } else {
       this.getMatchList = getOPartImgMultiMatchsList
+      this.checkMatch = updateOPartImgMultiMatchs
     }
     this.tableParams.devEvi_id = this.$route.params.id
     this.fetchList()
@@ -166,91 +180,102 @@ export default {
         this.loading = false
       })
     },
-    // initImage() {
-    //   this.canvasSample = document.getElementById(this.dataItem.id + '_sample')
-    //   this.ctxSample = this.canvasSample.getContext('2d')
-    //   this.canvasSample.width = 800
-    //   this.canvasSample.height = 600
-    //   // console.log('- - DeviceAppearanceSummary - - canvasSample:', this.canvasSample)
+    initImage() {
+      this.canvasSample = document.getElementById(this.dataItem.id + '_sample')
+      this.ctxSample = this.canvasSample.getContext('2d')
+      this.canvasSample.width = 800
+      this.canvasSample.height = 600
 
-    //   this.canvasEvidence = document.getElementById(this.dataItem.id + '_evidence')
-    //   this.ctxEvidence = this.canvasEvidence.getContext('2d')
-    //   this.canvasEvidence.width = 400
-    //   this.canvasEvidence.height = 300
-    // },
-    // 在新图像预处理后接收预处理的图像
-    receiveNorImgURL(norImgURL) {
-      console.log('- - DeviceAppearanceSummary - - receiveNorImgURL:', norImgURL)
-      this.evidenceNorImgURL = norImgURL
+      this.canvasEvidence = document.getElementById(this.dataItem.id + '_evidence')
+      this.ctxEvidence = this.canvasEvidence.getContext('2d')
+      this.canvasEvidence.width = 400
+      this.canvasEvidence.height = 300
     },
 
     handleCheck() {
       console.log('- - DeviceAppearanceSummary - - handleCheck:', this.currentSample.id)
     },
+
     // 详细比对
     handleDetail(row) {
-        // this.$router.push('/analysis/deviceAnalysis/deviceAppearanceCompare')
       this.dialogVisible = true
-      // console.log('- - DeviceAppearanceSummary - - handleDetail:', JSON.parse(row.matchSampleCoordi), row.matchEviCoordi, row.matchRadius)
-      let matchSampleCoordi	= JSON.parse(row.matchSampleCoordi).map(val => Number(val))
-      let matchEviCoordi = JSON.parse(row.matchEviCoordi).map(val => Number(val))
-      let matchRadius = Number(JSON.parse(row.matchRadius))
-      // console.log(row.matchRadius, JSON.parse(row.matchRadius), typeof JSON.parse(row.matchRadius))
 
-      // console.log('- - DeviceAppearanceSummary - - handleDetail:', row.devShapeSample, row.devSampleName)
-      /*
-      getDevShapeSamplesInfo(row.devShapeSample).then(res => {
-        this.currentSample = res  // res.norImgURL
-        this.currentSample.devSampleName = row.devSampleName
+      this.$nextTick(() => {
+        if(Number(this.eviType) === 3) {
+          let matchSampleCoordi	= JSON.parse(row.matchSampleCoordi).map(val => Number(val))
+          let matchEviCoordi = JSON.parse(row.matchEviCoordi).map(val => Number(val))
+          let matchRadius = Number(JSON.parse(row.matchRadius))
 
-        this.imgSample = new Image()
-        this.imgSample.src = this.currentSample.norImgURL
-        try {
-          if(!this.evidenceNorImgURL) {
-            throw (new Error("Evidence norImgURL is empty! Use srcImgURL."))
+          getDevShapeSamplesInfo(row.devShapeSample).then(res => {
+            this.currentSample = res  // res.norImgURL
+            this.currentSample.devSampleName = row.devSampleName
+
+            this.imgSample = new Image()
+            this.imgSample.src = this.currentSample.norImgURL
+            try {
+              if(!this.evidenceNorImgURL) {
+                throw (new Error("Evidence norImgURL is empty! Use srcImgURL."))
+              }
+            }
+            catch(e) {
+              console.log(e)
+              this.evidenceNorImgURL = this.dataItem.srcImgURL
+            }
+            this.imgEvidence = new Image()
+            this.imgEvidence.src = this.evidenceNorImgURL
+
+            this.initImage()
+
+            this.imgSample.onload = () => {
+              this.ctxSample.drawImage(this.imgSample, 0, 0, this.canvasSample.width, this.canvasSample.height)
+              
+              this.scaleSample[0] = Number((this.imgSample.naturalWidth / 800).toFixed(2))
+              this.scaleSample[1] = Number((this.imgSample.naturalHeight / 600).toFixed(2))
+              matchSampleCoordi[0] = matchSampleCoordi[0] / this.scaleSample[0]
+              matchSampleCoordi[1] = matchSampleCoordi[1] / this.scaleSample[1]
+
+              this.ctxSample.strokeStyle = 'rgb(250, 0, 0)'
+              this.ctxSample.beginPath()
+              this.ctxSample.arc(matchSampleCoordi[0], matchSampleCoordi[1], matchRadius, 0, Math.PI*2, true)
+              this.ctxSample.stroke()
+
+              // console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.imgSample.naturalWidth, 'naturalHeight: ', this.imgSample.naturalHeight,
+              //     'scaleSample[0]: ', this.scaleSample[0], 'scaleSample[1]: ', this.scaleSample[1])
+            }
+            this.imgEvidence.onload = () => {
+              this.ctxEvidence.drawImage(this.imgEvidence, 0, 0, this.canvasEvidence.width, this.canvasEvidence.height)
+              this.scaleEvidence[0] = Number((this.imgEvidence.naturalWidth / 400).toFixed(2))
+              this.scaleEvidence[1] = Number((this.imgEvidence.naturalHeight / 300).toFixed(2))
+              matchEviCoordi[0] = matchEviCoordi[0] / this.scaleEvidence[0]
+              matchEviCoordi[1] = matchEviCoordi[1] / this.scaleEvidence[1]
+
+              this.ctxEvidence.strokeStyle = 'rgb(250, 0, 0)'
+              this.ctxEvidence.beginPath()
+              this.ctxEvidence.arc(matchEviCoordi[0], matchEviCoordi[1], matchRadius, 0, Math.PI*2, true)
+              this.ctxEvidence.stroke()
+              // console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.imgEvidence.naturalWidth, 'naturalHeight: ', this.imgEvidence.naturalHeight,
+              //     'scaleEvidence[0]: ', this.scaleEvidence[0], 'scaleEvidence[1]: ', this.scaleEvidence[1])
+            }
+          })
+        } else {
+          this.currentSample = row.oPartImgSample
+          this.currentSample.devSampleName = row.devSampleName
+
+          this.imgSample = new Image()
+          this.imgSample.src = this.currentSample.srcImgURL
+          this.imgEvidence = new Image()
+          this.imgEvidence.src = this.dataItem.srcImgURL
+
+          this.initImage()
+
+          this.imgSample.onload = () => {
+            this.ctxSample.drawImage(this.imgSample, 0, 0, this.canvasSample.width, this.canvasSample.height)
+          }
+          this.imgEvidence.onload = () => {
+            this.ctxEvidence.drawImage(this.imgEvidence, 0, 0, this.canvasEvidence.width, this.canvasEvidence.height)
           }
         }
-        catch(e) {
-          console.log(e)
-          this.evidenceNorImgURL = this.dataItem.srcImgURL
-        }
-        this.imgEvidence = new Image()
-        this.imgEvidence.src = this.evidenceNorImgURL
-
-        this.initImage()
-
-        this.imgSample.onload = () => {
-          this.ctxSample.drawImage(this.imgSample, 0, 0, this.canvasSample.width, this.canvasSample.height)
-          
-          this.scaleSample[0] = Number((this.imgSample.naturalWidth / 800).toFixed(2))
-          this.scaleSample[1] = Number((this.imgSample.naturalHeight / 600).toFixed(2))
-          matchSampleCoordi[0] = matchSampleCoordi[0] / this.scaleSample[0]
-          matchSampleCoordi[1] = matchSampleCoordi[1] / this.scaleSample[1]
-
-          this.ctxSample.strokeStyle = 'rgb(250, 0, 0)'
-          this.ctxSample.beginPath()
-          this.ctxSample.arc(matchSampleCoordi[0], matchSampleCoordi[1], matchRadius, 0, Math.PI*2, true)
-          this.ctxSample.stroke()
-          // console.log('- - DeviceAppearanceSummary - - handleDetail:', matchSampleCoordi, matchRadius)
-          console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.imgSample.naturalWidth, 'naturalHeight: ', this.imgSample.naturalHeight,
-              'scaleSample[0]: ', this.scaleSample[0], 'scaleSample[1]: ', this.scaleSample[1])
-        }
-        this.imgEvidence.onload = () => {
-          this.ctxEvidence.drawImage(this.imgEvidence, 0, 0, this.canvasEvidence.width, this.canvasEvidence.height)
-          this.scaleEvidence[0] = Number((this.imgEvidence.naturalWidth / 400).toFixed(2))
-          this.scaleEvidence[1] = Number((this.imgEvidence.naturalHeight / 300).toFixed(2))
-          matchEviCoordi[0] = matchEviCoordi[0] / this.scaleEvidence[0]
-          matchEviCoordi[1] = matchEviCoordi[1] / this.scaleEvidence[1]
-
-          this.ctxEvidence.strokeStyle = 'rgb(250, 0, 0)'
-          this.ctxEvidence.beginPath()
-          this.ctxEvidence.arc(matchEviCoordi[0], matchEviCoordi[1], matchRadius, 0, Math.PI*2, true)
-          this.ctxEvidence.stroke()
-          console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.imgEvidence.naturalWidth, 'naturalHeight: ', this.imgEvidence.naturalHeight,
-              'scaleEvidence[0]: ', this.scaleEvidence[0], 'scaleEvidence[1]: ', this.scaleEvidence[1])
-        }
-      })*/
-      
+      })
     },
     handleCurrentChange(currentRow) {
       // console.log('- - DeviceAppearanceSummary - - handleCurrentChange:', currentRow.sName)

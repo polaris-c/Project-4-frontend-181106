@@ -74,10 +74,10 @@ export default {
       getDevEviInfo(this.$route.params.id).then(res => {
         console.log('- - AnalysisDeviceDetailAppearance - - res:', res)
         this.eviType = res.eviType
-        if(res.devShapeEvi) {
+        if(res.devShapeEvi.length) {
           this.dataList = res.devShapeEvi
         }
-        if(res.oPartImgEvi) {
+        if(res.oPartImgEvi.length) {
           this.dataList = res.oPartImgEvi
         }
         if(this.dataList.length > 0) {
