@@ -138,23 +138,23 @@ export function getOPartImgMatchsInfo(id) {
     method: 'get'
   })
 }
-/** oPartImgMultiMatch */
-export function getOPartImgMultiMatchList(params) {
+/** oPartImgMultiMatchs */
+export function getOPartImgMultiMatchsList(params) {
   return request({
-    url: '/oPartImgMultiMatch/',
+    url: '/oPartImgMultiMatchs/',
     method: 'get',
     params
   })
 }
-export function getOPartImgMultiMatchInfo(id) {
+export function getOPartImgMultiMatchsInfo(id) {
   return request({
-    url: '/oPartImgMultiMatch/' + id + '/',
+    url: '/oPartImgMultiMatchs/' + id + '/',
     method: 'get'
   })
 }
-export function updateOPartImgMultiMatch(id, data) {
+export function updateOPartImgMultiMatchs(id, data) {
   return request({
-    url: '/oPartImgMultiMatch/' + id + '/',
+    url: '/oPartImgMultiMatchs/' + id + '/',
     method: 'put',
     data
   })

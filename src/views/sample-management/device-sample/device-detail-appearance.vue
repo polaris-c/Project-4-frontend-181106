@@ -6,7 +6,7 @@
       shadow="hover" 
       class="el-row-style">
       <el-tabs 
-        v-if="dataList.length > 0"
+        v-if="dataList.length > 0 && sampleType > 0"
         type="border-card"
         v-model="activeTabName"  
         @tab-click="handleTabClick">
@@ -51,7 +51,7 @@ export default {
     return {
       loading: false,
       activeTabName: '',
-      sampleType: 2,
+      sampleType: 0,
       dataList: [
         { 
           id: 0,

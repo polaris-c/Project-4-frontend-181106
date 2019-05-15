@@ -89,12 +89,17 @@ import CheckButton from '@/components/Buttons/check-button'
 import Pagination from '@/components/Pagination'
 import { startMatch, 
           getDevShapeMultiMatchsList,
+          getOPartImgMultiMatchsList,
           getDevShapeMultiMatchsInfo } from '@/api/match-device'
 import { getDevShapeSamplesInfo } from '@/api/sample-device'
 
 export default {
   name: 'DeviceAppearanceSummary',
   props: {
+    eviType: {
+      type: [Number, String],
+      default: 2,
+    },
     // dataItem: {
     //   type: Object,
     //   default: {},
@@ -119,10 +124,11 @@ export default {
           devSampleName:	"A001-1 img"
         }
       ],
+      getMatchList: null,
       tableParams: {
         page: 1,
         page_size: 20,
-        devEvi_id: 1  // 物证数据文件id
+        devEvi_id: 1  // 物证id
       },
       dialogVisible: false,
       canvasSample: null,
@@ -144,13 +150,18 @@ export default {
     Pagination,
   },
   mounted() {
+    if(Number(this.eviType) === 3) {
+      this.getMatchList = getDevShapeMultiMatchsList
+    } else {
+      this.getMatchList = getOPartImgMultiMatchsList
+    }
+    this.tableParams.devEvi_id = this.$route.params.id
     this.fetchList()
   },
   methods: {
     fetchList() {
       this.loading = true
-      this.tableParams.devEvi_id = this.$route.params.id
-      getDevShapeMultiMatchsList(this.tableParams).then(res => {
+      this.getMatchList(this.tableParams).then(res => {
         this.tableData = res.results
         this.loading = false
       })
@@ -173,22 +184,6 @@ export default {
       this.evidenceNorImgURL = norImgURL
     },
 
-    handleRecognition() {
-      // console.log('- - DeviceAppearanceSummary - - handleRecognition:', this.$route.params)
-      this.loading = true
-      let uploadForm = new FormData()
-      this.matchData.type = 9  // PCB电路版
-      // this.matchData.eviFileId = this.dataItem.id
-      uploadForm.append('type', this.matchData.type)
-      uploadForm.append('eviFileId', this.matchData.eviFileId)
-      console.log('- - DeviceAppearanceSummary - - handleRecognition:', this.matchData.type, this.matchData.eviFileId)
-      startMatch(uploadForm).then(res => {
-        // console.log('- - DeviceAppearanceSummary - - handleRecognition:', res)
-        this.tableData = res.results
-        this.loading = false
-      })
-
-    },
     handleCheck() {
       console.log('- - DeviceAppearanceSummary - - handleCheck:', this.currentSample.id)
     },

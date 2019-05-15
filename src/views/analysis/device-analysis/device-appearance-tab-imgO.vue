@@ -80,7 +80,7 @@ const Back = 3
 const Front = 4
 
 export default {
-  name: 'AnalysisTabImg',
+  name: 'AnalysisTabImgO',
   props: {
     dataItem: {
       type: Object,

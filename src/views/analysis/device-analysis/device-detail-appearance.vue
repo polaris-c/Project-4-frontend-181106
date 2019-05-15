@@ -2,6 +2,7 @@
   <div class="app-main-container">
     <el-card shadow="hover" class="el-row-style">
       <el-tabs 
+        v-if="eviType > 0"
         type="border-card"
         v-model="activeTabName"
         @tab-click="handleTabClick">
@@ -20,8 +21,8 @@
         <el-tab-pane
           label="Summary"
           name="Summary">
-          <DeviceAppearanceSummary>
-            
+          <DeviceAppearanceSummary
+            :eviType="eviType">
           </DeviceAppearanceSummary>
         </el-tab-pane>
       </el-tabs>
@@ -47,7 +48,7 @@ export default {
   data() {
     return {
       loading: false,
-      eviType: 2,
+      eviType: 0,
       activeTabName: "1",
       dataList: [],
     }

@@ -182,7 +182,7 @@ export default {
         if(this.detailData.devShapeEvi.length) {
           this.shapeList = this.detailData.devShapeEvi
         }
-        if(this.detailData.oPartImgEvi) {
+        if(this.detailData.oPartImgEvi.length) {
           this.shapeList = this.detailData.oPartImgEvi
         }
         if(this.shapeList.length > 0) {
