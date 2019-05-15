@@ -237,6 +237,7 @@ import GobackButton from '@/components/Buttons/goback-button'
 import MessageButton from '@/components/Buttons/message-button'
 import ReportButton from '@/components/Buttons/report-button'
 import { getDevEviInfo } from '@/api/evidence-device'
+import { wordSelect } from '@/api/match-device'
 
 export default {
   name: 'AnalysisDeviceDetail',
@@ -245,23 +246,16 @@ export default {
       loading: false,
       devPartData: {},
       // checkList: ['Color', 'Material', 'Shape', 'thickness'],
-      checkList: ['Color'],
+      keyWords: '',
+      checkList: [],
+      checkObject: {
+        Color: false,
+        Material: false,
+        Shape: false,
+        thickness: false
+      },
       visibleTable: false,
-      tableData: [
-        {
-          id: '001',
-          sname: 'A001',
-          Type: 'A1',
-          Origin: 'AO',
-          Factory: 'AF',
-          Model: 'AM',
-          Logo: 'AL',
-          function: 'AF',
-          user: 'user001',
-          inputDate: '2018-11-19',
-          note: '1111'
-        }
-      ],
+      tableData: [],
     }
   },
   computed: {
@@ -298,6 +292,10 @@ export default {
   },
   mounted() {
     console.log('- - AnalysisDeviceDetail - - $route.params.id:', this.$route.params.id)
+    console.log('- - AnalysisDeviceDetail - - checkObject:', this.checkObject)
+    for(let key in this.checkObject) {
+      console.log('- - AnalysisDeviceDetail - - checkObject:', key, this.checkObject[key])
+    }
     this.fetchData()
   },
   methods: {
@@ -322,13 +320,33 @@ export default {
       this.$router.push('/analysis/deviceAnalysis/deviceAppearance/' + this.$route.params.id)
     },
 
+    /** 语义筛选 */
     analysisFilter() {
       // this.$router.push('/analysis/deviceAnalysis/deviceFilter')
+      if(this.checkList.length) {
+        this.checkList.forEach(key => {
+          if(this.checkObject.hasOwnProperty(key)) {
+            this.checkObject[key] = true
+          }
+        })
+      }
+      let uploadData = new FormData()
+      uploadData.append('devEviId', this.$route.params.id)
+      uploadData.append('keyWords', this.keyWords)
+      for(let key in this.checkObject) {
+        if(this.checkObject.hasOwnProperty(key)) {
+          uploadData.append(key, this.checkObject[key])
+        }
+      }
+      wordSelect(uploadData).then(res => {
+        this.tableData = res.results
+      })
       this.visibleTable = true
     },
     handleCheckListChange(currentCheckList) {
-      console.log('- - AnalysisDeviceDetail - - handleCheckListChange:', currentCheckList)
+      console.log('- - AnalysisDeviceDetail - - handleCheckListChange:', this.checkList)
     },
+
     handleSelectionChange(val) {
       this.multipleSelection = val
       console.log('- - AnalysisDeviceDetail - - multipleSeletion:', this.multipleSelection)

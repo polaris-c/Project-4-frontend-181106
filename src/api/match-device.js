@@ -8,6 +8,15 @@ export function startMatch(data) {
   })
 }
 
+/** wordSelect */
+export function wordSelect(data) {
+  return request({
+    url: '/wordSelect/',
+    method: 'post',
+    data
+  })
+}
+
 /** devMatchFTIR */
 export function getDevMatchFTIRList(params) {
   return request({
