@@ -119,7 +119,7 @@
               </el-table-column>
 
               <el-table-column
-                label="组件样本序号"
+                label="零件样本序号"
                 align="center"
                 width="150"
                 fixed="left">
@@ -134,7 +134,7 @@
 
               <el-table-column
                 prop="sname"
-                label="组件样本名称"
+                label="零件样本名称"
                 align="center"
                 width="150">
                 <template slot-scope="scope">
@@ -147,43 +147,71 @@
               </el-table-column>
 
               <el-table-column
-                prop="Type"
-                label="组件类型"
+                prop="sampleType"
+                label="零件类型"
                 align="center"
                 width="150">
               </el-table-column>
 
               <el-table-column
                 prop="Origin"
-                label="组件产地"
+                label="零件产地"
                 align="center"
                 width="150">
               </el-table-column>
 
               <el-table-column
                 prop="Factory"
-                label="组件厂家"
+                label="零件厂家"
                 align="center"
                 width="150">
               </el-table-column>
 
               <el-table-column
                 prop="Model"
-                label="组件型号"
+                label="零件型号"
                 align="center"
                 width="150">
               </el-table-column>
 
               <el-table-column
                 prop="Logo"
-                label="组件商标"
+                label="零件商标"
                 align="center"
                 width="150">
               </el-table-column>
 
               <el-table-column
                 prop="function"
-                label="组件功能"
+                label="零件功能"
+                align="center"
+                width="150">
+              </el-table-column>
+
+              <el-table-column
+                prop="Color"
+                label="零件颜色"
+                align="center"
+                width="150">
+              </el-table-column>
+
+              <el-table-column
+                prop="Material"
+                label="零件材质"
+                align="center"
+                width="150">
+              </el-table-column>
+
+              <el-table-column
+                prop="Shape"
+                label="零件形状"
+                align="center"
+                width="150">
+              </el-table-column>
+
+              <el-table-column
+                prop="thickness"
+                label="零件厚度"
                 align="center"
                 width="150">
               </el-table-column>
@@ -249,10 +277,10 @@ export default {
       keyWords: '',
       checkList: [],
       checkObject: {
-        Color: false,
-        Material: false,
-        Shape: false,
-        thickness: false
+        Color: 'False',
+        Material: 'False',
+        Shape: 'False',
+        thickness: 'False'
       },
       visibleTable: false,
       tableData: [],
@@ -323,10 +351,15 @@ export default {
     /** 语义筛选 */
     analysisFilter() {
       // this.$router.push('/analysis/deviceAnalysis/deviceFilter')
+      for(let key in this.checkObject) {
+        if(this.checkObject.hasOwnProperty(key)) {
+          this.checkObject[key] = 'False'
+        }
+      }
       if(this.checkList.length) {
         this.checkList.forEach(key => {
           if(this.checkObject.hasOwnProperty(key)) {
-            this.checkObject[key] = true
+            this.checkObject[key] = 'True'
           }
         })
       }
@@ -353,7 +386,7 @@ export default {
     },
     handleDetail(row) {
       console.log('- - AnalysisDeviceDetail - - row:', row.id, row.sname)
-      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetail/' + row.id)
+      this.$router.push('/sampleManagement/deviceSample/deviceIndexList/deviceDetail/' + row.devSample)
     },
 
     /** 页面操作按键 */
