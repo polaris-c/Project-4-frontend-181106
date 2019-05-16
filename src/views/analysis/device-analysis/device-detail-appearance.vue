@@ -22,10 +22,23 @@
           label="Summary"
           name="Summary">
           <DeviceAppearanceSummary
-            :eviType="eviType">
+            :eviType="eviType"
+            :expertShapeOpinion="expertShapeOpinion"
+            @change-sample = "handleSampleChange">
           </DeviceAppearanceSummary>
         </el-tab-pane>
       </el-tabs>
+    </el-card>
+
+    <el-card shadow="hover" class="el-row-style" v-if="role !== 3">
+      <div>专家意见：</div>
+      <hr>
+      <el-input 
+        v-model="expertShapeOpinion"
+        :rows="3"
+        type="textarea"
+        placeholder="请输入...">
+      </el-input>
     </el-card>
 
     <!-- 页面操作按键 -->
@@ -51,12 +64,14 @@ export default {
       eviType: 0,
       activeTabName: "1",
       dataList: [],
+      expertShapeOpinion: ''
     }
   },
   computed: {
     ...mapGetters([
       'name',
       'roles',
+      'role'
     ])
   },
   components: {
@@ -104,6 +119,10 @@ export default {
     handleTabClick(tab, event) {
       console.log('- - AnalysisDeviceDetailAppearance - - handleTabClick tab: ', tab.index, tab._props.label, tab._props.name)
       console.log('- - AnalysisDeviceDetailAppearance - - handleTabClick activeTabName: ', this.activeTabName)
+    },
+
+    handleSampleChange(expertShapeOpinion) {
+      this.expertShapeOpinion = expertShapeOpinion
     },
 
     /** */

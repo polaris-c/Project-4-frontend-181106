@@ -91,11 +91,10 @@
           align="center"
           width="100">
           <template slot-scope="scope">
-          <el-tag :type="(scope.row.isCheck == 2 || scope.row.isExpertCheck == 2) ? 'success' : 'info'">
-            {{scope.row.Score}}
-          </el-tag>
+            <el-tag :type="(scope.row.isCheck == 2 || scope.row.isExpertCheck == 2) ? 'success' : 'info'">
+              {{scope.row.Score}}
+            </el-tag>
           </template>
-
         </el-table-column>
       </el-table>
 
@@ -272,7 +271,7 @@ export default {
     /** 核准 */
     handleCheck() {
       console.log('- - AnalysisTabSummary - - handleCheck:', this.currentSample.devSample.sname)
-      if(this.checkData.hasOwnProperty('expertCompOpinion') && !this.checkData.expertCompOpinion) {
+      if(!this.checkData.expertCompOpinion) {
         this.checkData.expertCompOpinion = "已核准（默认说明）"
       }
       console.log('- - AnalysisTabSummary - - handleCheck:', this.checkData.expertCompOpinion)

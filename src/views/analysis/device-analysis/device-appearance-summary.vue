@@ -1,16 +1,11 @@
 <template>
-  <el-row :gutter="10">
-    <el-col :span="8">
-      <!-- 图表 -->
-    </el-col>
-
-    <el-col :span="12">
-      <el-row>
+  <el-row>
+    <el-col :span="24">
         <!-- 核准按键 -->
         <CheckButton 
           @check-confirm="handleCheck">
         </CheckButton>
-      </el-row>
+        当前选择：-{{ currentRow.id }}- 
       
       <!-- 结果排名列表 -->
       <el-table
@@ -38,11 +33,11 @@
         <el-table-column
           label="组件名称"
           align="center"
-          width="">
+          width="150">
           <template slot-scope="scope">
             <el-button 
               type="text"
-              @click="handleDetail(scope.row)">
+              @click="handleCurrentChange(scope.row)">
               {{ scope.row.devSample.sname }}
             </el-button>
           </template>
@@ -51,21 +46,43 @@
         <el-table-column
           label="零件名称"
           align="center"
-          width="">
+          width="150">
           <template slot-scope="scope">
             <el-button 
               type="text"
-              @click="handleDetail(scope.row)">
+              @click="handleCurrentChange(scope.row)">
               {{ scope.row.devPartSample.sname }}
             </el-button>
           </template>
         </el-table-column>
 
         <el-table-column
+          label="图像匹配信息"
+          align="center"
+          width="">
+          <template slot-scope="scope">
+            <el-button 
+              v-for="(item, index) in scope.row.devSampleList"
+              :key="item.id"
+              type="primary"
+              size="mini"
+              plain
+              @click="handleDetail(item)">
+              图{{ index + 1 }} - 相似度:{{ item.matchDegree }}
+            </el-button>
+          </template>
+        </el-table-column>
+
+        <el-table-column
           prop="Score"
-          label="相似分"
+          label="总相似分"
           align="center"
           width="100">
+          <template slot-scope="scope">
+            <el-tag :type="(scope.row.isCheck == 2 || scope.row.isExpertCheck == 2) ? 'success' : 'info'">
+              {{scope.row.Score}}
+            </el-tag>
+          </template>
         </el-table-column>
 
       </el-table>
@@ -118,10 +135,10 @@ export default {
       type: [Number, String],
       default: 2,
     },
-    // dataItem: {
-    //   type: Object,
-    //   default: {},
-    // },
+    expertShapeOpinion: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -131,16 +148,16 @@ export default {
         type: 0,
         eviFileId: 0
       },
-      tableData: [{
-        devPartSample: {},
-        devSample: {}
-      }],
+      tableData: [],
       getMatchList: null,
       checkMatch: null,
       tableParams: {
         page: 1,
         page_size: 20,
         devEvi_id: 1  // 物证id
+      },
+      checkData: {
+        Check: 'True',
       },
       dialogVisible: false,
       canvasSample: null,
@@ -150,6 +167,8 @@ export default {
       scaleSample: [],
       scaleEvidence: [],
       currentSample: {},
+      currentEvi: {},
+      currentRow: {},
       imgSample: new Image(),
       imgEvidence: new Image(),
       tablePageIndex: 1
@@ -160,6 +179,14 @@ export default {
     RecognitionButton,
     CheckButton,
     Pagination,
+  },
+  watch: {
+    expertShapeOpinion(val, oldVal) {
+      if(!val && !oldVal) return
+      if(this.role == 3) return
+      this.checkData.expertShapeOpinion = val
+      console.log('- - DeviceAppearanceSummary - - watch expertShapeOpinion:', this.checkData.expertShapeOpinion)
+    }
   },
   mounted() {
     if(Number(this.eviType) === 3) {
@@ -181,19 +208,38 @@ export default {
       })
     },
     initImage() {
-      this.canvasSample = document.getElementById(this.dataItem.id + '_sample')
+      this.canvasSample = document.getElementById('S_' + this.$route.params.id + '_sample')
       this.ctxSample = this.canvasSample.getContext('2d')
       this.canvasSample.width = 800
       this.canvasSample.height = 600
 
-      this.canvasEvidence = document.getElementById(this.dataItem.id + '_evidence')
+      this.canvasEvidence = document.getElementById('S_' + this.$route.params.id + '_evidence')
       this.ctxEvidence = this.canvasEvidence.getContext('2d')
       this.canvasEvidence.width = 400
       this.canvasEvidence.height = 300
     },
 
     handleCheck() {
-      console.log('- - DeviceAppearanceSummary - - handleCheck:', this.currentSample.id)
+      console.log('- - DeviceAppearanceSummary - - handleCheck:', this.currentRow.id)
+      if(!this.checkData.expertShapeOpinion) {
+        this.checkData.expertShapeOpinion = "已核准（默认说明）"
+      }
+      console.log('- - DeviceAppearanceSummary - - handleCheck:', this.checkData.expertShapeOpinion)
+      this.checkMatch(this.currentRow.id, this.checkData).then(res => {
+        console.log('- - DeviceAppearanceSummary - - handleCheck:', res)
+        this.fetchList()
+        this.$message({
+          message: '核准完成 ',
+          type: 'success',
+          duration: 6 * 1000
+        })
+      }).catch(err => {
+        this.$message({
+          message: '核准错误 ' + err.message,
+          type: 'error',
+          duration: 6 * 1000
+        })
+      })
     },
 
     // 详细比对
@@ -202,6 +248,7 @@ export default {
 
       this.$nextTick(() => {
         if(Number(this.eviType) === 3) {
+          /*
           let matchSampleCoordi	= JSON.parse(row.matchSampleCoordi).map(val => Number(val))
           let matchEviCoordi = JSON.parse(row.matchEviCoordi).map(val => Number(val))
           let matchRadius = Number(JSON.parse(row.matchRadius))
@@ -256,15 +303,16 @@ export default {
               // console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.imgEvidence.naturalWidth, 'naturalHeight: ', this.imgEvidence.naturalHeight,
               //     'scaleEvidence[0]: ', this.scaleEvidence[0], 'scaleEvidence[1]: ', this.scaleEvidence[1])
             }
-          })
+          }) */
         } else {
           this.currentSample = row.oPartImgSample
-          this.currentSample.devSampleName = row.devSampleName
+          this.currentEvi = row.oPartImgEvi
+          // this.currentSample.devSampleName = row.devSampleName
 
           this.imgSample = new Image()
           this.imgSample.src = this.currentSample.srcImgURL
           this.imgEvidence = new Image()
-          this.imgEvidence.src = this.dataItem.srcImgURL
+          this.imgEvidence.src = this.currentEvi.srcImgURL
 
           this.initImage()
 
@@ -278,8 +326,10 @@ export default {
       })
     },
     handleCurrentChange(currentRow) {
-      // console.log('- - DeviceAppearanceSummary - - handleCurrentChange:', currentRow.sName)
-      // this.currentSample = currentRow
+      // console.log('- - DeviceAppearanceSummary - - handleCurrentChange:', currentRow.id, currentRow.Score)
+      if(!currentRow) return
+      this.currentRow = currentRow
+      this.$emit('change-sample', currentRow.expertShapeOpinion)
     },
     handleChangePage(pageIndex) {
       console.log('- - DeviceAppearanceSummary - - pageIndex: ', pageIndex)

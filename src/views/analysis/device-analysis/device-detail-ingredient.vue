@@ -57,7 +57,7 @@
       <hr>
       <el-input 
         v-model="expertCompOpinion"
-        :rows="6"
+        :rows="3"
         type="textarea"
         placeholder="请输入...">
       </el-input>
