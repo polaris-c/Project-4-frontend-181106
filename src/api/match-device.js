@@ -159,3 +159,27 @@ export function updateOPartImgMultiMatchs(id, data) {
     data
   })
 }
+
+/** createDevReport 生成报告 */
+export function createDevReport(data) {
+  return request({
+    url: '/createDevReport/',
+    method: 'post',
+    data
+  })
+}
+
+/** devSynMatchs 物证综合报告表 */
+export function getDevSynMatchsList(params) {
+  return request({
+    url: '/devSynMatchs/',
+    method: 'get',
+    params
+  })
+}
+export function getDevSynMatchsInfo(id) {
+  return request({
+    url: '/devSynMatchs/' + id + '/',
+    method: 'get'
+  })
+}

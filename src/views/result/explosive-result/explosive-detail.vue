@@ -130,10 +130,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { getExploReportMatchsInfo } from '@/api/match-explosive'
+import { getExploReportMatchsList, getExploReportMatchsInfo } from '@/api/match-explosive'
 import GobackButton from '@/components/Buttons/goback-button'
-import TabChart from '@/views/result/explosive-result/result-tab-chart'
-import TabColumn from '@/views/result/explosive-result/result-tab-column'
+import TabChart from '@/components/ResultTab/result-tab-chart'
+import TabColumn from '@/components/ResultTab/result-tab-column'
+// import TabChart from '@/views/result/explosive-result/result-tab-chart'
+// import TabColumn from '@/views/result/explosive-result/result-tab-column'
 
 export default {
   name: 'ExplosiveDetail',
@@ -173,6 +175,7 @@ export default {
         search: null,
         page: 1,
         page_size: 20,
+        exploEvi_id: null,
         count: 1,
       }
     }
@@ -189,6 +192,7 @@ export default {
     TabColumn
   },
   mounted() {
+    this.tableParams.exploEvi_id = this.$route.params.id
     this.fetchData()
   },
   methods: {

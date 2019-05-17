@@ -265,7 +265,7 @@ import GobackButton from '@/components/Buttons/goback-button'
 import MessageButton from '@/components/Buttons/message-button'
 import ReportButton from '@/components/Buttons/report-button'
 import { getDevEviInfo } from '@/api/evidence-device'
-import { wordSelect } from '@/api/match-device'
+import { wordSelect, createDevReport } from '@/api/match-device'
 
 export default {
   name: 'AnalysisDeviceDetail',
@@ -390,8 +390,19 @@ export default {
     },
 
     /** 页面操作按键 */
+    /** 生成报告 */
     handleReport() {
+      let uploadForm = new FormData()
+      uploadForm.append('devEviId', this.$route.params.id)
+      createDevReport(uploadForm).then(res => {
+        this.$message({
+          message: '报告已生成 ',
+          type: 'success',
+          duration: 6 * 1000
+        })
+      })
     },
+    /** 专家咨询 */
     handleMessage() {
       // this.$router.push('/message/messageCreation')
       // const evidenceID = this.$route.params.id

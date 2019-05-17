@@ -69,12 +69,12 @@
         <el-col :span="19">
           <goback-button @goback-confirm="goBcak"></goback-button>
         </el-col>
-        <el-col :span="3">
+        <!-- <el-col :span="3">
           <message-button @message-confirm="handleMessage"></message-button>
-        </el-col>
-        <el-col :span="2">
+        </el-col> -->
+        <!-- <el-col :span="2">
           <report-button @report-confirm="handleReport"></report-button>
-        </el-col>
+        </el-col> -->
       </el-row>
     </el-card>
   </div>
