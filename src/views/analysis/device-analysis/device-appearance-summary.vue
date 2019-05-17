@@ -9,7 +9,7 @@
       
       <!-- 结果排名列表 -->
       <el-table
-        v-if="tableData.length > 0"
+        v-if="tableData.length > 0 && eviType > 0"
         v-loading="loading"
         class="app-main-table"
         ref="explosiveList"
@@ -62,7 +62,7 @@
           width="">
           <template slot-scope="scope">
             <el-button 
-              v-for="(item, index) in scope.row.devSampleList"
+              v-for="(item, index) in (Array.isArray(scope.row.devSampleList) ? scope.row.devSampleList : [scope.row.devSampleList])"
               :key="item.id"
               type="primary"
               size="mini"
@@ -133,7 +133,7 @@ export default {
   props: {
     eviType: {
       type: [Number, String],
-      default: 2,
+      default: 0,
     },
     expertShapeOpinion: {
       type: String,
