@@ -67,7 +67,7 @@
               type="primary"
               size="mini"
               plain
-              @click="handleDetail(item)">
+              @click="handleDetail(item, scope.row)">
               图{{ index + 1 }} - 相似度:{{ item.matchDegree }}
             </el-button>
           </template>
@@ -95,7 +95,7 @@
     </el-col>
 
     <el-dialog
-      :title="currentSample.devSampleName"
+      :title="currentSample.devSampleName + ' - ' + currentSample.devPartSampleName + ' - ' + currentSample.matchDegree"
       :visible.sync="dialogVisible"
       width="90%">
       <el-row>
@@ -243,33 +243,25 @@ export default {
     },
 
     // 详细比对
-    handleDetail(row) {
+    handleDetail(item, row) {
       this.dialogVisible = true
 
       this.$nextTick(() => {
         if(Number(this.eviType) === 3) {
-          /*
-          let matchSampleCoordi	= JSON.parse(row.matchSampleCoordi).map(val => Number(val))
-          let matchEviCoordi = JSON.parse(row.matchEviCoordi).map(val => Number(val))
-          let matchRadius = Number(JSON.parse(row.matchRadius))
+          let matchSampleCoordi	= JSON.parse(item.matchSampleCoordi).map(val => Number(val))
+          let matchEviCoordi = JSON.parse(item.matchEviCoordi).map(val => Number(val))
+          let matchRadius = Number(JSON.parse(item.matchRadius))
 
-          getDevShapeSamplesInfo(row.devShapeSample).then(res => {
-            this.currentSample = res  // res.norImgURL
-            this.currentSample.devSampleName = row.devSampleName
+          this.currentSample = item.devShapeSample
+          this.currentEvi = item.devShapeEvi
+          this.currentSample.devSampleName = row.devSample.sname
+          this.currentSample.devPartSampleName = row.devPartSample.sname
+          this.currentSample.matchDegree = item.matchDegree
 
-            this.imgSample = new Image()
-            this.imgSample.src = this.currentSample.norImgURL
-            try {
-              if(!this.evidenceNorImgURL) {
-                throw (new Error("Evidence norImgURL is empty! Use srcImgURL."))
-              }
-            }
-            catch(e) {
-              console.log(e)
-              this.evidenceNorImgURL = this.dataItem.srcImgURL
-            }
-            this.imgEvidence = new Image()
-            this.imgEvidence.src = this.evidenceNorImgURL
+          this.imgSample = new Image()
+          this.imgSample.src = this.currentSample.norImgURL || this.currentSample.srcImgURL
+          this.imgEvidence = new Image()
+          this.imgEvidence.src = this.currentEvi.norImgURL || this.currentEvi.srcImgURL
 
             this.initImage()
 
@@ -303,11 +295,14 @@ export default {
               // console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.imgEvidence.naturalWidth, 'naturalHeight: ', this.imgEvidence.naturalHeight,
               //     'scaleEvidence[0]: ', this.scaleEvidence[0], 'scaleEvidence[1]: ', this.scaleEvidence[1])
             }
-          }) */
+          // })
         } else {
-          this.currentSample = row.oPartImgSample
-          this.currentEvi = row.oPartImgEvi
-          // this.currentSample.devSampleName = row.devSampleName
+          this.currentSample = item.oPartImgSample
+          this.currentEvi = item.oPartImgEvi
+          this.currentSample.devSampleName = row.devSample.sname
+          this.currentSample.devPartSampleName = row.devPartSample.sname
+          this.currentSample.matchDegree = item.matchDegree
+
 
           this.imgSample = new Image()
           this.imgSample.src = this.currentSample.srcImgURL
