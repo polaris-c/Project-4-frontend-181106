@@ -154,10 +154,16 @@
         匹配得分：{{ item.matchDegree }}
         <el-row>
           <el-col :span="16">
-            <img :src="item.oPartImgSample ? item.oPartImgSample.srcImgURL : item.devShapeSample.srcImgURL">
+            <img 
+              width="800px"
+              height="700px"
+              :src="item.oPartImgSample ? item.oPartImgSample.srcImgURL : item.devShapeSample.srcImgURL">
           </el-col>
           <el-col :span="8">
-            <img :src="item.oPartImgEvi ? item.oPartImgEvi.srcImgURL : item.devShapeEvi.srcImgURL">
+            <img 
+              width="400px"
+              height="350px"
+              :src="item.oPartImgEvi ? item.oPartImgEvi.srcImgURL : item.devShapeEvi.srcImgURL">
           </el-col>
         </el-row>
         <hr>
