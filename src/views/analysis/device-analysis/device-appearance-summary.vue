@@ -143,7 +143,7 @@ export default {
   data() {
     return {
       loading: false,
-      evidenceNorImgURL: null,  // 在子组件对物证图像处理完毕后接收归一化的图片
+      evidenceNorImgURL: null,  // 在子组件对物证图像处理完毕后接收归一化的图像
       matchData: {
         type: 0,
         eviFileId: 0

@@ -113,8 +113,21 @@ export default {
       // console.log(this.$el);
       // this.$el.style.width = (this.styles.width || 900) + 'px';
       // this.$el.style.height = (this.styles.height || 600) + 'px';
-      this.options.xAxis.categories = this.seriesData[this.dataIndex].handledData[0]
-      this.options.series[0].data = this.seriesData[this.dataIndex].handledData[1]
+      if(this.dataType === "FTIR" || this.dataType ===  "ftir") {
+        console.log(`---- ChartCurve ---- is ${ this.dataType } !`)
+        let xVal = this.seriesData[this.dataIndex].handledData[0]
+        let yVal = this.seriesData[this.dataIndex].handledData[1]
+        this.options.xAxis.categories = xVal.reverse()
+        this.options.series[0].data = yVal.reverse().map(y => {
+          return y += 0.1
+        })
+      } else {
+        this.options.xAxis.categories = this.seriesData[this.dataIndex].handledData[0]
+        // this.options.series[0].data = this.seriesData[this.dataIndex].handledData[1]
+        this.options.series[0].data = this.seriesData[this.dataIndex].handledData[1].map(y => {
+          return y += 0.01
+        })
+      }
       this.chart = new Highcharts.Chart(this.$el, this.options);
     },
     

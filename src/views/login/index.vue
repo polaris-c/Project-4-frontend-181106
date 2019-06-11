@@ -2,8 +2,8 @@
   <div class="login-container">
 
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
-      <h3 class="title">- 系 统 登 录 -</h3>
+      <h3 class="title">爆 炸 残 留 物 分 析 系 统</h3>
+      <h3 class="title"> 系 统 登 录 </h3>
 
       <el-form-item prop="username">
         <span class="svg-container">
@@ -34,8 +34,8 @@
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
+        <!-- <span style="margin-right:20px;">username: admin</span> -->
+        <!-- <span> password: admin</span> -->
       </div>
 
     </el-form>

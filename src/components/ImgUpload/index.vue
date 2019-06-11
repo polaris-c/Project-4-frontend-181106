@@ -13,8 +13,8 @@
       :on-remove="handleRemove"
       :auto-upload="false"
       multiple>
-      <el-button size="mini" type="primary">点击选取图片</el-button>
-      <div slot="tip" class="el-upload__tip">只能上传jpg/png图片</div>
+      <el-button size="mini" type="primary">点击选取图像</el-button>
+      <div slot="tip" class="el-upload__tip">只能上传jpg/png图像</div>
     </el-upload>
   </div>
 </template>
@@ -32,10 +32,10 @@ export default {
   },
   data() {
     return {
-      shapeImgList: [],  // 存放图片列表
+      shapeImgList: [],  // 存放图像列表
       dataInfoId: '',  // 基本信息ID的键名
-      createDataFile: {},  // 上传图片文件的API函数
-      uploadShapeImg: {}  // 上传形态图片
+      createDataFile: {},  // 上传图像文件的API函数
+      uploadShapeImg: {}  // 上传形态图像
     }
   },
   watch:{
@@ -100,14 +100,14 @@ export default {
         this.uploadShapeImg.append(this.dataInfoId, this.basicInfoId)
         this.uploadShapeImg.append('srcImgURL', file.raw)
         this.createDataFile(this.uploadShapeImg).then(res => {
-            console.log(`${index}-${file.raw.name} 图片上传成功`)
+            console.log(`${index}-${file.raw.name} 图像上传成功`)
             this.$message({
-              message: `图片上传成功`,
+              message: `图像上传成功`,
               type: 'success'
             })
           }).catch(err => {
             this.$message({
-              message: `上传图片错误:${err.message}`,
+              message: `上传图像错误:${err.message}`,
               type: 'error',
               duration: 6 * 1000
             })
@@ -129,7 +129,7 @@ export default {
     },
     handlePreview(file) {
       // console.log('- - Preview - - file:', file.name)
-      return this.$alert(` ${ file.name }  (${ file.size }字节)`, `图片`, {
+      return this.$alert(` ${ file.name }  (${ file.size }字节)`, `图像`, {
         confirmButtonText: '确定',
         type: 'success'
       }).then(() => {

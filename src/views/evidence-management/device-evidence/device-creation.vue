@@ -119,12 +119,12 @@
       </el-col>
     </el-row>
 
-    <!-- 图片 -->
+    <!-- 图像 -->
     <el-row :gutter="15" class="el-row-style">
       <el-col :span="24">
         <el-card shadow="hover">
           <div slot="header">
-            形态图片
+            形态图像
           </div>
           <div>
             <img-upload
@@ -266,12 +266,12 @@ export default {
       }
       /** 创建残片信息 */
       createDevEvi(this.uploadBasicInfo).then(res => {
-        this.basicInfoData.id = res.id  // 获取残片id,用于发送残片成分检测数据文件与形态图片
+        this.basicInfoData.id = res.id  // 获取残片id,用于发送残片成分检测数据文件与形态图像
         /** 上传成分检测信息与数据文件 */
         this.$refs.commonDataType.forEach(component => {
           component.beforeSubmit()
         })
-        /** 上传形态图片 */
+        /** 上传形态图像 */
         this.$refs.imgUpload.beforeSubmit()
       }).catch(err => {
         console.log('---- DeviceCreation -- createDevEvi err:', err)

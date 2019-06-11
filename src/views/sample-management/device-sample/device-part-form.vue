@@ -27,7 +27,7 @@
 
           <el-collapse v-model="activeNames"> 
 
-            <!-- 图片 -->
+            <!-- 图像 -->
             <el-collapse-item title="零件形态" name="appearance">
               <img-upload
                 ref="imgUpload"
@@ -211,8 +211,8 @@ export default {
       basicInfoData: this.devPartData,  // 存放基本信息
       devPartSample: '',
       uploadBasicInfo: {},  // 上传基本信息
-      shapeImgList: [],  // 存放图片列表
-      uploadShapeImg: {},  // 上传形态图片
+      shapeImgList: [],  // 存放图像列表
+      uploadShapeImg: {},  // 上传形态图像
       tableParams: {
         page: 1,
         page_size: 100,
@@ -277,7 +277,7 @@ export default {
         this.$refs.commonDataType.forEach(component => {
           component.beforeSubmit()
         })
-        /** 上传形态图片 */
+        /** 上传形态图像 */
         this.$refs.imgUpload.beforeSubmit()
       }).catch(err => {
         console.log('---- DevicePartForm -- createDevPartSample err:', err)
