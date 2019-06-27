@@ -85,7 +85,8 @@
     </el-table>
 
     <pagination 
-      :currentPage="tablePageIndex"
+      v-bind="tableParams"
+      @change-size="handleChangeSize"
       @change-page="handleChangePage">
     </pagination>
   </div>

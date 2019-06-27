@@ -5,9 +5,6 @@
       <el-col :span="22">
         <search-input @emit-search="handleSearch"></search-input>
       </el-col>
-      <!-- <el-col :span="2">
-        <delete-button @delete-confirm="handleDelete"></delete-button>
-      </el-col> -->
     </el-row>
 
     <el-table
@@ -133,7 +130,8 @@
     </el-table>
 
     <pagination 
-      :currentPage="tablePageIndex"
+      v-bind="tableParams"
+      @change-size="handleChangeSize"
       @change-page="handleChangePage">
     </pagination>
 
@@ -219,12 +217,22 @@ export default {
 
     /** 页面按键功能 */
     handleSearch(searchInputData) {
-      console.log('- - search: ', searchInputData)
+      console.log('- - AnalysisDeviceList - - search: ', searchInputData)
+      this.tableParams.search = searchInputData
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
     },
     handleChangePage(pageIndex) {
       console.log('- - AnalysisDeviceList - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
-    }
+      this.tableParams.page = pageIndex
+      this.fetchData(this.tableParams)
+    },
+    handleChangeSize(pageSize) {
+      console.log('- - AnalysisDeviceList - - pageSize: ', pageSize)
+      this.tableParams.page_size = pageSize
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
+    },
   }
 }
 </script>

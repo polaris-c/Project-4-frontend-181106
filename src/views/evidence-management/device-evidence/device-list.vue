@@ -140,7 +140,8 @@
     </el-table>
 
     <pagination 
-      :currentPage="tablePageIndex"
+      v-bind="tableParams"
+      @change-size="handleChangeSize"
       @change-page="handleChangePage">
     </pagination>
 
@@ -166,6 +167,7 @@ export default {
         search: null,
         page: 1,
         page_size: 20,
+        // user: 2,
         count: 1,
       }
     }

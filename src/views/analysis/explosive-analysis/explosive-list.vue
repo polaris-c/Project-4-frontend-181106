@@ -4,9 +4,6 @@
       <el-col :span="22">
         <search-input @emit-search="handleSearch"></search-input>
       </el-col>
-      <!-- <el-col :span="2">
-        <delete-button @delete-confirm="handleDelete"></delete-button>
-      </el-col> -->
     </el-row>
     
     <el-table
@@ -85,7 +82,8 @@
     </el-table>
 
     <pagination 
-      :currentPage="tablePageIndex"
+      v-bind="tableParams"
+      @change-size="handleChangeSize"
       @change-page="handleChangePage">
     </pagination>
   </div>
@@ -154,27 +152,6 @@ export default {
     },
 
     /** 页面按键功能 */
-    handleDelete() {
-      this.loading = true
-      this.multipleSelection.forEach(val => {
-        deleteExplosiveEvi(val.id).then(res =>{
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-          this.tableParams.page = 1
-          this.fetchData(this.tableParams)
-          this.loading = false
-        }).catch(err => {
-          console.log('- - ExplosiveList - - handleDelete: 删除失败 ', err)
-          this.$message({
-            message: '删除失败' + err.message,
-            type: 'error'
-          })
-          this.loading = false
-        })
-      })
-    },
     handleSearch(searchInputData) {
       console.log('- - ExplosiveList - - search: ', searchInputData)
       this.tableParams.search = searchInputData
