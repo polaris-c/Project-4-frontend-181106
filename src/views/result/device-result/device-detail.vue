@@ -95,13 +95,13 @@
             <img 
               width="800px"
               height="700px"
-              :src="shapeData.devShapeSample.srcImgURL">
+              :src="eviType == 3 ? shapeData.devShapeSample.srcImgURL : shapeData.oPartImgSample.srcImgURL">
           </el-col>
           <el-col :span="8">
             <img 
               width="400px"
               height="350px"
-              :src="shapeData.devShapeEvi.srcImgURL">
+              :src="eviType == 3 ? shapeData.devShapeEvi.srcImgURL : shapeData.oPartImgEvi.srcImgURL">
           </el-col>
         </el-row>
 
@@ -178,7 +178,7 @@ import TabColumn from '@/components/ResultTab/result-tab-column'
 // import TabColumn from '@/views/result/explosive-result/result-tab-column'
 
 export default {
-  name: 'ExplosiveDetail',
+  name: 'DeviceDetail',
   data() {
     return {
       loading: false,
@@ -186,6 +186,7 @@ export default {
       detailData: {
         user: {}
       },
+      eviType: 0,
       devSampleList: [],
       currentSampleInfo: {},
       devShapeMultiMatch: {},
@@ -237,6 +238,7 @@ export default {
       this.loading = true
       getDevSynMatchsInfo(this.$route.params.id).then(res => {
         this.detailData = res.devEvi
+        this.eviType = res.devEvi.eviType
         if(Array.isArray(res.devSampleList)) {
           this.devSampleList = res.devSampleList
         } else {
@@ -275,7 +277,7 @@ export default {
       if(this.devSampleList[index].devShapeMultiMatchList) {
         this.devShapeMultiMatch = this.devSampleList[index].devShapeMultiMatchList
         this.expertShapeOpinion = this.devSampleList[index].devShapeMultiMatchList.expertShapeOpinion
-        this.shapeData = this.devSampleList[index].devShapeMultiMatchList.devShapeMatchList
+        this.shapeData = this.eviType == 3 ? this.devSampleList[index].devShapeMultiMatchList.devShapeMatchList : this.devSampleList[index].devShapeMultiMatchList.opartMatchList
       }
 
       if(this.devSampleList[index].devCompMatchList) {

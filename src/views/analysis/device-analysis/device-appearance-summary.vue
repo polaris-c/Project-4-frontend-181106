@@ -61,19 +61,14 @@
           align="center"
           width="">
           <template slot-scope="scope">
-            <!-- <el-button 
-              v-for="(item, index) in (Array.isArray(scope.row.devShapeMatchList) ? scope.row.devShapeMatchList : [scope.row.devShapeMatchList])"
-              :key="item.id"
-              type="primary"
-              size="mini"
-              plain
-              @click="handleDetail(item, scope.row)">
-              图{{ index + 1 }} - 相似度:{{ item.matchDegree }}
-            </el-button> -->
             <img 
-              :src="scope.row.devShapeMatchList.devShapeSample.srcImgURL" 
+              :src="eviType == 3 ? scope.row.devShapeMatchList.devShapeSample.srcImgURL : scope.row.opartMatchList.oPartImgSample.srcImgURL" 
               width="80px" height="60px"
-              @click="handleDetail(scope.row.devShapeMatchList, scope.row)">
+              @click="handleDetail(eviType == 3 ? scope.row.devShapeMatchList : scope.row.opartMatchList, scope.row)">
+            <!-- <img 
+              :src="scope.row.opartMatchList.oPartImgSample.srcImgURL" 
+              width="80px" height="60px"
+              @click="handleDetail(scope.row.opartMatchList, scope.row)"> -->
           </template>
         </el-table-column>
 
@@ -195,6 +190,7 @@ export default {
     }
   },
   mounted() {
+    console.log('- - DeviceAppearanceSummary - - eviType: ', this.eviType)
     if(Number(this.eviType) === 3) {
       this.getMatchList = getDevShapeMultiMatchsList
       this.checkMatch = updateDevShapeMultiMatchs
@@ -210,6 +206,7 @@ export default {
       this.loading = true
       this.getMatchList(this.tableParams).then(res => {
         this.tableData = res.results
+        this.tableParams.count =  res.count
         this.loading = false
       })
     },
