@@ -5,7 +5,7 @@
         <CheckButton 
           @check-confirm="handleCheck">
         </CheckButton>
-        当前选择：-{{ currentRow.id }}- 
+        当前选择：- {{ currentRow.id }} - 
       
       <!-- 结果排名列表 -->
       <el-table
@@ -33,7 +33,7 @@
         <el-table-column
           label="组件名称"
           align="center"
-          width="150">
+          width="200">
           <template slot-scope="scope">
             <el-button 
               type="text"
@@ -46,7 +46,7 @@
         <el-table-column
           label="零件名称"
           align="center"
-          width="150">
+          width="200">
           <template slot-scope="scope">
             <el-button 
               type="text"
@@ -61,15 +61,19 @@
           align="center"
           width="">
           <template slot-scope="scope">
-            <el-button 
-              v-for="(item, index) in (Array.isArray(scope.row.devSampleList) ? scope.row.devSampleList : [scope.row.devSampleList])"
+            <!-- <el-button 
+              v-for="(item, index) in (Array.isArray(scope.row.devShapeMatchList) ? scope.row.devShapeMatchList : [scope.row.devShapeMatchList])"
               :key="item.id"
               type="primary"
               size="mini"
               plain
               @click="handleDetail(item, scope.row)">
               图{{ index + 1 }} - 相似度:{{ item.matchDegree }}
-            </el-button>
+            </el-button> -->
+            <img 
+              :src="scope.row.devShapeMatchList.devShapeSample.srcImgURL" 
+              width="80px" height="60px"
+              @click="handleDetail(scope.row.devShapeMatchList, scope.row)">
           </template>
         </el-table-column>
 
@@ -87,8 +91,9 @@
 
       </el-table>
 
-      <pagination
-        :currentPage="tablePageIndex"
+      <pagination 
+        v-bind="tableParams"
+        @change-size="handleChangeSize"
         @change-page="handleChangePage">
       </pagination>
 
@@ -151,11 +156,6 @@ export default {
       tableData: [],
       getMatchList: null,
       checkMatch: null,
-      tableParams: {
-        page: 1,
-        page_size: 20,
-        devEvi_id: 1  // 物证id
-      },
       checkData: {
         Check: 'True',
       },
@@ -171,7 +171,13 @@ export default {
       currentRow: {},
       imgSample: new Image(),
       imgEvidence: new Image(),
-      tablePageIndex: 1
+      tablePageIndex: 1,
+      tableParams: {
+        page: 1,
+        page_size: 20,
+        devEvi_id: 1,  // 物证id
+        count: 1,
+      }
     }
   },
   components: {
@@ -326,10 +332,18 @@ export default {
       this.currentRow = currentRow
       this.$emit('change-sample', currentRow.expertShapeOpinion)
     },
+    /** 翻页 */
     handleChangePage(pageIndex) {
       console.log('- - DeviceAppearanceSummary - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
-    }
+      this.tableParams.page = pageIndex
+      this.fetchList(this.tableParams)
+    },
+    handleChangeSize(pageSize) {
+      console.log('- - DeviceAppearanceSummary - - pageSize: ', pageSize)
+      this.tableParams.page_size = pageSize
+      this.tableParams.page = 1
+      this.fetchList(this.tableParams)
+    },
   },
 }
 </script>

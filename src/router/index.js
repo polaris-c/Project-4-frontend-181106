@@ -432,13 +432,13 @@ export const constantRouterMap = [
             meta: { title: '残片详情' },
             hidden: true
           },
-          {
-            path: 'deviceFilter',
-            name: 'DeviceFilter',
-            component: () => import('@/views/analysis/device-analysis/device-detail-filter'),
-            meta: { title: 'DeviceFilter' },
-            hidden: true
-          },
+          // {
+          //   path: 'deviceFilter',
+          //   name: 'DeviceFilter',
+          //   component: () => import('@/views/analysis/device-analysis/device-detail-filter'),
+          //   meta: { title: 'DeviceFilter' },
+          //   hidden: true
+          // },
           {
             path: 'deviceIngredient/:id',
             name: 'DeviceIngredient',
@@ -453,13 +453,13 @@ export const constantRouterMap = [
             meta: { title: '残片形态比对' },
             hidden: true
           },
-          {
-            path: 'deviceAppearanceCompare',
-            name: 'DeviceAppearanceCompare',
-            component: () => import('@/views/analysis/device-analysis/device-detail-appearance-Compare'),
-            meta: { title: '形态比对详情' },
-            hidden: true
-          },
+          // {
+          //   path: 'deviceAppearanceCompare',
+          //   name: 'DeviceAppearanceCompare',
+          //   component: () => import('@/views/analysis/device-analysis/device-detail-appearance-Compare'),
+          //   meta: { title: '形态比对详情' },
+          //   hidden: true
+          // },
         ]
       }
     ]
