@@ -4,9 +4,6 @@
       <el-col :span="22">
         <search-input @emit-search="handleSearch"></search-input>
       </el-col>
-      <!-- <el-col :span="2">
-        <delete-button @delete-confirm="handleDelete"></delete-button>
-      </el-col> -->
     </el-row>
     
     <el-table
@@ -85,7 +82,8 @@
     </el-table>
 
     <pagination 
-      :currentPage="tablePageIndex"
+      v-bind="tableParams"
+      @change-size="handleChangeSize"
       @change-page="handleChangePage">
     </pagination>
   </div>

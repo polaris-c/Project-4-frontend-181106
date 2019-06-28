@@ -23,7 +23,7 @@
     <!-- 样本 -->
     <el-card shadow="hover" class="el-row-style">
       <div slot="header">
-        <span>匹配样本信息</span>
+        <span>核准样本信息</span>
       </div>
       <div v-loading="loading">
         <div 
@@ -32,7 +32,7 @@
           <el-button 
            type="text"
            @click="handleDetail(index)">
-            {{ item.exploSample.sname }} ———— {{ item.Score }}
+            {{ item.exploSample.id }} - {{ item.exploSample.sname }} ———— {{ item.Score }}
           </el-button>
         </div>
         <hr>
@@ -53,7 +53,7 @@
         </div>
         <div v-if="currentExpertOpinion">
           <hr>
-          {{ currentExpertOpinion }}
+          专家意见： {{ currentExpertOpinion }}
         </div>
         
       </div>

@@ -5,9 +5,6 @@
       <el-col :span="22">
         <search-input @emit-search="handleSearch"></search-input>
       </el-col>
-      <!-- <el-col :span="2">
-        <delete-button @delete-confirm="handleDelete"></delete-button>
-      </el-col> -->
     </el-row>
 
     <el-table
@@ -133,7 +130,8 @@
     </el-table>
 
     <pagination 
-      :currentPage="tablePageIndex"
+      v-bind="tableParams"
+      @change-size="handleChangeSize"
       @change-page="handleChangePage">
     </pagination>
 
@@ -146,6 +144,7 @@ import DeleteButton from '@/components/Buttons/delete-button'
 import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
 import { getDevEviList } from '@/api/evidence-device'
+import { getDevSynMatchsList } from '@/api/match-device'
 
 export default {
   name: 'DeviceList',
@@ -153,6 +152,7 @@ export default {
     return {
       loading: false,
       multipleSelection: [],
+      resultID: [],
       tableData: [
         {
           id: '001',
@@ -197,6 +197,14 @@ export default {
   methods: {
     fetchData(tableParams){
       this.loading = true
+      getDevSynMatchsList(tableParams).then(res => {
+        this.resultID = res.results.map(el => {
+          return el.devEvi
+        })
+      }).then(() => {
+        console.log('- - DeviceList - - resultID:', this.resultID)
+      })
+      
       getDevEviList(tableParams).then(res => {
         this.tableData = res.results
         this.tableParams.count =  res.count
@@ -219,12 +227,22 @@ export default {
 
     /** 页面按键功能 */
     handleSearch(searchInputData) {
-      console.log('- - search: ', searchInputData)
+      console.log('- - DeviceList - - search: ', searchInputData)
+      this.tableParams.search = searchInputData
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
     },
     handleChangePage(pageIndex) {
       console.log('- - DeviceList - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
-    }
+      this.tableParams.page = pageIndex
+      this.fetchData(this.tableParams)
+    },
+    handleChangeSize(pageSize) {
+      console.log('- - DeviceList - - pageSize: ', pageSize)
+      this.tableParams.page_size = pageSize
+      this.tableParams.page = 1
+      this.fetchData(this.tableParams)
+    },
   }
 }
 </script>
