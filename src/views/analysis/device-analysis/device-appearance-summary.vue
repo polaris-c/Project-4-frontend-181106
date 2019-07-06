@@ -213,13 +213,13 @@ export default {
     initImage() {
       this.canvasSample = document.getElementById('S_' + this.$route.params.id + '_sample')
       this.ctxSample = this.canvasSample.getContext('2d')
-      this.canvasSample.width = 800
-      this.canvasSample.height = 600
+      // this.canvasSample.width = 800
+      // this.canvasSample.height = 600
 
       this.canvasEvidence = document.getElementById('S_' + this.$route.params.id + '_evidence')
       this.ctxEvidence = this.canvasEvidence.getContext('2d')
-      this.canvasEvidence.width = 400
-      this.canvasEvidence.height = 300
+      // this.canvasEvidence.width = 400
+      // this.canvasEvidence.height = 300
     },
 
     handleCheck() {
@@ -269,12 +269,14 @@ export default {
             this.initImage()
 
             this.imgSample.onload = () => {
+              this.canvasSample.width = this.imgSample.naturalWidth
+              this.canvasSample.height = this.imgSample.naturalHeight
               this.ctxSample.drawImage(this.imgSample, 0, 0, this.canvasSample.width, this.canvasSample.height)
               
               this.scaleSample[0] = Number((this.imgSample.naturalWidth / 800).toFixed(2))
               this.scaleSample[1] = Number((this.imgSample.naturalHeight / 600).toFixed(2))
-              matchSampleCoordi[0] = matchSampleCoordi[0] / this.scaleSample[0]
-              matchSampleCoordi[1] = matchSampleCoordi[1] / this.scaleSample[1]
+              matchSampleCoordi[0] = matchSampleCoordi[0] // / this.scaleSample[0]
+              matchSampleCoordi[1] = matchSampleCoordi[1] // / this.scaleSample[1]
 
               this.ctxSample.strokeStyle = 'rgb(250, 0, 0)'
               this.ctxSample.beginPath()
@@ -285,11 +287,13 @@ export default {
               //     'scaleSample[0]: ', this.scaleSample[0], 'scaleSample[1]: ', this.scaleSample[1])
             }
             this.imgEvidence.onload = () => {
+              this.canvasEvidence.width = this.imgEvidence.naturalWidth
+              this.canvasEvidence.height = this.imgEvidence.naturalHeight
               this.ctxEvidence.drawImage(this.imgEvidence, 0, 0, this.canvasEvidence.width, this.canvasEvidence.height)
               this.scaleEvidence[0] = Number((this.imgEvidence.naturalWidth / 400).toFixed(2))
               this.scaleEvidence[1] = Number((this.imgEvidence.naturalHeight / 300).toFixed(2))
-              matchEviCoordi[0] = matchEviCoordi[0] / this.scaleEvidence[0]
-              matchEviCoordi[1] = matchEviCoordi[1] / this.scaleEvidence[1]
+              matchEviCoordi[0] = matchEviCoordi[0] // / this.scaleEvidence[0]
+              matchEviCoordi[1] = matchEviCoordi[1] // / this.scaleEvidence[1]
 
               this.ctxEvidence.strokeStyle = 'rgb(250, 0, 0)'
               this.ctxEvidence.beginPath()
