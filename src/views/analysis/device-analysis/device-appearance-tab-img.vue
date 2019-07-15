@@ -380,15 +380,29 @@ export default {
         this.image.src = this.baseURL + res.norImgURL  // 返回的URL不完整
 
         this.image.onload = () => {
-          this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
+
           this.naturalImgInfo.width = this.image.naturalWidth
           this.naturalImgInfo.height = this.image.naturalHeight
-          this.scaleX = Number((this.naturalImgInfo.width / this.canvas.width).toFixed(2))
-          this.scaleY = Number((this.naturalImgInfo.height / this.canvas.height).toFixed(2))
-          console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight,
-                      'scaleX: ', this.scaleX, 'scaleY: ', this.scaleY)
-          this.loading = false
+          // toFixed(n) 返回小数点后数字的n个数数字的字符串
+          this.WTHR = Number((this.image.naturalWidth / this.image.naturalHeight).toFixed(3))
 
+          if(this.naturalImgInfo.width > this.canvas.width) {
+            // 图像原始尺寸比画布大 等比例缩小
+            this.height = this.canvas.height = Number((this.canvas.width / this.WTHR).toFixed())
+          } else {
+            // 图像原始尺寸比画布小 直接使用原始尺寸
+            this.width = this.canvas.width = this.naturalImgInfo.width
+            this.height = this.canvas.height = this.naturalImgInfo.height
+          }
+
+          this.scaleX = Number((this.naturalImgInfo.width / this.canvas.width).toFixed(3))
+          this.scaleY = Number((this.naturalImgInfo.height / this.canvas.height).toFixed(3))
+          console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight, 'baseURL: ', this.baseURL,
+              'scaleX: ', this.scaleX, 'scaleY: ', this.scaleY, 'WTHR: ', this.WTHR)
+
+          this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
+          
+          this.loading = false
           this.$message({
             message: '图像归一化成功！',
             type: 'success',

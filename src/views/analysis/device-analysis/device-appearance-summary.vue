@@ -94,6 +94,7 @@
 
     </el-col>
 
+    <!-- 样本-物证的图像查看 -->
     <el-dialog
       :title="currentSample.devSampleName + ' - ' + currentSample.devPartSampleName + ' - ' + currentSample.matchDegree"
       :visible.sync="dialogVisible"
