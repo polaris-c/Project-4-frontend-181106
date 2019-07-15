@@ -65,6 +65,7 @@
 
     </el-col>
 
+    <!-- 样本-物证图像查看 -->
     <el-dialog
       :title="currentSample.devSampleName"
       :visible.sync="dialogVisible"

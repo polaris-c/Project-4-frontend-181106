@@ -19,7 +19,7 @@
         </el-tab-pane>
 
         <el-tab-pane
-          label="Summary"
+          label="综合"
           name="Summary">
           <DeviceAppearanceSummary
             :eviType="eviType"

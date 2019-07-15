@@ -2,28 +2,6 @@
   <div>
     <el-row class="img-operation-container">
       <el-col :span="24">
-        <!-- <el-button-group>
-          <el-button 
-            type="primary"
-            size="mini"
-            icon="el-icon-arrow-right"
-            @click="switchFunction(1)">
-            尺度
-          </el-button>
-          <el-button 
-            type="primary"
-            size="mini"
-            icon="el-icon-arrow-right"
-            @click="switchFunction(2)">
-            旋转
-          </el-button>
-          <el-button 
-            type="success"
-            size="mini"
-            icon="el-icon-upload2"
-            @click="preHandleUpload">
-          </el-button>
-        </el-button-group> -->
 
         <el-button-group>
           <el-button 
@@ -33,13 +11,7 @@
             @click="switchFunction(3)">
             背景
           </el-button>
-          <!-- <el-button 
-            type="primary"
-            size="mini"
-            icon="el-icon-arrow-right"
-            @click="switchFunction(4)">
-            前景
-          </el-button> -->
+
           <el-button 
             type="success"
             size="mini"
@@ -79,6 +51,10 @@ const Rotation = 2
 const Back = 3
 const Front = 4
 
+// 画布默认最大尺寸
+const CanvasWidth = 1000
+const CanvasHeight = 800
+
 export default {
   name: 'AnalysisTabImgO',
   props: {
@@ -98,7 +74,8 @@ export default {
         height: 0
       },
       scaleX: 1,
-      ScaleY: 1,
+      scaleY: 1,
+      WTHR: 1,  // 原始图像长宽比例 width to height ratio
       // 点击时坐标
       coordinate: {
         x: 0,
@@ -176,23 +153,30 @@ export default {
 
       this.canvas = document.getElementById(this.dataItem.id)
       this.ctx = this.canvas.getContext('2d')
-      this.width = this.canvas.width = 1000
-      this.height = this.canvas.height = 800
+      // 设置画布初始值
+      this.width = this.canvas.width = CanvasWidth
+      this.height = this.canvas.height = CanvasHeight
 
       this.image.onload = () => {
         
         this.naturalImgInfo.width = this.image.naturalWidth
         this.naturalImgInfo.height = this.image.naturalHeight
-        if(this.naturalImgInfo.width > this.canvas.width && this.naturalImgInfo.height > this.canvas.height) {
-          this.scaleX = Number((this.naturalImgInfo.width / this.canvas.width).toFixed(2))
-          this.ScaleY = Number((this.naturalImgInfo.height / this.canvas.height).toFixed(2))
+        // toFixed(n) 返回小数点后数字的n个数数字的字符串
+        this.WTHR = Number((this.image.naturalWidth / this.image.naturalHeight).toFixed(3))
+        
+        if(this.naturalImgInfo.width > this.canvas.width) {
+          // 图像原始尺寸比画布大 等比例缩小
+          this.height = this.canvas.height = Number((this.canvas.width / this.WTHR).toFixed())
         } else {
+          // 图像原始尺寸比画布小 直接使用原始尺寸
           this.width = this.canvas.width = this.naturalImgInfo.width
           this.height = this.canvas.height = this.naturalImgInfo.height
         }
 
+        this.scaleX = Number((this.naturalImgInfo.width / this.canvas.width).toFixed(3))
+        this.scaleY = Number((this.naturalImgInfo.height / this.canvas.height).toFixed(3))
         console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight, 'baseURL: ', this.baseURL,
-            'scaleX: ', this.scaleX, 'ScaleY: ', this.ScaleY)
+            'scaleX: ', this.scaleX, 'scaleY: ', this.scaleY, 'WTHR: ', this.WTHR)
 
         this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
 
@@ -337,64 +321,14 @@ export default {
 			}
 		},
 
-    // 预处理
-    /*
-    preHandleUpload() {
-      console.log(`objectScale:, ${this.objectScale.beginXY}, ${this.objectScale.endXY} \n
-            objectRotation:, ${this.objectRotation.beginXY}, ${this.objectRotation.endXY} \n
-            scale: ${this.scaleX}, ${this.ScaleY}`)
-      let [scaleX1, scaleX2, rotateX1, rotateX2] = [Number((this.objectScale.beginXY[0] * this.scaleX).toFixed()), 
-                                                    Number((this.objectScale.endXY[0] * this.scaleX).toFixed()), 
-                                                    Number((this.objectRotation.beginXY[0] * this.scaleX).toFixed()),
-                                                    Number((this.objectRotation.endXY[0] * this.scaleX).toFixed())]
-      let [scaleY1, scaleY2, rotateY1, rotateY2] = [Number((this.objectScale.beginXY[1] * this.ScaleY).toFixed()), 
-                                                    Number((this.objectScale.endXY[1] * this.ScaleY).toFixed()), 
-                                                    Number((this.objectRotation.beginXY[1] * this.ScaleY).toFixed()),
-                                                    Number((this.objectRotation.endXY[1] * this.ScaleY).toFixed())]
-      let preHandleData = new FormData()
-      preHandleData.append('scaleX1', scaleX1)
-      preHandleData.append('scaleY1', scaleY1)
-      preHandleData.append('scaleX2', scaleX2)
-      preHandleData.append('scaleY2', scaleY2)
-      preHandleData.append('rotateX1', rotateX1)
-      preHandleData.append('rotateY1', rotateY1)
-      preHandleData.append('rotateX2', rotateX2)
-      preHandleData.append('rotateY2', rotateY2)
-      preHandleData.append('PCBImgEviId', this.dataItem.id)
-      console.log([scaleX1, scaleY1, scaleX2, scaleY2, rotateX1, rotateY1, rotateX2, rotateY2, this.dataItem.id])
-      this.loading = true
-      nomEviPicture(preHandleData).then(res => {
-        console.log(res)
-        this.image = new Image()
-        this.image.src = this.baseURL + res.norImgURL  // 返回的URL不完整
-
-        this.image.onload = () => {
-          this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
-          this.naturalImgInfo.width = this.image.naturalWidth
-          this.naturalImgInfo.height = this.image.naturalHeight
-          this.scaleX = Number((this.naturalImgInfo.width / this.canvas.width).toFixed(2))
-          this.ScaleY = Number((this.naturalImgInfo.height / this.canvas.height).toFixed(2))
-          console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight,
-                      'scaleX: ', this.scaleX, 'ScaleY: ', this.ScaleY)
-          this.loading = false
-
-          this.$message({
-            message: '图像归一化成功！',
-            type: 'success',
-            duration: 10 * 1000
-          })
-        }
-      })
-    },*/
-
     handleUpload() {
       console.log(`objectBack:, ${this.objectBack.beginXY}, ${this.objectBack.endXY} \n
         objectFront:, ${this.objectFront.beginXY}, ${this.objectFront.endXY} \n
-        scale: ${this.scaleX}, ${this.ScaleY}`)
+        scale: ${this.scaleX}, ${this.scaleY}`)
       let [backX1, backY1, backX2, backY2] = [Number((this.objectBack.beginXY[0] * this.scaleX).toFixed()), 
-                                              Number((this.objectBack.beginXY[1] * this.ScaleY).toFixed()),
+                                              Number((this.objectBack.beginXY[1] * this.scaleY).toFixed()),
                                               Number((this.objectBack.endXY[0] * this.scaleX).toFixed()),
-                                              Number((this.objectBack.endXY[1] * this.ScaleY).toFixed())]
+                                              Number((this.objectBack.endXY[1] * this.scaleY).toFixed())]
       let rectCoordi = [backX1, backY1, backX2, backY2]
       rectCoordi = rectCoordi.join(' ')
       console.log(rectCoordi, this.dataItem.id)

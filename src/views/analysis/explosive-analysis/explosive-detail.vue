@@ -52,7 +52,7 @@
           <!-- <chart-curve></chart-curve> -->
         </el-tab-pane>
 
-        <el-tab-pane label="Summary" name="Summarytab">
+        <el-tab-pane label="综合" name="Summarytab">
           <div v-if = "loadingChart">
             <analysis-tab-summary
               evi-type="explosive"
