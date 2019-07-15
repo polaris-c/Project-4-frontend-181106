@@ -1,6 +1,5 @@
 <template>
   <div class="app-main-container">
-    <!-- {{ $route.params }} -->
     <el-card 
       v-loading="loading"
       shadow="hover" 
@@ -16,10 +15,12 @@
           :key="dataItem.tabID"
           :label="dataItem.tabID"
           :name="dataItem.id.toString()">
+          <!-- 电路板 -->
           <tab-img 
             v-if="sampleType == 3"
             :data-item="dataItem">
           </tab-img>
+          <!-- 其他零件 -->
           <tab-imgO
             v-else
             :data-item="dataItem">

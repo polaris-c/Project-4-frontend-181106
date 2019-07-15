@@ -234,13 +234,13 @@ export const constantRouterMap = [
                 component: () => import('@/views/sample-management/device-sample/device-list'),
                 meta: { title: '样本列表', icon: '' },
               },
-              {
-                path: 'deviceUpdate/:id',
-                name: 'DeviceUpdate',
-                component: () => import('@/views/sample-management/device-sample/device-update'),
-                meta: { title: '样本修改', icon: '' },
-                hidden: true
-              },
+              // {
+              //   path: 'deviceUpdate/:id',
+              //   name: 'DeviceUpdate',
+              //   component: () => import('@/views/sample-management/device-sample/device-update'),
+              //   meta: { title: '样本修改', icon: '' },
+              //   hidden: true
+              // },
               {
                 path: 'deviceDetail/:id',
                 name: 'DeviceDetail',
