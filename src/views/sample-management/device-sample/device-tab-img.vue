@@ -195,7 +195,7 @@ export default {
       this.height = this.canvas.height = CanvasHeight
 
       this.image.onload = () => {
-        this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
+
         this.naturalImgInfo.width = this.image.naturalWidth
         this.naturalImgInfo.height = this.image.naturalHeight
         // toFixed(n) 返回小数点后数字的n个数数字的字符串
@@ -214,6 +214,8 @@ export default {
         this.scaleY = Number((this.naturalImgInfo.height / this.canvas.height).toFixed(3))
         console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight, 'baseURL: ', this.baseURL,
             'scaleX: ', this.scaleX, 'scaleY: ', this.scaleY, 'WTHR: ', this.WTHR)
+
+        this.ctx.drawImage(this.image, 0, 0, this.width, this.height)
 
         this.loading = false
       }
