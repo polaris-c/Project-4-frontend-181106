@@ -3,7 +3,7 @@
 
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <h3 class="title">爆 炸 残 留 物 分 析 系 统</h3>
-      <h3 class="title"> 系 统 登 录 </h3>
+      <h3 class="title"> 登 录 </h3>
 
       <el-form-item prop="username">
         <span class="svg-container">
@@ -116,6 +116,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss">
 $bg:#2d3a4b;
 $light_gray:#eee;
+$dark_gray: #586a74;
 
 /* reset element-ui css */
 .login-container {
@@ -129,7 +130,7 @@ $light_gray:#eee;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
+      color: $dark_gray;
       height: 47px;
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
@@ -148,14 +149,15 @@ $light_gray:#eee;
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
+$bg: light_gray;//#2d3a4b;
+$dark_gray: #586a74; //#889aa4;
 $light_gray:#eee;
+
 .login-container {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: $bg;
+  background-color: #ffffff;
   .login-form {
     position: absolute;
     left: 0;
@@ -167,7 +169,7 @@ $light_gray:#eee;
   }
   .tips {
     font-size: 14px;
-    color: #fff;
+    color: $dark_gray; //#fff;
     margin-bottom: 10px;
     span {
       &:first-of-type {
@@ -185,7 +187,7 @@ $light_gray:#eee;
   .title {
     font-size: 26px;
     font-weight: 400;
-    color: $light_gray;
+    color: $dark_gray;
     margin: 0px auto 40px auto;
     text-align: center;
     font-weight: bold;
