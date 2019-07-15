@@ -98,12 +98,12 @@
     <el-dialog
       :title="currentSample.devSampleName + ' - ' + currentSample.devPartSampleName + ' - ' + currentSample.matchDegree"
       :visible.sync="dialogVisible"
-      width="90%">
+      width="95%">
       <el-row>
-        <el-col :span="16">
+        <el-col :span="18">
           <canvas :id="'S_' + $route.params.id + '_sample'"></canvas>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <canvas :id="'S_' + $route.params.id + '_evidence'"></canvas>
         </el-col>
       </el-row>
@@ -128,6 +128,13 @@ import { startMatch,
           updateDevShapeMultiMatchs,
           updateOPartImgMultiMatchs } from '@/api/match-device'
 import { getDevShapeSamplesInfo } from '@/api/sample-device'
+
+// 样本画布默认最大尺寸
+const SampleWidth = 1000
+const SampleHeight = 800
+// 物证画布默认最大尺寸
+const EvidenceWidth = 300
+const EvidenceHeight = 200
 
 export default {
   name: 'DeviceAppearanceSummary',
@@ -162,6 +169,8 @@ export default {
       ctxEvidence: null,
       scaleSample: [],
       scaleEvidence: [],
+      sampleWTHR: 1,
+      evidenceWTHR: 1,
       currentSample: {},
       currentEvi: {},
       currentRow: {},
@@ -214,13 +223,13 @@ export default {
     initImage() {
       this.canvasSample = document.getElementById('S_' + this.$route.params.id + '_sample')
       this.ctxSample = this.canvasSample.getContext('2d')
-      // this.canvasSample.width = 800
-      // this.canvasSample.height = 600
+      this.canvasSample.width = SampleWidth
+      this.canvasSample.height = SampleHeight
 
       this.canvasEvidence = document.getElementById('S_' + this.$route.params.id + '_evidence')
       this.ctxEvidence = this.canvasEvidence.getContext('2d')
-      // this.canvasEvidence.width = 400
-      // this.canvasEvidence.height = 300
+      this.canvasEvidence.width = EvidenceWidth
+      this.canvasEvidence.height = EvidenceHeight
     },
 
     handleCheck() {
@@ -270,40 +279,89 @@ export default {
             this.initImage()
 
             this.imgSample.onload = () => {
-              this.canvasSample.width = this.imgSample.naturalWidth
-              this.canvasSample.height = this.imgSample.naturalHeight
+
+              this.sampleWTHR = Number((this.imgSample.naturalWidth / this.imgSample.naturalHeight).toFixed(3))
+
+              if(this.imgSample.naturalWidth > this.canvasSample.width) {
+                // 图像原始尺寸比画布大 等比例缩小
+                this.canvasSample.height = Number((this.canvasSample.width / this.sampleWTHR).toFixed())
+              } else {
+                // 图像原始尺寸比画布小 直接使用原始尺寸
+                this.canvasSample.width = this.imgSample.naturalWidth
+                this.canvasSample.height = this.imgSample.naturalHeight
+              }
+
+              this.scaleSample[0] = Number((this.imgSample.naturalWidth / this.canvasSample.width).toFixed(3))
+              this.scaleSample[1] = Number((this.imgSample.naturalHeight / this.canvasSample.height).toFixed(3))
+              console.log('naturalWidth', this.imgSample.naturalWidth, 'naturalHeight: ', this.imgSample.naturalHeight,
+                  'scaleSample[0]: ', this.scaleSample[0], 'scaleSample[1]: ', this.scaleSample[1], 'WTHR: ', this.sampleWTHR)
+
               this.ctxSample.drawImage(this.imgSample, 0, 0, this.canvasSample.width, this.canvasSample.height)
-              
-              this.scaleSample[0] = Number((this.imgSample.naturalWidth / 800).toFixed(2))
-              this.scaleSample[1] = Number((this.imgSample.naturalHeight / 600).toFixed(2))
-              matchSampleCoordi[0] = matchSampleCoordi[0] // / this.scaleSample[0]
-              matchSampleCoordi[1] = matchSampleCoordi[1] // / this.scaleSample[1]
+            
+              matchSampleCoordi[0] = matchSampleCoordi[0] / this.scaleSample[0]
+              matchSampleCoordi[1] = matchSampleCoordi[1] / this.scaleSample[1]
 
               this.ctxSample.strokeStyle = 'rgb(250, 0, 0)'
               this.ctxSample.beginPath()
               this.ctxSample.arc(matchSampleCoordi[0], matchSampleCoordi[1], matchRadius, 0, Math.PI*2, true)
               this.ctxSample.stroke()
 
-              // console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.imgSample.naturalWidth, 'naturalHeight: ', this.imgSample.naturalHeight,
-              //     'scaleSample[0]: ', this.scaleSample[0], 'scaleSample[1]: ', this.scaleSample[1])
+              // this.canvasSample.width = this.imgSample.naturalWidth
+              // this.canvasSample.height = this.imgSample.naturalHeight
+              // this.ctxSample.drawImage(this.imgSample, 0, 0, this.canvasSample.width, this.canvasSample.height)
+              
+              // this.scaleSample[0] = Number((this.imgSample.naturalWidth / 800).toFixed(2))
+              // this.scaleSample[1] = Number((this.imgSample.naturalHeight / 600).toFixed(2))
+              // matchSampleCoordi[0] = matchSampleCoordi[0] // / this.scaleSample[0]
+              // matchSampleCoordi[1] = matchSampleCoordi[1] // / this.scaleSample[1]
+
+              // this.ctxSample.strokeStyle = 'rgb(250, 0, 0)'
+              // this.ctxSample.beginPath()
+              // this.ctxSample.arc(matchSampleCoordi[0], matchSampleCoordi[1], matchRadius, 0, Math.PI*2, true)
+              // this.ctxSample.stroke()
             }
+
             this.imgEvidence.onload = () => {
-              this.canvasEvidence.width = this.imgEvidence.naturalWidth
-              this.canvasEvidence.height = this.imgEvidence.naturalHeight
+
+              this.evidenceWTHR = Number((this.imgEvidence.naturalWidth / this.imgEvidence.naturalHeight).toFixed(3))
+
+              if(this.imgEvidence.naturalWidth > this.canvasEvidence.width) {
+                // 图像原始尺寸比画布大 等比例缩小
+                this.canvasEvidence.height = Number((this.canvasEvidence.width / this.evidenceWTHR).toFixed())
+              } else {
+                // 图像原始尺寸比画布小 直接使用原始尺寸
+                this.canvasEvidence.width = this.imgEvidence.naturalWidth
+                this.canvasEvidence.height = this.imgEvidence.naturalHeight
+              }
+
+              this.scaleEvidence[0] = Number((this.imgEvidence.naturalWidth / this.canvasEvidence.width).toFixed(3))
+              this.scaleEvidence[1] = Number((this.imgEvidence.naturalHeight / this.canvasEvidence.height).toFixed(3))
+              console.log('naturalWidth', this.imgEvidence.naturalWidth, 'naturalHeight: ', this.imgEvidence.naturalHeight,
+                  'scaleEvidence[0]: ', this.scaleEvidence[0], 'scaleEvidence[1]: ', this.scaleEvidence[1], 'WTHR: ', this.evidenceWTHR)
+
               this.ctxEvidence.drawImage(this.imgEvidence, 0, 0, this.canvasEvidence.width, this.canvasEvidence.height)
-              this.scaleEvidence[0] = Number((this.imgEvidence.naturalWidth / 400).toFixed(2))
-              this.scaleEvidence[1] = Number((this.imgEvidence.naturalHeight / 300).toFixed(2))
-              matchEviCoordi[0] = matchEviCoordi[0] // / this.scaleEvidence[0]
-              matchEviCoordi[1] = matchEviCoordi[1] // / this.scaleEvidence[1]
+            
+              matchEviCoordi[0] = matchEviCoordi[0] / this.scaleEvidence[0]
+              matchEviCoordi[1] = matchEviCoordi[1] / this.scaleEvidence[1]
 
               this.ctxEvidence.strokeStyle = 'rgb(250, 0, 0)'
               this.ctxEvidence.beginPath()
               this.ctxEvidence.arc(matchEviCoordi[0], matchEviCoordi[1], matchRadius, 0, Math.PI*2, true)
               this.ctxEvidence.stroke()
-              // console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.imgEvidence.naturalWidth, 'naturalHeight: ', this.imgEvidence.naturalHeight,
-              //     'scaleEvidence[0]: ', this.scaleEvidence[0], 'scaleEvidence[1]: ', this.scaleEvidence[1])
+
+              // this.canvasEvidence.width = this.imgEvidence.naturalWidth
+              // this.canvasEvidence.height = this.imgEvidence.naturalHeight
+              // this.ctxEvidence.drawImage(this.imgEvidence, 0, 0, this.canvasEvidence.width, this.canvasEvidence.height)
+              // this.scaleEvidence[0] = Number((this.imgEvidence.naturalWidth / 400).toFixed(2))
+              // this.scaleEvidence[1] = Number((this.imgEvidence.naturalHeight / 300).toFixed(2))
+              // matchEviCoordi[0] = matchEviCoordi[0] // / this.scaleEvidence[0]
+              // matchEviCoordi[1] = matchEviCoordi[1] // / this.scaleEvidence[1]
+
+              // this.ctxEvidence.strokeStyle = 'rgb(250, 0, 0)'
+              // this.ctxEvidence.beginPath()
+              // this.ctxEvidence.arc(matchEviCoordi[0], matchEviCoordi[1], matchRadius, 0, Math.PI*2, true)
+              // this.ctxEvidence.stroke()
             }
-          // })
         } else {
           this.currentSample = item.oPartImgSample
           this.currentEvi = item.oPartImgEvi
