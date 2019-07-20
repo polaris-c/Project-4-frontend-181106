@@ -147,9 +147,15 @@ export default {
     initImage() {
       this.loading = true
       this.image = new Image()
-      this.image.src = this.dataItem.srcImgURL
-      let end = this.dataItem.srcImgURL.search(/media/i)
-      this.baseURL = this.dataItem.srcImgURL.slice(0, end-1)
+      // this.image.src = this.dataItem.srcImgURL
+      // let end = this.dataItem.srcImgURL.search(/media/i)
+      // this.baseURL = this.dataItem.srcImgURL.slice(0, end-1)
+
+      let end = this.dataItem.srcImgRelURL.search(/media/i) + 5
+      let endURL = this.dataItem.srcImgRelURL.slice(end)
+      this.baseURL = this.dataItem.srcImgRelURL.slice(0, end-1)
+      this.baseURL = 'http://10.112.99.172:8001'
+      this.image.src = this.baseURL + endURL
 
       this.canvas = document.getElementById(this.dataItem.id)
       this.ctx = this.canvas.getContext('2d')
@@ -337,8 +343,7 @@ export default {
       handleData.append('rectCoordi', rectCoordi)
       this.loading = true
       updateOPartImgEvis(this.dataItem.id, handleData).then(res => {
-        // console.log(res)
-        // this.$emit('receiveNorImgURL', res.norImgURL)
+
         this.loading = false
 
         this.$message({

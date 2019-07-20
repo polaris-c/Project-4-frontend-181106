@@ -87,9 +87,11 @@ export default {
       this.loading = true
       getDevPartSampleInfo(this.$route.params.id).then(res => {
         this.sampleType = Number(res.sampleType) // 样本类型决定图像组件
+        // 电路板数据获取
         if(res.devShapeSample.length) {
           this.dataList = res.devShapeSample
         }
+        // 其他零件数据获取
         if(res.oPartImgSample.length) {
           this.dataList = res.oPartImgSample
         }

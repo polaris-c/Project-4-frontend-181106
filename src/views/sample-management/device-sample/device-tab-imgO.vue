@@ -29,7 +29,7 @@
       <div class="img-container" v-loading="loading">
         <el-col :span="24" :offset="0">
           <!-- {{ detectionType }} -->
-          <!-- <img :src="dataItem.srcImgURL"> -->
+          <!-- <img :src="dataItem.srcImgRelURL"> -->
           <canvas 
             :id="dataItem.id"
             @click="canvasClick"
@@ -59,7 +59,7 @@ export default {
   props: {
     dataItem: {
       type: Object,
-      default: { srcImgURL: "@/assets/4_123.jpg"},
+      default: { srcImgRelURL: "@/assets/4_123.jpg"},
     },
   },
   data() {
@@ -147,9 +147,12 @@ export default {
     initImage() {
       this.loading = true
       this.image = new Image()
-      this.image.src = this.dataItem.srcImgURL
-      let end = this.dataItem.srcImgURL.search(/media/i)
-      this.baseURL = this.dataItem.srcImgURL.slice(0, end-1)
+      
+      let end = this.dataItem.srcImgRelURL.search(/media/i) + 5
+      let endURL = this.dataItem.srcImgRelURL.slice(end)
+      this.baseURL = this.dataItem.srcImgRelURL.slice(0, end-1)
+      this.baseURL = 'http://10.112.99.172:8001'
+      this.image.src = this.baseURL + endURL
 
       this.canvas = document.getElementById(this.dataItem.id)
       this.ctx = this.canvas.getContext('2d')
@@ -336,7 +339,7 @@ export default {
       handleData.append('rectCoordi', rectCoordi)
       this.loading = true
       updateOPartImgSamples(this.dataItem.id, handleData).then(res => {
-        console.log(res)
+        // console.log(res)
         this.loading = false
 
         this.$message({

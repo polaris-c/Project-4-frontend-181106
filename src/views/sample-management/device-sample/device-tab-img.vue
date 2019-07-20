@@ -184,9 +184,16 @@ export default {
     initImage() {
       this.loading = true
       this.image = new Image()
-      this.image.src = this.dataItem.srcImgURL
-      let end = this.dataItem.srcImgURL.search(/media/i)
-      this.baseURL = this.dataItem.srcImgURL.slice(0, end-1)
+
+      // this.image.src = this.dataItem.srcImgURL
+      // let end = this.dataItem.srcImgURL.search(/media/i)
+      // this.baseURL = this.dataItem.srcImgURL.slice(0, end-1)
+
+      let end = this.dataItem.srcImgRelURL.search(/media/i) + 5
+      let endURL = this.dataItem.srcImgRelURL.slice(end)
+      this.baseURL = this.dataItem.srcImgRelURL.slice(0, end-1)
+      this.baseURL = 'http://10.112.99.172:8001'
+      this.image.src = this.baseURL + endURL
 
       this.canvas = document.getElementById(this.dataItem.id)
       this.ctx = this.canvas.getContext('2d')
@@ -386,7 +393,13 @@ export default {
       nomSamplePicture(preHandleData).then(res => {
         console.log(res)
         this.image = new Image()
-        this.image.src = this.baseURL + res.norImgURL  // 返回的URL不完整
+        // this.image.src = this.baseURL + res.norImgURL  // 返回的URL不完整
+
+        let end = this.dataItem.nomRelURL.search(/media/i) + 5
+        let endURL = this.dataItem.nomRelURL.slice(end)
+        this.baseURL = this.dataItem.nomRelURL.slice(0, end-1)
+        this.baseURL = 'http://10.112.99.172:8001'
+        this.image.src = this.baseURL + endURL
 
         this.image.onload = () => {
 
