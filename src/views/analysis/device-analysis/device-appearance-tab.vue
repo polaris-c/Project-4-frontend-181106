@@ -70,7 +70,7 @@
       :title="currentSample.devSampleName"
       :visible.sync="dialogVisible"
       width="95%">
-      <el-row>
+      <el-row v-loading="loadingImg">
         <el-col :span="18">
           <canvas :id="dataItem.id + '_sample'"></canvas>
         </el-col>
@@ -122,6 +122,7 @@ export default {
   data() {
     return {
       loading: false,
+      loadingImg: false,
       evidenceNorImgURL: null,  // 在子组件对物证图像处理完毕后接收归一化的图像
       getMatchList: null,
       matchData: {
@@ -217,6 +218,7 @@ export default {
     // 详细比对
     handleDetail(row) {
       this.dialogVisible = true
+      this.loadingImg = true
 
       this.$nextTick(() => {
         if(Number(this.eviType) === 3) {
@@ -285,6 +287,8 @@ export default {
               this.ctxSample.beginPath()
               this.ctxSample.arc(matchSampleCoordi[0], matchSampleCoordi[1], matchRadius, 0, Math.PI*2, true)
               this.ctxSample.stroke()
+
+              this.loadingImg = false
             }
 
             this.imgEvidence.onload = () => {

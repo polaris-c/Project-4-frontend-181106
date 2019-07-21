@@ -192,7 +192,7 @@ export default {
       let end = this.dataItem.srcImgRelURL.search(/media/i) + 5
       let endURL = this.dataItem.srcImgRelURL.slice(end)
       this.baseURL = this.dataItem.srcImgRelURL.slice(0, end-1)
-      this.baseURL = 'http://10.112.99.172:8001'
+      this.baseURL = 'http://10.112.99.172:8000'
       this.image.src = this.baseURL + endURL
 
       this.canvas = document.getElementById(this.dataItem.id)
@@ -398,7 +398,7 @@ export default {
         let end = this.dataItem.nomRelURL.search(/media/i) + 5
         let endURL = this.dataItem.nomRelURL.slice(end)
         this.baseURL = this.dataItem.nomRelURL.slice(0, end-1)
-        this.baseURL = 'http://10.112.99.172:8001'
+        this.baseURL = 'http://10.112.99.172:8000'
         this.image.src = this.baseURL + endURL
 
         this.image.onload = () => {

@@ -37,7 +37,7 @@
     <!-- 样本 -->
     <el-card shadow="hover" class="el-row-style">
       <div slot="header">
-        <span>核准样本信息</span>
+        <span>已核准样本信息</span>
       </div>
       <div v-loading="loading">
         <div 
@@ -82,7 +82,9 @@
     <el-card 
       shadow="hover" 
       class="el-row-style"
-      v-if="shapeData">
+      v-if="showImg"
+      v-loading="loadingImg">
+      <!-- v-if="shapeData"> -->
         <div v-if="expertShapeOpinion">
           专家意见：
           {{ expertShapeOpinion }}
@@ -91,17 +93,23 @@
         形态匹配综合得分：{{ devShapeMultiMatch.Score }}
 
         <el-row>
-          <el-col :span="16">
-            <img 
+          <el-col :span="18">
+            <img id="ImgSample">
+            <!-- <img 
+              id="ImgSample"
               width="800px"
-              height="700px"
-              :src="eviType == 3 ? shapeData.devShapeSample.srcImgURL : shapeData.oPartImgSample.srcImgURL">
+              :src="eviType == 3 
+                ? baseURL + shapeData.devShapeSample.srcImgRelURL.slice(11)
+                : baseURL + shapeData.oPartImgSample.srcImgRelURL.slice(11)"> -->
           </el-col>
-          <el-col :span="8">
-            <img 
+          <el-col :span="6">
+            <img id="ImgEvidence">
+            <!-- <img 
+              id="ImgEvidence"
               width="400px"
-              height="350px"
-              :src="eviType == 3 ? shapeData.devShapeEvi.srcImgURL : shapeData.oPartImgEvi.srcImgURL">
+              :src="eviType == 3 
+                ? baseURL + shapeData.devShapeEvi.srcImgRelURL.slice(11) 
+                : baseURL + shapeData.oPartImgEvi.srcImgRelURL.slice(11)"> -->
           </el-col>
         </el-row>
 
@@ -182,7 +190,10 @@ export default {
   data() {
     return {
       loading: false,
+      loadingImg: false,
       loadingChart: false,
+      showImg: false,
+      baseURL: 'http://10.112.99.172:8000',
       detailData: {
         user: {}
       },
@@ -272,13 +283,52 @@ export default {
     },
     handleDetail(index) {
       this.initData()
-      this.currentSampleInfo = this.devSampleList[index].devPartSample
 
-      if(this.devSampleList[index].devShapeMultiMatchList) {
-        this.devShapeMultiMatch = this.devSampleList[index].devShapeMultiMatchList
-        this.expertShapeOpinion = this.devSampleList[index].devShapeMultiMatchList.expertShapeOpinion
-        this.shapeData = this.eviType == 3 ? this.devSampleList[index].devShapeMultiMatchList.devShapeMatchList : this.devSampleList[index].devShapeMultiMatchList.opartMatchList
-      }
+      this.showImg = true
+      this.loadingImg = true
+
+      this.$nextTick(() => {
+        let ImgSample = document.getElementById('ImgSample')
+        let ImgEvidence = document.getElementById('ImgEvidence')
+
+        console.log('ImgSample: ', ImgSample)
+
+        ImgSample.style.width = "960px"
+        ImgEvidence.style.width = "320px"
+
+        this.currentSampleInfo = this.devSampleList[index].devPartSample
+
+        if(this.devSampleList[index].devShapeMultiMatchList) {
+          this.devShapeMultiMatch = this.devSampleList[index].devShapeMultiMatchList
+          this.expertShapeOpinion = this.devSampleList[index].devShapeMultiMatchList.expertShapeOpinion
+          this.shapeData = this.eviType == 3 
+            ? this.devSampleList[index].devShapeMultiMatchList.devShapeMatchList 
+            : this.devSampleList[index].devShapeMultiMatchList.opartMatchList
+
+          ImgSample.src = this.eviType == 3 
+            ? this.baseURL + this.shapeData.devShapeSample.srcImgRelURL.slice(11)
+            : this.baseURL + this.shapeData.oPartImgSample.srcImgRelURL.slice(11)
+          ImgEvidence.src = this.eviType == 3 
+            ? this.baseURL + this.shapeData.devShapeEvi.srcImgRelURL.slice(11)
+            : this.baseURL + this.shapeData.oPartImgEvi.srcImgRelURL.slice(11)
+
+          ImgSample.onload = () => {
+            console.log('ImgSample.naturalWidth: ', ImgSample.naturalWidth)
+            if(ImgSample.naturalWidth < 960) {
+              ImgSample.style.width = ImgSample.naturalWidth + 'px'
+            }
+            this.loadingImg = false
+          }
+          ImgEvidence.onload = () => {
+            console.log('ImgEvidence.naturalWidth: ', ImgEvidence.naturalWidth)
+            if(ImgEvidence.naturalWidth < 320) {
+              ImgEvidence.style.width = ImgEvidence.naturalWidth + 'px'
+            }
+            this.loadingImg = false
+          }
+        }
+      })
+
 
       if(this.devSampleList[index].devCompMatchList) {
         this.devCompMatch = this.devSampleList[index].devCompMatchList
