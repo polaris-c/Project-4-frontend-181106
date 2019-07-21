@@ -80,7 +80,7 @@
       </el-row>
       
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
@@ -337,10 +337,23 @@ export default {
           this.currentSample = row.oPartImgSample
           this.currentSample.devSampleName = row.devSampleName
 
+          // URL
+          this.baseURL = 'http://10.112.99.172:8001'
+          
+          let end = this.currentSample.srcImgRelURL.search(/media/i) + 5
+          let endURL = this.currentSample.srcImgRelURL.slice(end)
           this.imgSample = new Image()
-          this.imgSample.src = this.currentSample.srcImgURL
+          this.imgSample.src = this.baseURL + endURL
+
+          end = this.dataItem.srcImgRelURL.search(/media/i) + 5
+          endURL = this.dataItem.srcImgRelURL.slice(end)
           this.imgEvidence = new Image()
-          this.imgEvidence.src = this.dataItem.srcImgURL
+          this.imgEvidence.src = this.baseURL + endURL
+
+          // this.imgSample = new Image()
+          // this.imgSample.src = this.currentSample.srcImgURL
+          // this.imgEvidence = new Image()
+          // this.imgEvidence.src = this.dataItem.srcImgURL
 
           this.initImage()
 

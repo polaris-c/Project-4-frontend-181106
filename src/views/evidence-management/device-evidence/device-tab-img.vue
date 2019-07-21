@@ -59,7 +59,7 @@ export default {
       let end = this.dataItem.srcImgRelURL.search(/media/i) + 5
       let endURL = this.dataItem.srcImgRelURL.slice(end)
       this.baseURL = this.dataItem.srcImgRelURL.slice(0, end-1)
-      this.baseURL = 'http://10.112.99.172:8000'
+      this.baseURL = 'http://10.112.99.172:8001'
       this.image.src = this.baseURL + endURL
 
       this.canvas = document.getElementById(this.dataItem.id)
@@ -67,12 +67,12 @@ export default {
       // 设置画布初始值
       this.width = this.canvas.width = CanvasWidth
       this.height = this.canvas.height = CanvasHeight
-      // toFixed(n) 返回小数点后数字的n个数数字的字符串
-      this.WTHR = Number((this.image.naturalWidth / this.image.naturalHeight).toFixed(3))
 
       this.image.onload = () => {
         this.naturalImgInfo.width = this.image.naturalWidth
         this.naturalImgInfo.height = this.image.naturalHeight
+        // toFixed(n) 返回小数点后数字的n个数数字的字符串
+        this.WTHR = Number((this.image.naturalWidth / this.image.naturalHeight).toFixed(3))
 
         if(this.naturalImgInfo.width > this.canvas.width) {
           // 图像原始尺寸比画布大 等比例缩小

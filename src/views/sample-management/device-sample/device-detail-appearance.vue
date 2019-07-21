@@ -56,7 +56,7 @@ export default {
       dataList: [
         { 
           id: 0,
-          srcImgURL: 'http://127.0.0.1:8000/media/image/devShapeSample/original/27.jpg' 
+          srcImgURL: 'http://127.0.0.1:8001/media/image/devShapeSample/original/27.jpg' 
         },
         { 
           id: 1,
