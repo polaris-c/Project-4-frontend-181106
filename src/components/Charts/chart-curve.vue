@@ -119,13 +119,18 @@ export default {
         let yVal = this.seriesData[this.dataIndex].handledData[1]
         this.options.xAxis.categories = xVal.reverse()
         this.options.series[0].data = yVal.reverse().map(y => {
-          return y += 0.1
+          return y += 0.01
         })
-      } else {
+      } else if(this.dataType === "Raman" || this.dataType ===  "raman") {
         this.options.xAxis.categories = this.seriesData[this.dataIndex].handledData[0]
         // this.options.series[0].data = this.seriesData[this.dataIndex].handledData[1]
         this.options.series[0].data = this.seriesData[this.dataIndex].handledData[1].map(y => {
-          return y += 0.01
+          return y += 0.001
+        })
+      } else {
+        this.options.xAxis.categories = this.seriesData[this.dataIndex].handledData[0]
+        this.options.series[0].data = this.seriesData[this.dataIndex].handledData[1].map(y => {
+          return y += 1
         })
       }
       this.chart = new Highcharts.Chart(this.$el, this.options);
