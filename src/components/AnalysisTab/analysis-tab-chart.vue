@@ -142,8 +142,9 @@ export default {
       // this.$el.style.width = (this.styles.width || 900) + 'px';
       // this.$el.style.height = (this.styles.height || 600) + 'px';
       this.options.xAxis.categories = this.seriesData[this.dataIndex].handledData[0]
-      this.options.series[0].data = this.seriesData[this.dataIndex].handledData[1]
-      // console.log(`---- AnalysisTabChart ---- sampleData Len:`, Object.keys(this.sampleData).length )
+      this.options.series[0].data = this.seriesData[this.dataIndex].handledData[1].map(y => {
+        return y += 0.01
+      })
       this.options.series[1].data = []
       if(Object.keys(this.sampleData).length !== 0) {
         console.log(`---- AnalysisTabChart ---- sampleData:`, this.sampleData )
@@ -152,6 +153,7 @@ export default {
           return y += Number(this.distanceData)
         })
       }
+
 
       this.chart = new Highcharts.Chart(this.$el, this.options);
     },

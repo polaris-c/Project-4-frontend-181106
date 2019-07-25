@@ -358,14 +358,33 @@ export default {
           this.initImage()
 
           this.imgSample.onload = () => {
+            this.sampleWTHR = Number((this.imgSample.naturalWidth / this.imgSample.naturalHeight).toFixed(3))
+
+            if(this.imgSample.naturalWidth > this.canvasSample.width) {
+              // 图像原始尺寸比画布大 等比例缩小
+              this.canvasSample.height = Number((this.canvasSample.width / this.sampleWTHR).toFixed())
+            } else {
+              // 图像原始尺寸比画布小 直接使用原始尺寸
+              this.canvasSample.width = this.imgSample.naturalWidth
+              this.canvasSample.height = this.imgSample.naturalHeight
+            }
             this.ctxSample.drawImage(this.imgSample, 0, 0, this.canvasSample.width, this.canvasSample.height)
-            // console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.imgSample.naturalWidth, 'naturalHeight: ', this.imgSample.naturalHeight,
-            //     'scaleSample[0]: ', this.scaleSample[0], 'scaleSample[1]: ', this.scaleSample[1])
+
+            this.loadingImg = false
           }
           this.imgEvidence.onload = () => {
+            this.evidenceWTHR = Number((this.imgEvidence.naturalWidth / this.imgEvidence.naturalHeight).toFixed(3))
+
+            if(this.imgEvidence.naturalWidth > this.canvasEvidence.width) {
+              // 图像原始尺寸比画布大 等比例缩小
+              this.canvasEvidence.height = Number((this.canvasEvidence.width / this.evidenceWTHR).toFixed())
+            } else {
+              // 图像原始尺寸比画布小 直接使用原始尺寸
+              this.canvasEvidence.width = this.imgEvidence.naturalWidth
+              this.canvasEvidence.height = this.imgEvidence.naturalHeight
+            }
             this.ctxEvidence.drawImage(this.imgEvidence, 0, 0, this.canvasEvidence.width, this.canvasEvidence.height)
-            // console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.imgEvidence.naturalWidth, 'naturalHeight: ', this.imgEvidence.naturalHeight,
-            //     'scaleEvidence[0]: ', this.scaleEvidence[0], 'scaleEvidence[1]: ', this.scaleEvidence[1])
+
           }
         }
       })

@@ -395,9 +395,9 @@ export default {
         this.image = new Image()
         // this.image.src = this.baseURL + res.norImgURL  // 返回的URL不完整
 
-        let end = this.dataItem.nomRelURL.search(/media/i) + 5
-        let endURL = this.dataItem.nomRelURL.slice(end)
-        this.baseURL = this.dataItem.nomRelURL.slice(0, end-1)
+        let end = res.nomRelURL.search(/media/i) + 5
+        let endURL = res.nomRelURL.slice(end)
+        this.baseURL = res.nomRelURL.slice(0, end-1)
         this.baseURL = 'http://10.112.99.172:8001'
         this.image.src = this.baseURL + endURL
 
@@ -419,7 +419,7 @@ export default {
 
           this.scaleX = Number((this.naturalImgInfo.width / this.canvas.width).toFixed(3))
           this.scaleY = Number((this.naturalImgInfo.height / this.canvas.height).toFixed(3))
-          console.log('dataItem id:', this.dataItem.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight, 'baseURL: ', this.baseURL,
+          console.log('dataItem id:', res.id, 'naturalWidth', this.image.naturalWidth, 'naturalHeight: ', this.image.naturalHeight, 'baseURL: ', this.baseURL,
               'scaleX: ', this.scaleX, 'scaleY: ', this.scaleY, 'WTHR: ', this.WTHR)
 
           this.ctx.drawImage(this.image, 0, 0, this.width, this.height)

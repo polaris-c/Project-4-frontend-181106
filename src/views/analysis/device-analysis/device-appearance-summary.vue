@@ -61,10 +61,20 @@
           align="center"
           width="">
           <template slot-scope="scope">
-            <img 
+            <!-- <img 
               :src="eviType == 3 
                 ? baseURL + scope.row.devShapeMatchList.devShapeSample.srcImgRelURL.slice(11) 
                 : baseURL + scope.row.opartMatchList.oPartImgSample.srcImgRelURL.slice(11)" 
+              width="80px" height="60px"
+              @click="handleDetail(eviType == 3 ? scope.row.devShapeMatchList : scope.row.opartMatchList, scope.row)"> -->
+            <img 
+              v-if="eviType == 3"
+              :src="baseURL + scope.row.devShapeMatchList.devShapeSample.srcImgRelURL.slice(11)"
+              width="80px" height="60px"
+              @click="handleDetail(eviType == 3 ? scope.row.devShapeMatchList : scope.row.opartMatchList, scope.row)">
+            <img 
+              v-else
+              :src="baseURL + scope.row.opartMatchList.oPartImgSample.srcImgRelURL.slice(11)"
               width="80px" height="60px"
               @click="handleDetail(eviType == 3 ? scope.row.devShapeMatchList : scope.row.opartMatchList, scope.row)">
           </template>
@@ -157,6 +167,7 @@ export default {
         eviFileId: 0
       },
       tableData: [],
+      oPartImgSample: null,
       getMatchList: null,
       checkMatch: null,
       checkData: {
@@ -216,6 +227,11 @@ export default {
       this.loading = true
       this.getMatchList(this.tableParams).then(res => {
         this.tableData = res.results
+        // console.log('- - DeviceAppearanceSummary - - tableData: ',  this.tableData)
+        // console.log('- - DeviceAppearanceSummary - - tableData[0]: ', this.tableData[0].opartMatchList[0].oPartImgSample)
+        // console.log('- - DeviceAppearanceSummary - - tableData[0]: ', this.tableData[0].opartMatchList[0].oPartImgSample.srcImgRelURL.slice(11))
+        // this.oPartImgSample = this.baseURL + this.tableData[0].opartMatchList[0].oPartImgSample.srcImgRelURL.slice(11)
+        // console.log('- - DeviceAppearanceSummary - - tableData[0]: ', this.tableData[0].devShapeMatchList.devShapeSample)
         this.tableParams.count =  res.count
         this.loading = false
       })
