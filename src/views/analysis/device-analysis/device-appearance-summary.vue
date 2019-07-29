@@ -160,7 +160,7 @@ export default {
     return {
       loading: false,
       loadingImg: false,
-      baseURL: 'http://10.112.196.15:8001',
+      baseURL: 'http://10.112.99.172:8001',
       evidenceNorImgURL: null,  // 在子组件对物证图像处理完毕后接收归一化的图像
       matchData: {
         type: 0,
@@ -289,7 +289,7 @@ export default {
           this.currentSample.matchDegree = item.matchDegree
 
           // URL
-          this.baseURL = 'http://10.112.196.15:8001'
+          this.baseURL = 'http://10.112.99.172:8001'
 
           let end = this.currentSample.srcImgRelURL.search(/media/i) + 5
           let endURL = this.currentSample.srcImgRelURL.slice(end)
@@ -397,7 +397,7 @@ export default {
           this.currentSample.matchDegree = item.matchDegree
 
           // URL
-          this.baseURL = 'http://10.112.196.15:8001'
+          this.baseURL = 'http://10.112.99.172:8001'
           
           let end = this.currentSample.srcImgRelURL.search(/media/i) + 5
           let endURL = this.currentSample.srcImgRelURL.slice(end)

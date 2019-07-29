@@ -60,6 +60,7 @@
       
       <!-- 结果排名列表 -->
       <el-table
+        v-loading="loading"
         class="app-main-table"
         ref="deviceList"
         :data="tableData"
@@ -164,6 +165,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       tableData: [],
       currentSample: {
         id: null,
@@ -241,9 +243,11 @@ export default {
   methods: {
     /** 获取匹配列表 */
     fetchList() {
+      this.loading = true
       getDevCompMatchsList(this.tableParams).then(res => {
         this.tableData = res.results
-        console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
+        this.loading = false
+        // console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
       })
     },
     initData() {

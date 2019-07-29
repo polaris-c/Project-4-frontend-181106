@@ -113,7 +113,7 @@
         evi-type="explosive"
         :series-data = "XRDdata.exploEviXRDTestFile"
         :sample-data = "XRDdata.exploSampleXRDTestFile"
-        distance-data = 30>
+        distance-data = 200>
       </TabChart>
     </el-card>
 
@@ -208,7 +208,7 @@ export default {
         this.loading = false
       }).catch(err => {
         this.$message({
-          message: '获取列表错误 ' + err.message,
+          message: '物证未生成研判结果报告',
           type: 'error'
         })
       })

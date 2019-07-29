@@ -193,7 +193,7 @@ export default {
       loadingImg: false,
       loadingChart: false,
       showImg: false,
-      baseURL: 'http://10.112.196.15:8001',
+      baseURL: 'http://10.112.99.172:8001',
       detailData: {
         user: {}
       },
@@ -291,7 +291,7 @@ export default {
         let ImgSample = document.getElementById('ImgSample')
         let ImgEvidence = document.getElementById('ImgEvidence')
 
-        console.log('ImgSample: ', ImgSample)
+        // console.log('ImgSample: ', ImgSample)
 
         ImgSample.style.width = "960px"
         ImgEvidence.style.width = "320px"

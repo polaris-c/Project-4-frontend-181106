@@ -52,7 +52,7 @@
               evi-type="explosive"
               :series-data = "XRDdata.exploEviXRDTestFile"
               :sample-data = "XRDdata.exploSampleXRDTestFile"
-              distance-data = 30>
+              distance-data = 200>
             </TabChart>
             <hr>
           </el-col>
@@ -79,6 +79,7 @@
       
       <!-- 结果排名列表 -->
       <el-table
+        v-loading="loading"
         class="app-main-table"
         ref="explosiveList"
         :data="tableData"
@@ -191,6 +192,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       tableData: [],
       currentSample: {
         id: null,
@@ -268,9 +270,11 @@ export default {
   methods: {
     /** 获取匹配列表 */
     fetchList() {
+      this.loading = true
       getExploSynMatchList(this.tableParams).then(res => {
         this.tableData = res.results
-        console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
+        // console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
+        this.loading = false
       })
     },
     initData() {
