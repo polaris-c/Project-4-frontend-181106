@@ -193,7 +193,7 @@ export default {
       loadingImg: false,
       loadingChart: false,
       showImg: false,
-      baseURL: 'http://10.112.99.172:8001',
+      baseURL: 'http://10.112.196.15:8001',
       detailData: {
         user: {}
       },

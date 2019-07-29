@@ -338,7 +338,7 @@ export default {
           this.currentSample.devSampleName = row.devSampleName
 
           // URL
-          this.baseURL = 'http://10.112.99.172:8001'
+          this.baseURL = 'http://10.112.196.15:8001'
           
           let end = this.currentSample.srcImgRelURL.search(/media/i) + 5
           let endURL = this.currentSample.srcImgRelURL.slice(end)

@@ -73,7 +73,7 @@ export default {
         height: 0
       },
       scaleX: 0,
-      ScaleY: 0,
+      scaleY: 0,
       WTHR: 1,  // 原始图像长宽比例 width to height ratio
       // 点击时坐标
       coordinate: {
@@ -151,7 +151,7 @@ export default {
       let end = this.dataItem.srcImgRelURL.search(/media/i) + 5
       let endURL = this.dataItem.srcImgRelURL.slice(end)
       this.baseURL = this.dataItem.srcImgRelURL.slice(0, end-1)
-      this.baseURL = 'http://10.112.99.172:8001'
+      this.baseURL = 'http://10.112.196.15:8001'
       this.image.src = this.baseURL + endURL
 
       this.canvas = document.getElementById(this.dataItem.id)
@@ -326,11 +326,11 @@ export default {
     handleUpload() {
       console.log(`objectBack:, ${this.objectBack.beginXY}, ${this.objectBack.endXY} \n
         objectFront:, ${this.objectFront.beginXY}, ${this.objectFront.endXY} \n
-        scale: ${this.scaleX}, ${this.ScaleY}`)
+        scale: ${this.scaleX}, ${this.scaleY}`)
       let [backX1, backY1, backX2, backY2] = [Number((this.objectBack.beginXY[0] * this.scaleX).toFixed()), 
-                                              Number((this.objectBack.beginXY[1] * this.ScaleY).toFixed()),
+                                              Number((this.objectBack.beginXY[1] * this.scaleY).toFixed()),
                                               Number((this.objectBack.endXY[0] * this.scaleX).toFixed()),
-                                              Number((this.objectBack.endXY[1] * this.ScaleY).toFixed())]
+                                              Number((this.objectBack.endXY[1] * this.scaleY).toFixed())]
       let rectCoordi = [backX1, backY1, backX2, backY2]
       rectCoordi = rectCoordi.join(' ')
       console.log(rectCoordi, this.dataItem.id)
