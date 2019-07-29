@@ -1,5 +1,6 @@
 <template>
   <el-pagination
+    v-if="listType === 'main'"
     :current-page="page"
     :total="count"
     :page-sizes="[10, 20, 50, 100]"
@@ -8,12 +9,28 @@
     @size-change="handleSizeChange"
     layout="total, sizes, prev, pager, next, jumper">
   </el-pagination>
+
+  <el-pagination
+    v-else-if="listType === 'match'"
+    :current-page="page"
+    :total="Number(count)"
+    :page-sizes="[10, 20]"
+    :page-size="page_size"
+    :pager-count="5"
+    @current-change="handleCurrentChange"
+    @size-change="handleSizeChange"
+    layout="total, prev, pager, next">
+  </el-pagination>
 </template>
 
 <script>
 export default {
   name: 'Pagination',
   props: {
+    listType: {
+      type: [String],
+      default: 'main'
+    },
     count: {
       type: [String, Number],
       default: 1

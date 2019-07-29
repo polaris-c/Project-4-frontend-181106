@@ -58,8 +58,11 @@
 
       </el-table>
 
+      <!-- table内结果排名列表小分页 -->
       <pagination
-        :currentPage="tablePageIndex"
+        list-type="match"
+        v-bind="tableParams"
+        @change-size="handleChangeSize"
         @change-page="handleChangePage">
       </pagination>
 
@@ -132,8 +135,9 @@ export default {
       tableData: [],
       tableParams: {
         page: 1,
-        page_size: 20,
+        page_size: 10,
         // devShapeEvi_id: 1  // 物证数据文件id
+        count: 1,
       },
       dialogVisible: false,
       canvasSample: null,
@@ -176,6 +180,7 @@ export default {
       this.loading = true
       this.getMatchList(this.tableParams).then(res => {
         this.tableData = res.results
+        this.tableParams.count = res.count
         this.loading = false
       })
     },
@@ -394,10 +399,17 @@ export default {
       // console.log('- - DeviceAppearanceTab - - handleCurrentChange:', currentRow.sName)
       // this.currentSample = currentRow
     },
+    /** tab内结果排名列表翻页 */
+    handleChangeSize(pageSize) {
+      this.tableParams.page_size = pageSize
+      this.tableParams.page = 1
+      this.fetchList()
+    },
     handleChangePage(pageIndex) {
-      console.log('- - DeviceAppearanceTab - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
-    }
+      // console.log('- - DeviceAppearanceTab - - pageIndex: ', pageIndex)
+      this.tableParams.page = pageIndex
+      this.fetchList()
+    },
   },
 }
 </script>

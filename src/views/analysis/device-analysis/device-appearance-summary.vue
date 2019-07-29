@@ -190,7 +190,7 @@ export default {
       tablePageIndex: 1,
       tableParams: {
         page: 1,
-        page_size: 20,
+        page_size: 10,
         devEvi_id: 1,  // 物证id
         count: 1,
       }

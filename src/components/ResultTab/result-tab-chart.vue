@@ -127,29 +127,22 @@ export default {
     this.drawChart();
   },
   methods: {
-    // initChart() {
-    //   // console.log(this.$el);
-    //   // this.$el.style.width = (this.styles.width || 900) + 'px';
-    //   // this.$el.style.height = (this.styles.height || 600) + 'px';
-    //   this.chart = new Highcharts.Chart(this.$el, this.options);
-    // }
     drawChart() {
       if (!this.seriesData == {}) {
         console.log(`---- ResultTabChart ---- ${ this.detectionType } is empty!!! `)
         return
       }
-      // console.log(this.$el);
-      // this.$el.style.width = (this.styles.width || 900) + 'px';
-      // this.$el.style.height = (this.styles.height || 600) + 'px';
       this.options.xAxis.categories = this.seriesData.handledData[0]
+      let eviData = this.seriesData.handledData[1].concat()
+      let distance = eviData.sort((a, b) => a - b)[eviData.length - 1]
       this.options.series[0].data = this.seriesData.handledData[1]
       // console.log(`---- ResultTabChart ---- sampleData Len:`, Object.keys(this.sampleData).length )
       this.options.series[1].data = []
       if(Object.keys(this.sampleData).length !== 0) {
-        console.log(`---- ResultTabChart ---- sampleData:`, this.sampleData )
+        // console.log(`---- ResultTabChart ---- sampleData:`, this.sampleData )
         let count = 0
         this.options.series[1].data = this.sampleData.handledData[1].map(y => {
-          return y += Number(this.distanceData)
+          return y += distance || Number(this.distanceData)
         })
       }
 

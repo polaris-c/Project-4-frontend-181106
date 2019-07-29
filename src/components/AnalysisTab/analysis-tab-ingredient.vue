@@ -91,9 +91,11 @@
         </el-table-column>
       </el-table>
 
-      <!-- table内小分页 -->
+      <!-- table内结果排名列表小分页 -->
       <pagination
-        :currentPage="tablePageIndex"
+        list-type="match"
+        v-bind="tableParams"
+        @change-size="handleChangeSize"
         @change-page="handleChangePage">
       </pagination>
     </el-col>
@@ -188,6 +190,7 @@ export default {
   },
   data() {
     return {
+      match: 'match',
       matchData: {
         type: 0,  // 根据数据类型触发算法类别
         eviFileIdName: '',  // 物证id字段名称
@@ -201,8 +204,9 @@ export default {
       tablePageIndex: 1,
       tableParams: {
         page: 1,
-        page_size: 20,
+        page_size: 10,
         // exploEviFTIRTestFile_id: 1  // 物证数据文件id
+        count: 1,
       },
       // tab内大分页
       dataIndex: 0,  // 数据数组下标从0开始
@@ -267,6 +271,7 @@ export default {
       }
       this.matchData.getMatchList(this.tableParams).then(res => {
         this.tableData = res.results
+        this.tableParams.count = res.count
         // console.log('- - AnalysisTabIngredient - - fetchList: ', this.tableData)
       })
     },
@@ -299,14 +304,19 @@ export default {
         })
       }
     },
-    // handleCurrentChange() {
-    // },
+    /** tab内结果排名列表翻页 */
+    handleChangeSize(pageSize) {
+      this.tableParams.page_size = pageSize
+      this.tableParams.page = 1
+      this.fetchList()
+    },
     handleChangePage(pageIndex) {
-      console.log('- - AnalysisTabIngredient - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
+      // console.log('- - AnalysisTabIngredient - - pageIndex: ', pageIndex)
+      this.tableParams.page = pageIndex
+      this.fetchList()
     },
 
-    // tab内大分页
+    /** tab内大分页 */ 
     handleChangeFilePage(index) {
       console.log('- - AnalysisTabIngredient - - index: ', index)
       this.dataIndex = index - 1

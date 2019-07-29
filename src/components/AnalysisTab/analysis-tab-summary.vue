@@ -119,31 +119,17 @@
         </el-table-column>
       </el-table>
 
-      <!-- table内小分页 -->
+      <!-- table内结果排名列表小分页 -->
       <pagination
-        :currentPage="tablePageIndex"
+        list-type="match"
+        v-bind="tableParams"
+        @change-size="handleChangeSize"
         @change-page="handleChangePage">
       </pagination>
     </el-col>
 
   </el-row>
 
-  <!-- tab内大分页 -->
-  <el-row>
-    <el-col :span="4" :offset="0">
-      <el-input
-        v-model="inputDistanceData"
-        placeholder="样本-物证距离">
-        <el-button
-          slot="append"
-          size="mini"
-          @click="handleDistance">
-          分 离
-        </el-button>
-      </el-input>
-
-    </el-col>
-  </el-row>
   </div>
 
 </template>
@@ -222,7 +208,8 @@ export default {
       tablePageIndex: 1,
       tableParams: {
         page: 1,
-        page_size: 20,
+        page_size: 10,
+        count: 1,
         // exploEviFTIRTestFile_id: 1  // 物证数据文件id
         exploEvi_id: null
       },
@@ -273,7 +260,8 @@ export default {
       this.loading = true
       getExploSynMatchList(this.tableParams).then(res => {
         this.tableData = res.results
-        // console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
+        this.tableParams.count = res.count
+        console.log('- - AnalysisTabSummary - - fetchList: ', this.tableParams.count)
         this.loading = false
       })
     },
@@ -325,7 +313,7 @@ export default {
     /** 选定样本 */
     handleDetail(row) {
       this.currentSample = row
-      console.log('- - AnalysisTabSummary - - handleDetail:', row)
+      // console.log('- - AnalysisTabSummary - - handleDetail:', row)
       this.handleCurrentChange(row)
       // getExploSynMatchInfo().then()
       this.initData()
@@ -348,9 +336,16 @@ export default {
       this.$emit('change-sample', row.expertOpinion)
     },
 
+    /** tab内结果排名列表翻页 */
+    handleChangeSize(pageSize) {
+      this.tableParams.page_size = pageSize
+      this.tableParams.page = 1
+      this.fetchList()
+    },
     handleChangePage(pageIndex) {
-      console.log('- - AnalysisTabSummary - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
+      // console.log('- - AnalysisTabSummary - - pageIndex: ', pageIndex)
+      this.tableParams.page = pageIndex
+      this.fetchList()
     },
 
     // tab内大分页

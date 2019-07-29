@@ -99,9 +99,11 @@
         </el-table-column>
       </el-table>
 
-      <!-- table内小分页 -->
+      <!-- table内结果排名列表小分页 -->
       <pagination
-        :currentPage="tablePageIndex"
+        list-type="match"
+        v-bind="tableParams"
+        @change-size="handleChangeSize"
         @change-page="handleChangePage">
       </pagination>
     </el-col>
@@ -109,7 +111,7 @@
   </el-row>
 
   <!-- tab内大分页 -->
-  <el-row>
+  <!-- <el-row>
     <el-col :span="4" :offset="0">
       <el-input
         v-model="inputDistanceData"
@@ -123,7 +125,7 @@
       </el-input>
 
     </el-col>
-  </el-row>
+  </el-row> -->
   </div>
 
 </template>
@@ -148,7 +150,7 @@ const deviceMap = {}
 let dataTypeMap = {}
 
 export default {
-  name: 'AnalysisTabSummary',
+  name: 'AnalysisTabSummaryD',
   props: {
     dataType: {
       type: String,
@@ -196,6 +198,7 @@ export default {
       tableParams: {
         page: 1,
         page_size: 20,
+        count: 1,
         // devEviFTIRTestFile_id: 1  // 物证数据文件id
         devEvi_id: null
       },
@@ -220,7 +223,7 @@ export default {
       if(!val && !oldVal) return
       if(this.role == 3) return
       this.checkData.expertCompOpinion = val
-      console.log('- - AnalysisTabSummary - - watch expertCompOpinion:', this.checkData.expertCompOpinion)
+      console.log('- - AnalysisTabSummaryD - - watch expertCompOpinion:', this.checkData.expertCompOpinion)
     }
   },
   components: {
@@ -246,8 +249,9 @@ export default {
       this.loading = true
       getDevCompMatchsList(this.tableParams).then(res => {
         this.tableData = res.results
+        this.tableParams.count = res.count
         this.loading = false
-        // console.log('- - AnalysisTabSummary - - fetchList: ', this.tableData)
+        // console.log('- - AnalysisTabSummaryD - - fetchList: ', this.tableData)
       })
     },
     initData() {
@@ -274,13 +278,13 @@ export default {
     },
     /** 核准 */
     handleCheck() {
-      console.log('- - AnalysisTabSummary - - handleCheck:', this.currentSample.devSample.sname)
+      console.log('- - AnalysisTabSummaryD - - handleCheck:', this.currentSample.devSample.sname)
       if(!this.checkData.expertCompOpinion) {
         this.checkData.expertCompOpinion = "已核准（默认说明）"
       }
-      console.log('- - AnalysisTabSummary - - handleCheck:', this.checkData.expertCompOpinion)
+      console.log('- - AnalysisTabSummaryD - - handleCheck:', this.checkData.expertCompOpinion)
       updateDevCompMatchs(this.currentSample.id, this.checkData).then(res => {
-        console.log('- - AnalysisTabSummary - - handleCheck:', res)
+        console.log('- - AnalysisTabSummaryD - - handleCheck:', res)
         this.fetchList()
         this.$message({
           message: '核准完成 ',
@@ -298,7 +302,7 @@ export default {
     /** 选定样本 */
     handleDetail(row) {
       this.currentSample = row
-      console.log('- - AnalysisTabSummary - - handleDetail:', row)
+      console.log('- - AnalysisTabSummaryD - - handleDetail:', row)
       this.handleCurrentChange(row)
       this.initData()
       if(this.currentSample.devEviFTIR) {
@@ -316,18 +320,25 @@ export default {
     },
     handleCurrentChange(row) {
       this.currentSample = row
-      console.log('- - AnalysisTabSummary - - handleCurrentChange:', this.currentSample.id)
+      console.log('- - AnalysisTabSummaryD - - handleCurrentChange:', this.currentSample.id)
       this.$emit('change-sample', row.expertCompOpinion)
     },
 
+    /** tab内结果排名列表翻页 */
+    handleChangeSize(pageSize) {
+      this.tableParams.page_size = pageSize
+      this.tableParams.page = 1
+      this.fetchList()
+    },
     handleChangePage(pageIndex) {
-      console.log('- - AnalysisTabSummary - - pageIndex: ', pageIndex)
-      this.tablePageIndex = pageIndex
+      // console.log('- - AnalysisTabSummaryD - - pageIndex: ', pageIndex)
+      this.tableParams.page = pageIndex
+      this.fetchList()
     },
 
     // tab内大分页
     // handleChangeFilePage(index) {
-    //   console.log('- - AnalysisTabSummary - - index: ', index)
+    //   console.log('- - AnalysisTabSummaryD - - index: ', index)
     //   this.dataIndex = index - 1
     //   this.pageIndex = index
     // },
